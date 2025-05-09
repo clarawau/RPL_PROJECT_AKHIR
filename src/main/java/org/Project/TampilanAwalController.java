@@ -54,7 +54,7 @@ public class TampilanAwalController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert("Database Error", "Gagal mengambil data dari database:\n" + e.getMessage());
-            Platform.exit(); // keluar dari aplikasi
+            Platform.exit();
         }
     }
 
@@ -67,13 +67,10 @@ public class TampilanAwalController implements Initializable {
         alert.showAndWait();
     }
 
-    // Tombol handler dari FXML
     @FXML
     private void onBtnkpClick() throws IOException {
-        // Pindah ke halaman daftar-catatan-view
         Apps.setRoot("daftar-catatan-view", "Daftar Catatan", false);
 
-        // Tutup jendela saat ini (halaman utama)
         Stage currentStage = (Stage) table.getScene().getWindow();
         currentStage.close();
     }
@@ -86,17 +83,14 @@ public class TampilanAwalController implements Initializable {
 
     @FXML
     private void onBtnlogoutClick() throws IOException {
-        // Load login-view.fxml
         FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
         Parent root = loader.load();
 
-        // Buat stage (jendela) baru
         Stage loginStage = new Stage();
         loginStage.setTitle("Login");
         loginStage.setScene(new Scene(root));
         loginStage.show();
 
-        // Tutup jendela saat ini (TampilanAwal)
         Stage currentStage = (Stage) table.getScene().getWindow();
         currentStage.close();
     }

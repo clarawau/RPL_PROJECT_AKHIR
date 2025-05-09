@@ -6,12 +6,11 @@ public class JdbcDao {
 
     private final String jdbcURL = "jdbc:sqlite:database.db";
 
-    // Koneksi DB
+
     protected Connection getConnection() throws SQLException {
         return DriverManager.getConnection(jdbcURL);
     }
 
-    // Buat tabel users jika belum ada
     public void createUsersTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS users (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -31,7 +30,7 @@ public class JdbcDao {
         }
     }
 
-    // Simpan data registrasi
+
     public void insertRecord(String fullName, String email, String password, String nickname, String favoriteColor, String birthDate) {
         String sql = "INSERT INTO users(full_name, email, password, nickname, favorite_color, birth_date) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -52,7 +51,6 @@ public class JdbcDao {
         }
     }
 
-    // Validasi login
     public boolean validateLogin(String email, String password) {
         String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
 

@@ -22,42 +22,43 @@ public class RegisterController {
     @FXML private ColorPicker favoriteColorPicker;
     @FXML private DatePicker birthDatePicker;
     @FXML private Button submitButton;
-
-    // Fungsi untuk tombol Register
     @FXML
     public void register(ActionEvent event) throws SQLException, IOException {
         Window owner = submitButton.getScene().getWindow();
 
-        // Validasi input
-        if (fullNameField.getText().isEmpty() || emailIdField.getText().isEmpty() || passwordField.getText().isEmpty() || confirmPasswordField.getText().isEmpty()) {
+
+        if (fullNameField.getText().isEmpty() ||
+                emailIdField.getText().isEmpty() ||
+                passwordField.getText().isEmpty() ||
+                confirmPasswordField.getText().isEmpty()) {
+
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Semua field harus diisi.", false);
             return;
         }
 
-        // Validasi password match
+
         if (!passwordField.getText().equals(confirmPasswordField.getText())) {
             showAlert(Alert.AlertType.ERROR, owner, "Password Mismatch", "Password dan Konfirmasi Password tidak sama.", false);
             return;
         }
 
+
         String fullName = fullNameField.getText();
         String emailId = emailIdField.getText();
         String password = passwordField.getText();
         String nickname = nicknameField.getText();
-        String favoriteColor = favoriteColorPicker.getValue().toString();
-        String birthDate = birthDatePicker.getValue().toString();
+        String favoriteColor = (favoriteColorPicker.getValue() != null) ? favoriteColorPicker.getValue().toString() : "";
+        String birthDate = (birthDatePicker.getValue() != null) ? birthDatePicker.getValue().toString() : "";
+
 
         JdbcDao jdbcDao = new JdbcDao();
-        jdbcDao.createUsersTableIfNotExists(); // buat tabel kalau belum ada
+        jdbcDao.createUsersTableIfNotExists();
         jdbcDao.insertRecord(fullName, emailId, password, nickname, favoriteColor, birthDate);
-
         showAlert(Alert.AlertType.INFORMATION, owner, "Registrasi Berhasil!", "Selamat datang, " + fullName, true);
-
-        // Pindah ke halaman login setelah registrasi berhasil
         Apps.setRoot("login-view", "Login", true);
     }
 
-    // Fungsi untuk menampilkan alert
+
     private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message, boolean wait) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -71,7 +72,6 @@ public class RegisterController {
         else alert.show();
     }
 
-    // Fungsi untuk berpindah ke halaman login
     @FXML
     private void goToLogin() throws IOException {
         Apps.setRoot("login-view", "Login", true);

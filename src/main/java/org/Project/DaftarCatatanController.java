@@ -48,7 +48,7 @@ public class DaftarCatatanController implements Initializable {
 
     @FXML
     private void onBtnkpClick(ActionEvent event) {
-        // logika kamu
+
     }
     @FXML
     private ChoiceBox<String> cbKategori;
@@ -98,7 +98,7 @@ public class DaftarCatatanController implements Initializable {
                 connection = DriverManager.getConnection(DB_URL);
             } catch (SQLException e) {
                 e.printStackTrace();
-                // Handle database connection error
+
             }
         }
         return connection;
@@ -110,13 +110,12 @@ public class DaftarCatatanController implements Initializable {
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
-                // Handle database connection closure error
+
             }
         }
     }
 
-    /* Create database tables if they don't exist
-     * */
+
     public void createTable() {
         String mhsTableSql = "CREATE TABLE IF NOT EXISTS catatan ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -128,7 +127,7 @@ public class DaftarCatatanController implements Initializable {
             stmt.execute(mhsTableSql);
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle table creation error
+
         }
     }
 
@@ -160,7 +159,7 @@ public class DaftarCatatanController implements Initializable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle database query error
+
         }
     }
 
@@ -255,34 +254,29 @@ public class DaftarCatatanController implements Initializable {
         String queryGetNextId = "SELECT seq FROM SQLITE_SEQUENCE WHERE name = 'catatan' LIMIT 1";
         String queryInsert = "INSERT INTO catatan (judul, konten, kategori) VALUES (?, ?, ?)";
         try {
-            connection.setAutoCommit(false); // Start transaction
+            connection.setAutoCommit(false);
             try (PreparedStatement getNextIdStatement = connection.prepareStatement(queryGetNextId);
                  PreparedStatement insertStatement = connection.prepareStatement(queryInsert)) {
-                // Execute query to get the next ID
                 ResultSet resultSet = getNextIdStatement.executeQuery();
-                int nextId = 1; // Default value if no rows are returned
+                int nextId = 1;
                 if (resultSet.next()) {
                     nextId = resultSet.getInt("seq") + 1;
                 }
-                // Set parameters for insert query
                 insertStatement.setString(1, catatan.getJudul());
                 insertStatement.setString(2, catatan.getKonten());
                 insertStatement.setString(3, catatan.getKategori());
-                // Execute insert query
                 int rowsAffected = insertStatement.executeUpdate();
-
                 if (rowsAffected > 0) {
                     catatan.setId(nextId);
                     catatanObservableList.add(catatan);
-                    connection.commit(); // Commit transaction
+                    connection.commit();
                     return true;
                 }
             } catch (SQLException e) {
-                connection.rollback(); // Rollback transaction
+                connection.rollback();
                 e.printStackTrace();
-                // Handle database query error
             } finally {
-                connection.setAutoCommit(true); // Reset auto-commit mode
+                connection.setAutoCommit(true);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -306,7 +300,7 @@ public class DaftarCatatanController implements Initializable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle database query error
+
         }
         return false;
     }
@@ -340,13 +334,13 @@ public class DaftarCatatanController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TampilanAwal.fxml"));
         Parent root = loader.load();
 
-        // Buat stage (jendela) baru
+
         Stage loginStage = new Stage();
         loginStage.setTitle("Login");
         loginStage.setScene(new Scene(root));
         loginStage.show();
 
-        // Tutup jendela saat ini (TampilanAwal)
+
         Stage currentStage = (Stage) table.getScene().getWindow();
         currentStage.close();
 

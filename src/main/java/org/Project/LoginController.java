@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class LoginController {
 
-    @FXML private TextField txtUsername; // pakai email
+    @FXML private TextField txtUsername;
     @FXML private PasswordField txtPassword;
 
     @FXML
