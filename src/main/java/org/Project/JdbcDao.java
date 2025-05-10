@@ -4,66 +4,77 @@ import java.sql.*;
 
 public class JdbcDao {
 
-    private final String jdbcURL = "jdbc:sqlite:database.db";
+    private static final String DB_URL = "jdbc:sqlite:database.db";
 
+    public JdbcDao() {
+        createUsersTableIfNotExists();
+    }
 
-    protected Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(jdbcURL);
+    private Connection connect() {
+        try {
+            return DriverManager.getConnection(DB_URL);
+        } catch (SQLException e) {
+            System.out.println("Koneksi gagal: " + e.getMessage());
+            return null;
+        }
     }
 
     public void createUsersTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS users (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "full_name TEXT NOT NULL, " +
-                "email TEXT NOT NULL UNIQUE, " +
-                "password TEXT NOT NULL, " +
-                "nickname TEXT, " +
-                "favorite_color TEXT, " +
-                "birth_date TEXT)";
-
-        try (Connection conn = getConnection();
+                "emailId TEXT UNIQUE NOT NULL, " +
+                "password TEXT NOT NULL" +
+                ");";
+        try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
-            System.out.println("Tabel users siap digunakan.");
+            System.out.println("Tabel users dicek/dibuat.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Gagal membuat tabel: " + e.getMessage());
         }
     }
 
+    public void insertRecord(String emailId, String password) {
+        if (isEmailExist(emailId)) {
+            System.out.println("Email sudah terdaftar!");
+            return; // Jika email sudah ada, berhenti
+        }
 
-    public void insertRecord(String fullName, String email, String password, String nickname, String favoriteColor, String birthDate) {
-        String sql = "INSERT INTO users(full_name, email, password, nickname, favorite_color, birth_date) VALUES (?, ?, ?, ?, ?, ?)";
-
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            preparedStatement.setString(1, fullName);
-            preparedStatement.setString(2, email);
-            preparedStatement.setString(3, password);
-            preparedStatement.setString(4, nickname);
-            preparedStatement.setString(5, favoriteColor);
-            preparedStatement.setString(6, birthDate);
-            preparedStatement.executeUpdate();
-
-            System.out.println("User berhasil diregistrasi: " + email);
+        String sql = "INSERT INTO users(emailId, password) VALUES(?, ?)";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, emailId);
+            pstmt.setString(2, password);
+            pstmt.executeUpdate();
+            System.out.println("Registrasi berhasil!");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Registrasi gagal: " + e.getMessage());
         }
     }
 
-    public boolean validateLogin(String email, String password) {
-        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
-
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            return resultSet.next();
+    public boolean isEmailExist(String emailId) {
+        String sql = "SELECT * FROM users WHERE emailId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, emailId);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Cek email gagal: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean loginUser(String emailId, String password) {
+        String sql = "SELECT * FROM users WHERE emailId = ? AND password = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, emailId);
+            pstmt.setString(2, password);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            System.out.println("Login gagal: " + e.getMessage());
             return false;
         }
     }

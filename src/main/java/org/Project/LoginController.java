@@ -29,9 +29,7 @@ public class LoginController {
         String password = txtPassword.getText();
 
         JdbcDao jdbcDao = new JdbcDao();
-        jdbcDao.createUsersTableIfNotExists();
-        boolean validUser = jdbcDao.validateLogin(email, password);
-
+        boolean validUser = jdbcDao.loginUser(email, password);
         Alert alert;
         if (validUser) {
             alert = new Alert(Alert.AlertType.INFORMATION);
@@ -39,11 +37,8 @@ public class LoginController {
             alert.setContentText("Login berhasil!");
             alert.showAndWait();
 
-            // Tutup jendela login
             Stage currentStage = (Stage) txtUsername.getScene().getWindow();
             currentStage.close();
-
-            // Buka tampilan utama
             Apps.setRoot("TampilanAwal", "Daftar Catatan", false);
         } else {
             alert = new Alert(Alert.AlertType.ERROR);
@@ -53,5 +48,4 @@ public class LoginController {
             txtUsername.requestFocus();
         }
     }
-
 }
