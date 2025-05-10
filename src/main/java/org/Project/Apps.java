@@ -11,11 +11,11 @@ import java.io.IOException;
 public class Apps extends Application {
 
     public static void openViewWithModal(String s, boolean b) {
-        // Kosong, bisa diisi nanti kalau butuh modal window
+
     }
 
     public static void showAndWait() {
-        // Kosong juga, bisa diisi nanti
+
     }
 
     @Override
