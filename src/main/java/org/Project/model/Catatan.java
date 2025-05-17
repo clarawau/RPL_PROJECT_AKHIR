@@ -36,6 +36,10 @@ public class Catatan {
         this.kategori = kategori;
     }
 
+    public Catatan() {
+
+    }
+
     public int getId() {
         return id;
     }
