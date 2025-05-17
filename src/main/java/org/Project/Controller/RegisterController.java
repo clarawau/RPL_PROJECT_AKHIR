@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.Project.Apps;
 import org.Project.DataBase.JdbcDao;
@@ -55,7 +58,18 @@ public class RegisterController {
 
         showAlert(Alert.AlertType.INFORMATION, owner, "Registrasi Berhasil!", "Selamat datang, " + fullNameField.getText().trim(), true);
 
-        Apps.setRoot("login-view.fxml", "Login", true);
+        Stage stage = (Stage) submitButton.getScene().getWindow();
+        stage.close();
+
+// Ganti tampilan langsung dari controller
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
+        Stage loginStage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        loginStage.setTitle("Login");
+        loginStage.setScene(scene);
+        loginStage.setResizable(false);
+        loginStage.show();
+
     }
 
     private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message, boolean wait) {

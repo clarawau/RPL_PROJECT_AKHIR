@@ -4,7 +4,8 @@ import java.sql.*;
 
 public class JdbcDao {
 
-    private static final String DB_URL = "jdbc:sqlite:database.db";
+    private static final String DB_URL = "jdbc:sqlite:" + System.getProperty("user.dir") + "/database.db";
+
 
     public JdbcDao() {
         createUsersTableIfNotExists();

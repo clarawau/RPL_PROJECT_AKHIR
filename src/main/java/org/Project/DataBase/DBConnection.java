@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String DB_URL = "jdbc:sqlite:C:/path/to/your/db/catatanku.db";
+    private static final String DB_URL = "jdbc:sqlite:database.db";
     private static Connection connection;
 
     private DBConnection() {}

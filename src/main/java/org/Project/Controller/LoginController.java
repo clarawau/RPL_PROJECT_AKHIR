@@ -1,6 +1,8 @@
 package org.Project.Controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -41,7 +43,16 @@ public class LoginController {
 
             Stage currentStage = (Stage) txtUsername.getScene().getWindow();
             currentStage.close();
-            Apps.setRoot("TampilanAwal", "Daftar Catatan", false);
+
+// Langsung buka TampilanAwal.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/TampilanAwal.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.load());
+            stage.setTitle("Daftar Catatan");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
         } else {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Gagal");
