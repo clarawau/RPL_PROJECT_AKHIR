@@ -156,7 +156,15 @@ public class TampilanAwalController implements Initializable {
 
     @FXML
     private void onBtnkpClick() throws IOException {
-        Apps.setRoot("daftar-catatan-view", "Daftar Catatan", false);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/views/daftar-catatan-view.fxml"));
+        Parent root = loader.load();
+
+
+        Stage loginStage = new Stage();
+        loginStage.setTitle("Login");
+        loginStage.setScene(new Scene(root));
+        loginStage.show();
+
 
         Stage currentStage = (Stage) table.getScene().getWindow();
         currentStage.close();

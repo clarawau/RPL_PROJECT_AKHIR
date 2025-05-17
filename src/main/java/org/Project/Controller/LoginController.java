@@ -1,64 +1,153 @@
 package org.Project.Controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-import org.Project.Apps;
+import javafx.stage.Window;
 import org.Project.DataBase.JdbcDao;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class LoginController {
 
-    @FXML private TextField txtUsername;
-    @FXML private PasswordField txtPassword;
+    @FXML
+    private TextField usernameField;
 
     @FXML
-    protected void onKeyPressEvent(KeyEvent event) throws IOException, SQLException {
-        if (event.getCode() == KeyCode.ENTER) {
-            btnLoginClick();
+    private PasswordField passwordField;
+
+    @FXML
+    private Button loginButton;
+
+    @FXML
+    private Hyperlink registerLink;
+
+    @FXML
+    private Hyperlink forgotPasswordLink;
+
+    @FXML
+    void handleLogin(ActionEvent event) {
+        Window owner = loginButton.getScene().getWindow();
+
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal", "Username dan Password harus diisi.", false);
+            return;
+        }
+
+        JdbcDao dao = new JdbcDao();
+        boolean valid = dao.validateLogin(username, password);
+
+        if (valid) {
+            showAlert(Alert.AlertType.INFORMATION, owner, "Login Berhasil", "Selamat datang, " + username, false);
+
+            try {
+                // Ganti tampilan ke halaman utama
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                stage.close();
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/home-view.fxml"));
+                Stage homeStage = new Stage();
+                Scene scene = new Scene(loader.load());
+                homeStage.setTitle("Dashboard");
+                homeStage.setScene(scene);
+                homeStage.setResizable(false);
+                homeStage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal", "Username atau Password salah.", false);
         }
     }
 
     @FXML
-    protected void btnLoginClick() throws IOException, SQLException {
-        String email = txtUsername.getText();
-        String password = txtPassword.getText();
+    void handleRegisterLink(ActionEvent event) {
+        try {
+            Stage stage = (Stage) registerLink.getScene().getWindow();
+            stage.close();
 
-        JdbcDao jdbcDao = new JdbcDao();
-        boolean validUser = jdbcDao.loginUser(email, password);
-        Alert alert;
-        if (validUser) {
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Sukses");
-            alert.setContentText("Login berhasil!");
-            alert.showAndWait();
-
-            Stage currentStage = (Stage) txtUsername.getScene().getWindow();
-            currentStage.close();
-
-// Langsung buka TampilanAwal.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/TampilanAwal.fxml"));
-            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/register-view.fxml"));
+            Stage regStage = new Stage();
             Scene scene = new Scene(loader.load());
-            stage.setTitle("Daftar Catatan");
+            regStage.setTitle("Register");
+            regStage.setScene(scene);
+            regStage.setResizable(false);
+            regStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void handleForgotPasswordLink(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/ForgetPass-view.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            Stage stage = new Stage();
+            stage.setTitle("Lupa Password");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
 
-        } else {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Gagal");
-            alert.setContentText("Login gagal! Email atau password salah.");
+            System.out.println("Reset Password window opened successfully.");
+
+        } catch (IOException e) {
+            System.err.println("Gagal memuat forgot-password-view.fxml");
+            e.printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Gagal membuka halaman reset password");
+            alert.setContentText(e.getMessage());
             alert.showAndWait();
-            txtUsername.requestFocus();
         }
     }
-}
+
+
+    private void showAlert(Alert.AlertType alertType, Window owner, String title, String message, boolean wait) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initOwner(owner);
+
+        if (wait) {
+            alert.showAndWait();
+        } else {
+            alert.show();
+        }
+    }
+
+    public void handleForgotPassword(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/ForgetPass-view.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            Stage stage = new Stage();
+            stage.setTitle("Lupa Password");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
+            System.out.println("Reset Password window opened successfully.");
+
+        } catch (IOException e) {
+            System.err.println("Gagal memuat forgot-password-view.fxml");
+            e.printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Gagal membuka halaman reset password");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }
+    }

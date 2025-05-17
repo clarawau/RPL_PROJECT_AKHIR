@@ -1,43 +1,51 @@
 package org.Project.Controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.Project.Apps;
 import org.Project.DataBase.JdbcDao;
 
 public class RegisterController {
 
     @FXML private TextField fullNameField;
-    @FXML private TextField emailIdField;
-    @FXML private PasswordField passwordField;
+    @FXML private PasswordField pass1;
+    @FXML private PasswordField pass2;
+    @FXML private TextField pet;
+    @FXML private TextField food;
+    @FXML private TextField book;
+    @FXML private ColorPicker color;
     @FXML private Button submitButton;
+    @FXML private Hyperlink login;
 
     @FXML
-    public void register(ActionEvent event) throws SQLException, IOException {
+    void register(ActionEvent event) throws IOException {
         Window owner = submitButton.getScene().getWindow();
 
-        if (fullNameField.getText().trim().isEmpty() || emailIdField.getText().trim().isEmpty() || passwordField.getText().trim().isEmpty()) {
+        String username = fullNameField.getText().trim();
+        String password = pass1.getText().trim();
+        String confirmPassword = pass2.getText().trim();
+        String petAnswer = pet.getText().trim();
+        String foodAnswer = food.getText().trim();
+        String bookAnswer = book.getText().trim();
+        Color colorValue = color.getValue();
+
+        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ||
+                petAnswer.isEmpty() || foodAnswer.isEmpty() || bookAnswer.isEmpty() || colorValue == null) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Semua field harus diisi.", false);
             return;
         }
 
-        String emailId = emailIdField.getText().trim();
-        if (!isValidEmail(emailId)) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Format email tidak valid.", false);
+        if (!password.equals(confirmPassword)) {
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Password dan Konfirmasi tidak sesuai.", false);
             return;
         }
 
-        String password = passwordField.getText().trim();
         if (password.length() < 6) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Password minimal 6 karakter.", false);
             return;
@@ -49,27 +57,47 @@ public class RegisterController {
         }
 
         JdbcDao jdbcDao = new JdbcDao();
-        if (jdbcDao.isEmailExist(emailId)) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Email sudah terdaftar.", false);
+        if (jdbcDao.isUsernameExist(username)) {
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Username sudah terdaftar.", false);
             return;
         }
 
-        jdbcDao.insertRecord(emailId, password);
+        boolean inserted = jdbcDao.insertUser(username, password, petAnswer, foodAnswer, bookAnswer, colorValue.toString());
+        if (inserted) {
+            showAlert(Alert.AlertType.INFORMATION, owner, "Registrasi Berhasil!", "Hallo, " + username + "!", true);
 
-        showAlert(Alert.AlertType.INFORMATION, owner, "Registrasi Berhasil!", "Selamat datang, " + fullNameField.getText().trim(), true);
+            Stage stage = (Stage) submitButton.getScene().getWindow();
+            stage.close();
 
-        Stage stage = (Stage) submitButton.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
+            Stage loginStage = new Stage();
+            Scene scene = new Scene(loader.load());
+            loginStage.setTitle("Login");
+            loginStage.setScene(scene);
+            loginStage.setResizable(false);
+            loginStage.show();
+        } else {
+            showAlert(Alert.AlertType.ERROR, owner, "Registrasi Gagal!", "Terjadi kesalahan saat menyimpan data.", false);
+        }
+    }
+
+    @FXML
+    void onactionlg(ActionEvent event) throws IOException {
+        Stage stage = (Stage) login.getScene().getWindow();
         stage.close();
 
-// Ganti tampilan langsung dari controller
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
         Stage loginStage = new Stage();
-        Scene scene = new Scene(fxmlLoader.load());
+        Scene scene = new Scene(loader.load());
         loginStage.setTitle("Login");
         loginStage.setScene(scene);
         loginStage.setResizable(false);
         loginStage.show();
+    }
 
+    private boolean isValidPassword(String password) {
+        String passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$";
+        return password.matches(passwordRegex);
     }
 
     private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message, boolean wait) {
@@ -86,15 +114,5 @@ public class RegisterController {
         } else {
             alert.show();
         }
-    }
-
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        return email.matches(emailRegex);
-    }
-
-    private boolean isValidPassword(String password) {
-        String passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$";
-        return password.matches(passwordRegex);
     }
 }
