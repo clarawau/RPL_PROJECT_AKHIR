@@ -1,10 +1,11 @@
-package org.Project;
+package org.Project.Controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
+import org.Project.DataBase.DBConnection;
 
 import java.awt.*;
 import java.net.URL;

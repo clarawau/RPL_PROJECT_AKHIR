@@ -1,4 +1,4 @@
-package org.Project;
+package org.Project.Controller;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -11,6 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.Project.Apps;
+import org.Project.model.Catatan2;
 
 import java.io.IOException;
 import java.net.URL;

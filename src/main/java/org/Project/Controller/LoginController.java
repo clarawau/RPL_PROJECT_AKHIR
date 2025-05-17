@@ -1,4 +1,4 @@
-package org.Project;
+package org.Project.Controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import org.Project.Apps;
+import org.Project.DataBase.JdbcDao;
 
 import java.io.IOException;
 import java.sql.SQLException;

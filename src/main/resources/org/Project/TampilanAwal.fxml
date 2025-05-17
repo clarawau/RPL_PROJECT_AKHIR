@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Project.TampilanAwalController">
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Project.Controller.TampilanAwalController">
 
    <children>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="42.0" prefWidth="598.0">

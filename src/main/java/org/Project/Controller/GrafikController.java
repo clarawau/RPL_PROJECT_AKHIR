@@ -1,4 +1,4 @@
-package org.Project;
+package org.Project.Controller;
 
 public class GrafikController {
 }

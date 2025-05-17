@@ -1,4 +1,4 @@
-package org.Project;
+package org.Project.model;
 
 import javafx.beans.property.*;
 

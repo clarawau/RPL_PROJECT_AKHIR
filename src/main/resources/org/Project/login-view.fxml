@@ -13,7 +13,7 @@
   prefWidth="316.0"
   xmlns="http://javafx.com/javafx/17.0.2-ea"
   xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="org.Project.LoginController">
+  fx:controller="org.Project.Controller.LoginController">
    <children>
       <Label layoutX="66.0" layoutY="31.0" text="Welcome, Login Here">
          <font>

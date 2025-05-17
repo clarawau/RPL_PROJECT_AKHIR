@@ -1,4 +1,4 @@
-package org.Project;
+package org.Project.model;
 
 public class Catatan {
     private int id;
