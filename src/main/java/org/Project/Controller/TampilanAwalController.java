@@ -4,15 +4,17 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.Project.Apps;
 import org.Project.model.Catatan2;
+import org.Project.model.Session;
+import org.Project.model.Session;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,9 +42,15 @@ public class TampilanAwalController implements Initializable {
 
     private void getAllData() {
         catatanObservableList.clear();
+        int userId = Session.getUserId();
+
+        String sql = "SELECT * FROM catatan WHERE user_id = ?";
+
         try (Connection con = DriverManager.getConnection("jdbc:sqlite:catatanku.db");
-             Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery("SELECT * FROM catatan")) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -60,7 +68,6 @@ public class TampilanAwalController implements Initializable {
         }
     }
 
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -76,7 +83,6 @@ public class TampilanAwalController implements Initializable {
         Stage currentStage = (Stage) table.getScene().getWindow();
         currentStage.close();
     }
-
 
     @FXML
     private void onBtnGrafikClick() {

@@ -3,6 +3,7 @@ package org.Project.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -137,6 +138,9 @@ public class LoginController {
             stage.setResizable(false);
             stage.show();
 
+            // Tutup halaman login
+            ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+
             System.out.println("Reset Password window opened successfully.");
 
         } catch (IOException e) {
@@ -150,4 +154,4 @@ public class LoginController {
             alert.showAndWait();
         }
     }
-    }
+}

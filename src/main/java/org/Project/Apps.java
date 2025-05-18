@@ -16,7 +16,6 @@ public class Apps extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        // Cek atau buat tabel 'users'
         JdbcDao dao = new JdbcDao();
         dao.createUsersTableIfNotExists();
 
