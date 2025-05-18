@@ -14,8 +14,12 @@ public class Apps extends Application {
         JdbcDao dao = new JdbcDao();
         dao.createTableIfNotExists();
 
+<<<<<<< Updated upstream
         // Load halaman login
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/Project/Registrasi-view.fxml"));
+=======
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TampilanAwal.fxml"));
+>>>>>>> Stashed changes
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Aplikasi Catatan");
         stage.setScene(scene);

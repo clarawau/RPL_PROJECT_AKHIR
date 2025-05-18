@@ -156,6 +156,7 @@ public class TampilanAwalController implements Initializable {
 
     @FXML
     private void onBtnkpClick() throws IOException {
+<<<<<<< Updated upstream
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/views/daftar-catatan-view.fxml"));
         Parent root = loader.load();
 
@@ -168,6 +169,15 @@ public class TampilanAwalController implements Initializable {
 
         Stage currentStage = (Stage) table.getScene().getWindow();
         currentStage.close();
+=======
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/Project/daftar-catatan-view.fxml"));
+        Stage dfStage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        dfStage.setTitle("daftarcatatan");
+        dfStage.setScene(scene);
+        dfStage.setResizable(false);
+        dfStage.show();
+>>>>>>> Stashed changes
     }
 
     @FXML
@@ -188,4 +198,5 @@ public class TampilanAwalController implements Initializable {
         Stage currentStage = (Stage) table.getScene().getWindow();
         currentStage.close();
     }
+
 }
