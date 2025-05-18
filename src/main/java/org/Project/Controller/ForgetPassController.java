@@ -34,8 +34,9 @@ public class ForgetPassController {
         String color = "";
 
         if (colorPicker.getValue() != null) {
-            color = colorPicker.getValue().toString().substring(2, 8).toUpperCase(); // ambil hex value
+            color = colorPicker.getValue().toString(); // langsung ambil format lengkap seperti di database
         }
+
 
         String newPassword = newPasswordField.getText().trim();
         String confirmPassword = confirmPasswordField.getText().trim();

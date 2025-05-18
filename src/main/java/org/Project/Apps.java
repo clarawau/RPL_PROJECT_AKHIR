@@ -8,35 +8,26 @@ import org.Project.DataBase.JdbcDao;
 
 public class Apps extends Application {
 
+    public static void setRoot(String tampilanAwal, String daftarCatatan, boolean b) {
+    }
+
+    public static void openViewWithModal(String s, boolean b) {
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
-        // Inisialisasi dan buat tabel user jika belum ada
+        // Cek atau buat tabel 'users'
         JdbcDao dao = new JdbcDao();
-        dao.createTableIfNotExists();
+        dao.createUsersTableIfNotExists();
 
-<<<<<<< Updated upstream
-        // Load halaman login
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/Project/Registrasi-view.fxml"));
-=======
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TampilanAwal.fxml"));
->>>>>>> Stashed changes
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Registrasi-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Aplikasi Catatan");
         stage.setScene(scene);
-        stage.setResizable(false);
         stage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    // Optional: Placeholder jika ingin dipakai nanti
-    public static void setRoot(String view1, String view2, boolean modal) {
-        // Implementasi ganti scene kalau dibutuhkan
-    }
-
-    public static void openViewWithModal(String fxmlPath, boolean modal) {
-        // Implementasi buka modal window kalau dibutuhkan
     }
 }
