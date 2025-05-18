@@ -11,7 +11,7 @@ public class JdbcDao {
         return DriverManager.getConnection(DB_URL);
     }
 
-    // Buat tabel jika belum ada (bisa dipanggil di awal)
+    // Buat tabel jika belum ada
     public void createTableIfNotExists() {
         String sql = "CREATE TABLE IF NOT EXISTS users (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -29,16 +29,15 @@ public class JdbcDao {
         }
     }
 
-
     public boolean insertUser(String username, String password, String pet, String food, String book, String color) {
         String sql = "INSERT INTO users(username, password, pet, food, book, color) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
+            stmt.setString(1, username.toLowerCase());
             stmt.setString(2, password);
-            stmt.setString(3, pet);
-            stmt.setString(4, food);
-            stmt.setString(5, book);
-            stmt.setString(6, color);
+            stmt.setString(3, pet.toLowerCase());
+            stmt.setString(4, food.toLowerCase());
+            stmt.setString(5, book.toLowerCase());
+            stmt.setString(6, color.toLowerCase());
             int rowsInserted = stmt.executeUpdate();
             return rowsInserted > 0;
         } catch (SQLException e) {
@@ -47,12 +46,10 @@ public class JdbcDao {
         }
     }
 
-
-
     public boolean isUsernameExist(String username) {
         String sql = "SELECT 1 FROM users WHERE username = ?";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
+            stmt.setString(1, username.toLowerCase());
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         } catch (SQLException e) {
@@ -61,11 +58,10 @@ public class JdbcDao {
         return false;
     }
 
-    // Verifikasi login
     public boolean checkLogin(String username, String password) {
         String sql = "SELECT 1 FROM users WHERE username = ? AND password = ?";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
+            stmt.setString(1, username.toLowerCase());
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
             return rs.next();
@@ -75,29 +71,28 @@ public class JdbcDao {
         return false;
     }
 
-    // Verifikasi jawaban security question
     public boolean verifySecurityAnswers(String username, String pet, String food, String book, String color) {
-        String sql = "SELECT 1 FROM users WHERE username = ? AND pet = ? AND food = ? AND book = ? AND color = ?";
+        String sql = "SELECT 1 FROM users WHERE " +
+                "LOWER(username) = ? AND LOWER(pet) = ? AND LOWER(food) = ? AND LOWER(book) = ? AND LOWER(color) = ?";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
-            stmt.setString(2, pet);
-            stmt.setString(3, food);
-            stmt.setString(4, book);
-            stmt.setString(5, color);
+            stmt.setString(1, username.toLowerCase());
+            stmt.setString(2, pet.toLowerCase());
+            stmt.setString(3, food.toLowerCase());
+            stmt.setString(4, book.toLowerCase());
+            stmt.setString(5, color.toLowerCase());
             ResultSet rs = stmt.executeQuery();
-            return rs.next(); // true jika semua jawaban cocok
+            return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    // Update password
     public void updatePassword(String username, String newPassword) {
-        String sql = "UPDATE users SET password = ? WHERE username = ?";
+        String sql = "UPDATE users SET password = ? WHERE LOWER(username) = ?";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, newPassword);
-            stmt.setString(2, username);
+            stmt.setString(2, username.toLowerCase());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -107,5 +102,4 @@ public class JdbcDao {
     public boolean validateLogin(String username, String password) {
         return checkLogin(username, password);
     }
-
 }

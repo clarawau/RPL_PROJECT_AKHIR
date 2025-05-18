@@ -15,7 +15,7 @@ public class Apps extends Application {
         dao.createTableIfNotExists();
 
         // Load halaman login
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/Project/Registrasi-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Aplikasi Catatan");
         stage.setScene(scene);

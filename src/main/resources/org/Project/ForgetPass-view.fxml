@@ -4,7 +4,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.ForgetPassController"
             prefWidth="400" prefHeight="500">
     <children>
@@ -12,18 +11,17 @@
             <Label text="Reset Password" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
 
             <TextField fx:id="usernameField" promptText="Username" />
-            <Button fx:id="resetButton" onAction="#resetPassword" text="Reset Password"/>
 
-
-            <PasswordField fx:id="petField" promptText="Nama hewan peliharaan" />
-            <PasswordField fx:id="foodField" promptText="Makanan favorit" />
-            <PasswordField fx:id="bookField" promptText="Buku favorit" />
-            <ColorPicker fx:id="colorPicker" promptText="Warna favorit" />
+            <TextField fx:id="petField" promptText="Nama hewan peliharaan" />
+            <TextField fx:id="foodField" promptText="Makanan favorit" />
+            <TextField fx:id="bookField" promptText="Buku favorit" />
+            <ColorPicker fx:id="colorPicker" />
 
             <PasswordField fx:id="newPasswordField" promptText="Password baru" />
             <PasswordField fx:id="confirmPasswordField" promptText="Konfirmasi password" />
 
-            <Button text="Reset Password" onAction="#handleResetPassword" />
+            <Button fx:id="resetButton" text="Reset Password" onAction="#resetPassword" />
+            <Hyperlink fx:id="backToLogin" text="Kembali ke Login" onAction="#backToLogin" />
         </VBox>
     </children>
 </AnchorPane>

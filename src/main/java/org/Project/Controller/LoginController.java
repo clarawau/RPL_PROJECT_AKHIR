@@ -51,7 +51,7 @@ public class LoginController {
                 Stage stage = (Stage) loginButton.getScene().getWindow();
                 stage.close();
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/home-view.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/TampilanAwal.fxml"));
                 Stage homeStage = new Stage();
                 Scene scene = new Scene(loader.load());
                 homeStage.setTitle("Dashboard");

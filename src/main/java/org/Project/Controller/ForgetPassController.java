@@ -14,9 +14,9 @@ import java.io.IOException;
 public class ForgetPassController {
 
     @FXML private TextField usernameField;
-    @FXML private PasswordField petField;
-    @FXML private PasswordField foodField;
-    @FXML private PasswordField bookField;
+    @FXML private TextField petField;
+    @FXML private TextField foodField;
+    @FXML private TextField bookField;
     @FXML private ColorPicker colorPicker;
     @FXML private PasswordField newPasswordField;
     @FXML private PasswordField confirmPasswordField;
@@ -34,7 +34,7 @@ public class ForgetPassController {
         String color = "";
 
         if (colorPicker.getValue() != null) {
-            color = colorPicker.getValue().toString().substring(2, 8).toUpperCase(); // Format warna diperbaiki
+            color = colorPicker.getValue().toString().substring(2, 8).toUpperCase(); // ambil hex value
         }
 
         String newPassword = newPasswordField.getText().trim();
@@ -67,26 +67,9 @@ public class ForgetPassController {
         dao.updatePassword(username, newPassword);
         showAlert(Alert.AlertType.INFORMATION, owner, "Berhasil", "Password berhasil diperbarui!", true);
 
-        // Arahkan kembali ke halaman login
+        // kembali ke halaman login
         try {
             Stage stage = (Stage) resetButton.getScene().getWindow();
-            stage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
-            Stage loginStage = new Stage();
-            Scene scene = new Scene(loader.load());
-            loginStage.setTitle("Login");
-            loginStage.setScene(scene);
-            loginStage.setResizable(false);
-            loginStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void backToLogin(ActionEvent event) {
-        try {
-            Stage stage = (Stage) backToLogin.getScene().getWindow();
             stage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
             Stage loginStage = new Stage();
@@ -111,7 +94,6 @@ public class ForgetPassController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.initOwner(owner);
-
         if (wait) {
             alert.showAndWait();
         } else {
@@ -119,6 +101,16 @@ public class ForgetPassController {
         }
     }
 
-    public void handleResetPassword(ActionEvent actionEvent) {
+    public void backToLogin(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) backToLogin.getScene().getWindow();
+        stage.close();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
+        Stage loginStage = new Stage();
+        Scene scene = new Scene(loader.load());
+        loginStage.setTitle("Login");
+        loginStage.setScene(scene);
+        loginStage.setResizable(false);
+        loginStage.show();
     }
 }

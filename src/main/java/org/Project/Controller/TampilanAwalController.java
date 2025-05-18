@@ -161,7 +161,7 @@ public class TampilanAwalController implements Initializable {
 
 
         Stage loginStage = new Stage();
-        loginStage.setTitle("Login");
+        loginStage.setTitle("daftar catatan");
         loginStage.setScene(new Scene(root));
         loginStage.show();
 
