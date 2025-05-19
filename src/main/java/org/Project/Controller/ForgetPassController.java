@@ -28,47 +28,50 @@ public class ForgetPassController {
         Window owner = resetButton.getScene().getWindow();
 
         String username = usernameField.getText().trim();
-        String pet = petField.getText().trim();
-        String food = foodField.getText().trim();
-        String book = bookField.getText().trim();
+        String pet = petField.getText().trim().toLowerCase();
+        String food = foodField.getText().trim().toLowerCase();
+        String book = bookField.getText().trim().toLowerCase();
         String color = "";
 
         if (colorPicker.getValue() != null) {
-            color = colorPicker.getValue().toString(); // langsung ambil format lengkap seperti di database
+            color = colorPicker.getValue().toString().trim().toLowerCase(); // pastikan konsisten dengan database
         }
-
 
         String newPassword = newPasswordField.getText().trim();
         String confirmPassword = confirmPasswordField.getText().trim();
 
-        if (username.isEmpty() || pet.isEmpty() || food.isEmpty() || book.isEmpty() || color.isEmpty() ||
-                newPassword.isEmpty() || confirmPassword.isEmpty()) {
+        // Validasi isian kosong
+        if (username.isEmpty() || pet.isEmpty() || food.isEmpty() || book.isEmpty() || color.isEmpty()
+                || newPassword.isEmpty() || confirmPassword.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Semua field harus diisi.", false);
             return;
         }
 
+        // Validasi kecocokan password
         if (!newPassword.equals(confirmPassword)) {
             showAlert(Alert.AlertType.ERROR, owner, "Password Error", "Password tidak cocok.", false);
             return;
         }
 
+        // Validasi kompleksitas password
         if (newPassword.length() < 6 || !isValidPassword(newPassword)) {
             showAlert(Alert.AlertType.ERROR, owner, "Password Error", "Password minimal 6 karakter dan harus mengandung huruf dan angka.", false);
             return;
         }
 
+        // Verifikasi jawaban keamanan
         DB dao = new DB();
-
         boolean verified = dao.verifySecurityAnswers(username, pet, food, book, color);
         if (!verified) {
             showAlert(Alert.AlertType.ERROR, owner, "Verifikasi Gagal", "Jawaban security question salah.", false);
             return;
         }
 
+        // Update password
         dao.updatePassword(username, newPassword);
         showAlert(Alert.AlertType.INFORMATION, owner, "Berhasil", "Password berhasil diperbarui!", true);
 
-        // kembali ke halaman login
+        // Kembali ke login
         try {
             Stage stage = (Stage) resetButton.getScene().getWindow();
             stage.close();
@@ -83,6 +86,7 @@ public class ForgetPassController {
             e.printStackTrace();
         }
     }
+
 
     private boolean isValidPassword(String password) {
         String regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$";
