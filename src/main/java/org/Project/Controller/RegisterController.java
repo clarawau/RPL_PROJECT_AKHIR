@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.Project.DB.DB;
+import org.Project.Database.DB;
 
 public class RegisterController {
 
@@ -56,13 +56,13 @@ public class RegisterController {
             return;
         }
 
-        JdbcDao jdbcDao = new JdbcDao();
+        DB jdbcDao = new DB();
         if (jdbcDao.isUsernameExist(username)) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Username sudah terdaftar.", false);
             return;
         }
 
-        boolean inserted = db.insertUser(username, password, petAnswer, foodAnswer, bookAnswer, colorValue.toString());
+        boolean inserted = jdbcDao.insertUser(username, password, petAnswer, foodAnswer, bookAnswer, colorValue.toString());
         if (inserted) {
             showAlert(Alert.AlertType.INFORMATION, owner, "Registrasi Berhasil!", "Hallo, " + username + "!", true);
 

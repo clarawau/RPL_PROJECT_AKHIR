@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.Project.DB.DB;
+import org.Project.Database.DB;
 
 public class Apps extends Application {
 
