@@ -88,6 +88,7 @@ public class ForgetPassController {
     }
 
 
+
     private boolean isValidPassword(String password) {
         String regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$";
         return password.matches(regex);
