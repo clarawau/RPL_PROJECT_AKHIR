@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.Project.DB.DB;
+import org.Project.Database.DB;
 
 import java.io.IOException;
 
