@@ -9,20 +9,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane prefHeight="436.0" prefWidth="647.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="org.Project.Controller.LoginController">
+<AnchorPane prefHeight="418.0" prefWidth="643.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Project.Controller.LoginController">
    <children>
 
       <TextField fx:id="usernameField" layoutX="453.0" layoutY="163.0" prefHeight="25.0" prefWidth="159.0" promptText="Username" />
       <PasswordField fx:id="passwordField" layoutX="453.0" layoutY="212.0" prefHeight="25.0" prefWidth="159.0" promptText="Password" />
 
       <Button fx:id="loginButton" layoutX="510.0" layoutY="263.0" onAction="#handleLogin" text="Login" />
-      <BorderPane prefHeight="320.0" prefWidth="520.0">
+      <BorderPane prefHeight="403.0" prefWidth="402.0">
          <left>
-            <AnchorPane prefHeight="400.0" prefWidth="332.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="300.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="550.0" fitWidth="375.0" layoutX="4.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="403.0" fitWidth="375.0" layoutX="1.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@/img/tampil.jpg"/>
+                        <Image url="@../../img/tampil.jpg" />
                      </image>
                   </ImageView>
                </children>
@@ -30,12 +30,12 @@
          </left>
       </BorderPane>
 
-      <ImageView fitHeight="40.0" fitWidth="67.0" layoutX="513.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="55.0" fitWidth="75.0" layoutX="513.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@/img/login.jpg"/>
+            <Image url="@../../img/login.jpg" />
          </image>
       </ImageView>
 
-      <Hyperlink layoutX="487.0" layoutY="299.0" onAction="#handleForgotPassword" text="Lupa Password?" />
+      <Hyperlink layoutX="487.0" layoutY="299.0" onAction="#handleForgotPassword" text="Forgot Password?" />
    </children>
 </AnchorPane>
