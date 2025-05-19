@@ -25,7 +25,6 @@ import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
 
-
 public class DaftarCatatanController implements Initializable {
     @FXML
     private Button btnbck;

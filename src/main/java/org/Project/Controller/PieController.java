@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
-import org.Project.DataBase.DBConnection;
+import org.Project.DB.DBConnection;
 
 import java.awt.*;
 import java.net.URL;

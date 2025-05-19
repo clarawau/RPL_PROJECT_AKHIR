@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.Project.DataBase.JdbcDao;
+import org.Project.DB.DB;
 
 import java.io.IOException;
 
@@ -41,7 +41,7 @@ public class LoginController {
             return;
         }
 
-        JdbcDao dao = new JdbcDao();
+        DB dao = new DB();
         boolean valid = dao.validateLogin(username, password);
 
         if (valid) {

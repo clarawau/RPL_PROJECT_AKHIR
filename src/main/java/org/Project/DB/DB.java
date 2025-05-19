@@ -1,8 +1,8 @@
-package org.Project.DataBase;
+package org.Project.DB;
 
 import java.sql.*;
 
-public class JdbcDao {
+public class DB {
 
     private static final String DB_URL = "jdbc:sqlite:users.db";
 
