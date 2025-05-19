@@ -31,7 +31,7 @@ public class DB {
         String sql = "INSERT INTO users(username, password, pet, food, book, color) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username.toLowerCase().trim());
-            stmt.setString(2, password);
+            stmt.setString(2, password.trim());
             stmt.setString(3, pet.toLowerCase().trim());
             stmt.setString(4, food.toLowerCase().trim());
             stmt.setString(5, book.toLowerCase().trim());
@@ -57,10 +57,10 @@ public class DB {
     }
 
     public boolean checkLogin(String username, String password) {
-        String sql = "SELECT 1 FROM users WHERE LOWER(username) = ? AND password = ?";
+        String sql = "SELECT id FROM users WHERE LOWER(username) = ? AND password = ?";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username.toLowerCase().trim());
-            stmt.setString(2, password);
+            stmt.setString(2, password.trim());
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         } catch (SQLException e) {
@@ -88,7 +88,7 @@ public class DB {
     public void updatePassword(String username, String newPassword) {
         String sql = "UPDATE users SET password = ? WHERE LOWER(username) = ?";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, newPassword);
+            stmt.setString(1, newPassword.trim());
             stmt.setString(2, username.toLowerCase().trim());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -96,7 +96,6 @@ public class DB {
         }
     }
 
-    // Method baru untuk reset password sekaligus verifikasi security questions
     public boolean resetPassword(String username, String pet, String food, String book, String color, String newPassword) {
         if (verifySecurityAnswers(username, pet, food, book, color)) {
             updatePassword(username, newPassword);
@@ -106,7 +105,6 @@ public class DB {
         }
     }
 
-    // Alias agar lebih jelas
     public boolean validateLogin(String username, String password) {
         return checkLogin(username, password);
     }

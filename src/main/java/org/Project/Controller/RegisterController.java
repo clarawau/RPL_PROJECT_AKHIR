@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.Project.DataBase.JdbcDao;
+import org.Project.DB.DB;
 
 public class RegisterController {
 
@@ -56,7 +56,7 @@ public class RegisterController {
             return;
         }
 
-        JdbcDao jdbcDao = new JdbcDao();
+        DB jdbcDao = new DB();
         if (jdbcDao.isUsernameExist(username)) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Username sudah terdaftar.", false);
             return;

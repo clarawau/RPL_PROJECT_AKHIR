@@ -32,7 +32,6 @@ public class LoginController {
     @FXML
     void handleLogin(ActionEvent event) {
         Window owner = loginButton.getScene().getWindow();
-
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
 
@@ -46,12 +45,9 @@ public class LoginController {
 
         if (valid) {
             showAlert(Alert.AlertType.INFORMATION, owner, "Login Berhasil", "Selamat datang, " + username, false);
-
             try {
-                // Ganti tampilan ke halaman utama
                 Stage stage = (Stage) loginButton.getScene().getWindow();
                 stage.close();
-
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/TampilanAwal.fxml"));
                 Stage homeStage = new Stage();
                 Scene scene = new Scene(loader.load());
@@ -62,7 +58,6 @@ public class LoginController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         } else {
             showAlert(Alert.AlertType.ERROR, owner, "Login Gagal", "Username atau Password salah.", false);
         }
@@ -73,7 +68,6 @@ public class LoginController {
         try {
             Stage stage = (Stage) registerLink.getScene().getWindow();
             stage.close();
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/register-view.fxml"));
             Stage regStage = new Stage();
             Scene scene = new Scene(loader.load());
@@ -91,39 +85,19 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/ForgetPass-view.fxml"));
             Scene scene = new Scene(loader.load());
-
             Stage stage = new Stage();
             stage.setTitle("Lupa Password");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
-
-            System.out.println("Reset Password window opened successfully.");
-
         } catch (IOException e) {
             System.err.println("Gagal memuat forgot-password-view.fxml");
             e.printStackTrace();
-
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Gagal membuka halaman reset password");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
-        }
-    }
-
-
-    private void showAlert(Alert.AlertType alertType, Window owner, String title, String message, boolean wait) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.initOwner(owner);
-
-        if (wait) {
-            alert.showAndWait();
-        } else {
-            alert.show();
         }
     }
 
@@ -131,27 +105,33 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/ForgetPass-view.fxml"));
             Scene scene = new Scene(loader.load());
-
             Stage stage = new Stage();
             stage.setTitle("Lupa Password");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
-
-            // Tutup halaman login
             ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
-
-            System.out.println("Reset Password window opened successfully.");
-
         } catch (IOException e) {
             System.err.println("Gagal memuat forgot-password-view.fxml");
             e.printStackTrace();
-
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Gagal membuka halaman reset password");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
+        }
+    }
+
+    private void showAlert(Alert.AlertType alertType, Window owner, String title, String message, boolean wait) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initOwner(owner);
+        if (wait) {
+            alert.showAndWait();
+        } else {
+            alert.show();
         }
     }
 }

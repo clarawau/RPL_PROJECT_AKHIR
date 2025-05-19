@@ -13,8 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.Project.Apps;
 import org.Project.model.Catatan2;
-import org.Project.model.Session;
-import org.Project.model.Session;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,15 +40,9 @@ public class TampilanAwalController implements Initializable {
 
     private void getAllData() {
         catatanObservableList.clear();
-        int userId = Session.getUserId();
-
-        String sql = "SELECT * FROM catatan WHERE user_id = ?";
-
         try (Connection con = DriverManager.getConnection("jdbc:sqlite:catatanku.db");
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, userId);
-            ResultSet rs = ps.executeQuery();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery("SELECT * FROM catatan")) {
 
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -64,10 +56,9 @@ public class TampilanAwalController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert("Database Error", "Gagal mengambil data dari database:\n" + e.getMessage());
-            Platform.exit();
+            Platform.exit(); // keluar dari aplikasi
         }
     }
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

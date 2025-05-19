@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.Project.DataBase.JdbcDao;
+import org.Project.DB.DB;
 
 public class Apps extends Application {
 
@@ -16,8 +16,8 @@ public class Apps extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        JdbcDao dao = new JdbcDao();
-        dao.createUsersTableIfNotExists();
+        DB db = new DB();
+        db.createUsersTableIfNotExists();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Registrasi-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
