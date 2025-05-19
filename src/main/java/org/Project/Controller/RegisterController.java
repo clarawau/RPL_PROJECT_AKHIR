@@ -56,13 +56,13 @@ public class RegisterController {
             return;
         }
 
-        DB jdbcDao = new DB();
+        JdbcDao jdbcDao = new JdbcDao();
         if (jdbcDao.isUsernameExist(username)) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Username sudah terdaftar.", false);
             return;
         }
 
-        boolean inserted = jdbcDao.insertUser(username, password, petAnswer, foodAnswer, bookAnswer, colorValue.toString());
+        boolean inserted = db.insertUser(username, password, petAnswer, foodAnswer, bookAnswer, colorValue.toString());
         if (inserted) {
             showAlert(Alert.AlertType.INFORMATION, owner, "Registrasi Berhasil!", "Hallo, " + username + "!", true);
 

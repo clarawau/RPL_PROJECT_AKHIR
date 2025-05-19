@@ -8,8 +8,8 @@ module org.Project {
     exports org.Project;
     exports org.Project.Controller;
     opens org.Project.Controller to javafx.fxml;
-    exports org.Project.DB;
-    opens org.Project.DB to javafx.fxml;
+    exports org.Project.Database;
+    opens org.Project.Database to javafx.fxml;
     exports org.Project.model;
     opens org.Project.model to javafx.fxml;
 }

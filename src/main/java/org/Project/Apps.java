@@ -21,7 +21,7 @@ public class Apps extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Registrasi-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Aplikasi Catatan");
+        stage.setTitle("Catatan Keuangan Pribadi");
         stage.setScene(scene);
         stage.show();
     }
