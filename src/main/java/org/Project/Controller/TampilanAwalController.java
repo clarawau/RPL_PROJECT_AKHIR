@@ -26,6 +26,12 @@ public class TampilanAwalController implements Initializable {
     @FXML private TableColumn<Catatan2, String> judul;
     @FXML private TableColumn<Catatan2, String> kategori;
     @FXML private TextField searchBox;
+    @FXML
+    private Button btnkp;
+
+    @FXML
+    private Button btnGrafik1;
+
 
     private final ObservableList<Catatan2> catatanObservableList = FXCollections.observableArrayList();
 
@@ -69,20 +75,36 @@ public class TampilanAwalController implements Initializable {
 
     @FXML
     private void onBtnkpClick() throws IOException {
-        Apps.setRoot("daftar-catatan-view", "Daftar Catatan", false);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/Controller/daftar-catatan-view.fxml"));
 
+        Parent root = loader.load();
+        Stage loginStage = new Stage();
+        loginStage.setTitle("daftar catatan");
+        loginStage.setScene(new Scene(root));
+        loginStage.show();
         Stage currentStage = (Stage) table.getScene().getWindow();
         currentStage.close();
     }
 
     @FXML
     private void onBtnGrafikClick() {
-        // TODO
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/Controller/linechart-view.fxml")); // Ganti dengan nama file FXML grafik garis kamu
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Grafik Jumlah Catatan");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     private void onBtnlogoutClick() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/Controller/login-view.fxml"));
+
         Parent root = loader.load();
 
         Stage loginStage = new Stage();

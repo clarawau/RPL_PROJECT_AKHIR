@@ -22,19 +22,20 @@
                <children>
                   <ImageView fitHeight="550.0" fitWidth="375.0" layoutX="4.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../../Users/acer_/Downloads/tampil.jpg" />
+                        <Image url="@/img/tampil.jpg"/>
                      </image>
                   </ImageView>
                </children>
             </AnchorPane>
          </left>
       </BorderPane>
+
       <ImageView fitHeight="40.0" fitWidth="67.0" layoutX="513.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../../Users/acer_/Downloads/login%20r.jpg" />
+            <Image url="@/img/login.jpg"/>
          </image>
       </ImageView>
 
-            <Hyperlink layoutX="487.0" layoutY="299.0" onAction="#handleForgotPassword" text="Lupa Password?" />
+      <Hyperlink layoutX="487.0" layoutY="299.0" onAction="#handleForgotPassword" text="Lupa Password?" />
    </children>
 </AnchorPane>

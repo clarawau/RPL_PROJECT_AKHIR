@@ -5,14 +5,18 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.Project.Controller.GrafikController"
+      prefWidth="600.0" prefHeight="400.0">
+
    <children>
-      <LineChart fx:id="lineChart">
+      <LineChart fx:id="lineChart" title="Jumlah Catatan per Kategori">
          <xAxis>
-            <CategoryAxis side="BOTTOM" />
+            <CategoryAxis label="Kategori" />
          </xAxis>
          <yAxis>
-            <NumberAxis side="LEFT" />
+            <NumberAxis label="Jumlah" />
          </yAxis>
       </LineChart>
    </children>
