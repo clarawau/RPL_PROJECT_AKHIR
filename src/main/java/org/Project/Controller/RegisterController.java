@@ -118,9 +118,4 @@ public class RegisterController {
             alert.show();
         }
     }
-
-    public void onClickPass(ActionEvent actionEvent) {
-        labelPasswordInfo.setText("Minimal password 8 - 16 karakter, harus mengandung minimal 1 angka dan 1 karakter spesial.");
-        labelPasswordInfo.setVisible(true);
-    }
 }
