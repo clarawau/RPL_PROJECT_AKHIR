@@ -20,7 +20,7 @@ public class Apps extends Application {
         db.createUsersTableIfNotExists();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("registrasi-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        Scene scene = new Scene(fxmlLoader.load(), 660, 620);
         stage.setTitle("Catatan Keuangan Pribadi");
         stage.setScene(scene);
         stage.show();

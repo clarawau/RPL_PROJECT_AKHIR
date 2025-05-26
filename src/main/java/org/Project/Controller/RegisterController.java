@@ -1,6 +1,5 @@
 package org.Project.Controller;
 
-import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +9,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.Project.Database.DB;
+
+import java.io.IOException;
 
 public class RegisterController {
 
@@ -22,9 +23,30 @@ public class RegisterController {
     @FXML private ColorPicker color;
     @FXML private Button submitButton;
     @FXML private Hyperlink login;
-    @FXML
-    private Label labelPasswordInfo;
 
+    @FXML private Label labelPasswordInfo;
+    @FXML private Label labelConfirmPasswordWarning;
+
+    @FXML
+    public void initialize() {
+        pass1.textProperty().addListener((obs, oldText, newText) -> {
+            labelPasswordInfo.setVisible(true);
+            if (!isValidPassword(newText)) {
+                labelPasswordInfo.setText("Password harus 8-16 karakter, mengandung huruf besar, huruf kecil, angka, dan karakter spesial.");
+            } else {
+                labelPasswordInfo.setVisible(false);
+            }
+        });
+
+        pass2.textProperty().addListener((obs, oldText, newText) -> {
+            if (!newText.equals(pass1.getText())) {
+                labelConfirmPasswordWarning.setText("Konfirmasi password tidak cocok.");
+                labelConfirmPasswordWarning.setVisible(true);
+            } else {
+                labelConfirmPasswordWarning.setVisible(false);
+            }
+        });
+    }
 
     @FXML
     void register(ActionEvent event) throws IOException {
@@ -45,17 +67,13 @@ public class RegisterController {
         }
 
         if (!password.equals(confirmPassword)) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Password dan Konfirmasi tidak sesuai.", false);
-            return;
-        }
-
-        if (password.length() < 6) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Password minimal 6 karakter.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Password dan konfirmasi tidak cocok.", false);
             return;
         }
 
         if (!isValidPassword(password)) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Password harus mengandung huruf dan angka.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "Password harus 8-16 karakter, mengandung huruf besar, huruf kecil, angka, dan karakter spesial.", false);
             return;
         }
 
@@ -99,8 +117,7 @@ public class RegisterController {
     }
 
     private boolean isValidPassword(String password) {
-        String passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$";
-        return password.matches(passwordRegex);
+        return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,16}$");
     }
 
     private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message, boolean wait) {
@@ -111,16 +128,10 @@ public class RegisterController {
         if (owner != null) {
             alert.initOwner(owner);
         }
-
         if (wait) {
             alert.showAndWait();
         } else {
             alert.show();
         }
-    }
-
-    public void onClickPass(ActionEvent actionEvent) {
-        labelPasswordInfo.setText("Minimal password 8 - 16 karakter, harus mengandung minimal 1 angka dan 1 karakter spesial.");
-        labelPasswordInfo.setVisible(true);
     }
 }
