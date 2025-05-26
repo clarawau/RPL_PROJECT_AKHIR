@@ -13,13 +13,15 @@
 <AnchorPane prefHeight="461.0" prefWidth="683.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Project.Controller.RegisterController">
    <children>
       <Label layoutX="152.0" layoutY="131.0" text="Username" />
-      <TextField fx:id="fullNameField" layoutX="231.0" layoutY="127.0" prefWidth="200" promptText="Clara Elisabeth Wau" />
+      <TextField fx:id="fullNameField" layoutX="231.0" layoutY="127.0" prefWidth="200" promptText="username" />
+
+      <Label fx:id="labelPasswordInfo" text="Minimal password 8 - 16 karakter, harus mengandung minimal 1 angka dan 1 karakter spesial." textFill="RED" visible="false"/>
 
       <Label layoutX="155.0" layoutY="165.0" text="Password" />
-      <PasswordField fx:id="pass1" layoutX="231.0" layoutY="162.0" prefWidth="200" promptText="\@Hallo12" />
+      <PasswordField fx:id="pass1" layoutX="231.0" layoutY="162.0" onAction="#onClickPass" prefWidth="200" promptText="password" />
 
       <Label layoutX="117.0" layoutY="201.0" text="Confirm Password " />
-      <PasswordField fx:id="pass2" layoutX="232.0" layoutY="200.0" prefWidth="200" promptText="\@Hallo12" />
+      <PasswordField fx:id="pass2" layoutX="232.0" layoutY="200.0" prefWidth="200" promptText="confirm password" />
 
       <Button fx:id="submitButton" layoutX="286.0" layoutY="438.0" onAction="#register" prefHeight="26.0" prefWidth="87.0" text="Register" />
 
@@ -50,9 +52,9 @@
 
       <Label layoutX="130.0" layoutY="387.0" prefHeight="17.0" prefWidth="87.0" text="Favorite food?" />
 
-      <TextField fx:id="pet" layoutX="230.0" layoutY="307.0" prefWidth="200" promptText="Dog" />
-      <TextField fx:id="book" layoutX="230.0" layoutY="345.0" prefWidth="200" promptText="Doraemon" />
-      <TextField fx:id="food" layoutX="230.0" layoutY="383.0" prefWidth="200" promptText="Nasi Goreng" />
+      <TextField fx:id="pet" layoutX="230.0" layoutY="307.0" prefWidth="200" promptText="favorite pet" />
+      <TextField fx:id="book" layoutX="230.0" layoutY="345.0" prefWidth="200" promptText="favorite book" />
+      <TextField fx:id="food" layoutX="230.0" layoutY="383.0" prefWidth="200" promptText="favorite food" />
       <Pane layoutX="-16.0" layoutY="472.0" prefHeight="61.0" prefWidth="706.0" style="-fx-background-color: #ADD8E6;" />
    </children>
 </AnchorPane>

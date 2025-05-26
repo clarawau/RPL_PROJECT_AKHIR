@@ -22,6 +22,9 @@ public class RegisterController {
     @FXML private ColorPicker color;
     @FXML private Button submitButton;
     @FXML private Hyperlink login;
+    @FXML
+    private Label labelPasswordInfo;
+
 
     @FXML
     void register(ActionEvent event) throws IOException {
@@ -114,5 +117,10 @@ public class RegisterController {
         } else {
             alert.show();
         }
+    }
+
+    public void onClickPass(ActionEvent actionEvent) {
+        labelPasswordInfo.setText("Minimal password 8 - 16 karakter, harus mengandung minimal 1 angka dan 1 karakter spesial.");
+        labelPasswordInfo.setVisible(true);
     }
 }
