@@ -80,27 +80,6 @@ public class LoginController {
         }
     }
 
-    @FXML
-    void handleForgotPasswordLink(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/ForgetPass-view.fxml"));
-            Scene scene = new Scene(loader.load());
-            Stage stage = new Stage();
-            stage.setTitle("Lupa Password");
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-        } catch (IOException e) {
-            System.err.println("Gagal memuat forgot-password-view.fxml");
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Gagal membuka halaman reset password");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        }
-    }
-
     public void handleForgotPassword(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/ForgetPass-view.fxml"));
