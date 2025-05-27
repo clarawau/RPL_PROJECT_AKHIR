@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
-import org.Project.Database.DBConnection;
+import org.Project.Database.CatatanDB;
 
 import java.awt.*;
 import java.net.URL;
@@ -33,7 +33,7 @@ public class PieController implements Initializable {
                 "GROUP BY kategori";
 
 
-        try (PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = CatatanDB.getConnection().prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String kategori = resultSet.getString("kategori");

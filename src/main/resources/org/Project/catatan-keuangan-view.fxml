@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.KeuanganController">
+
+   <top>
+      <VBox spacing="10">
+         <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+         </padding>
+         <HBox spacing="10">
+            <Label text="Judul:"/>
+            <TextField fx:id="tfJudul"/>
+            <Label text="Jumlah:"/>
+            <TextField fx:id="tfJumlah"/>
+         </HBox>
+         <HBox spacing="10">
+            <Label text="Kategori:"/>
+            <ComboBox fx:id="cbKategori"/>
+            <Label text="Tipe:"/>
+            <ComboBox fx:id="cbTipe"/>
+            <Label text="Tanggal:"/>
+            <DatePicker fx:id="dpTanggal"/>
+            <Button text="Tambah" onAction="#tambahCatatan"/>
+         </HBox>
+      </VBox>
+   </top>
+
+   <center>
+      <TableView fx:id="tableKeuangan">
+         <columns>
+            <TableColumn fx:id="colJudul" text="Judul"/>
+            <TableColumn fx:id="colJumlah" text="Jumlah"/>
+            <TableColumn fx:id="colKategori" text="Kategori"/>
+            <TableColumn fx:id="colTipe" text="Tipe"/>
+            <TableColumn fx:id="colTanggal" text="Tanggal"/>
+         </columns>
+      </TableView>
+   </center>
+
+   <bottom>
+      <VBox spacing="10">
+         <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+         </padding>
+         <HBox spacing="10">
+            <Label text="Filter Tanggal:"/>
+            <DatePicker fx:id="dpFilterMulai"/>
+            <Label text="s/d"/>
+            <DatePicker fx:id="dpFilterSelesai"/>
+            <Button text="Filter" onAction="#filterTanggal"/>
+         </HBox>
+         <HBox spacing="10">
+            <Label text="Total Pemasukan:"/>
+            <Label fx:id="lblTotalPemasukan"/>
+            <Label text="Total Pengeluaran:"/>
+            <Label fx:id="lblTotalPengeluaran"/>
+         </HBox>
+      </VBox>
+   </bottom>
+
+</BorderPane>

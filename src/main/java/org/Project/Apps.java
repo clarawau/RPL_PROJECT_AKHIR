@@ -4,29 +4,21 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.Project.Database.DB;
+
+import java.io.IOException;
 
 public class Apps extends Application {
-
-    public static void setRoot(String tampilanAwal, String daftarCatatan, boolean b) {
-    }
-
-    public static void openViewWithModal(String s, boolean b) {
-    }
-
     @Override
-    public void start(Stage stage) throws Exception {
-        DB db = new DB();
-        db.createUsersTableIfNotExists();
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("registrasi-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 660, 620);
-        stage.setTitle("Catatan Keuangan Pribadi");
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Apps.class.getResource("/org/Project/Registrasi-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Login Page");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch(args);
+        launch();
     }
 }

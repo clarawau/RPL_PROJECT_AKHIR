@@ -46,7 +46,7 @@ public class TampilanAwalController implements Initializable {
 
     private void getAllData() {
         catatanObservableList.clear();
-        try (Connection con = DriverManager.getConnection("jdbc:sqlite:catatanku.db");
+        try (Connection con = DriverManager.getConnection("jdbc:sqlite:catatan.db");
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery("SELECT * FROM catatan")) {
 
@@ -75,7 +75,7 @@ public class TampilanAwalController implements Initializable {
 
     @FXML
     private void onBtnkpClick() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/Controller/daftar-catatan-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/Controller/catatan-keuangan-view.fxml"));
 
         Parent root = loader.load();
         Stage loginStage = new Stage();

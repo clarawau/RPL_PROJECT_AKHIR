@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.Project.Database.DB;
+import org.Project.Database.UserDB;
 
 import java.io.IOException;
 
@@ -54,13 +54,13 @@ public class ForgetPassController {
         }
 
         // Validasi kompleksitas password
-        if (newPassword.length() < 6 || !isValidPassword(newPassword)) {
-            showAlert(Alert.AlertType.ERROR, owner, "Password Error", "Password minimal 6 karakter dan harus mengandung huruf dan angka.", false);
+        if (newPassword.length() < 8 && newPassword.length() > 16 || !isValidPassword(newPassword)) {
+            showAlert(Alert.AlertType.ERROR, owner, "ok","Password harus 8-16 karakter, mengandung huruf besar, huruf kecil, angka, dan karakter spesial.", false);
             return;
         }
 
         // Verifikasi jawaban keamanan
-        DB dao = new DB();
+        UserDB dao = new UserDB();
         boolean verified = dao.verifySecurityAnswers(username, pet, food, book, color);
         if (!verified) {
             showAlert(Alert.AlertType.ERROR, owner, "Verifikasi Gagal", "Jawaban security question salah.", false);
@@ -90,7 +90,7 @@ public class ForgetPassController {
 
 
     private boolean isValidPassword(String password) {
-        String regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$";
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,16}$";
         return password.matches(regex);
     }
 

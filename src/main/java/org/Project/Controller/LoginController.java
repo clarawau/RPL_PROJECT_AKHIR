@@ -8,7 +8,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.Project.Database.DB;
+import org.Project.Database.UserDB;
+import org.Project.Manager.Session;
+import org.Project.Database.CatatanDB;
+
 
 import java.io.IOException;
 
@@ -40,15 +43,16 @@ public class LoginController {
             return;
         }
 
-        DB dao = new DB();
-        boolean valid = dao.validateLogin(username, password);
+        UserDB userDb = new UserDB();
+        if (userDb.validateLogin(username, password)) {
+            int userId = userDb.getUserId(username);
+            Session.getInstance().setSession(userId, username);
 
-        if (valid) {
             showAlert(Alert.AlertType.INFORMATION, owner, "Login Berhasil", "Selamat datang, " + username, false);
             try {
                 Stage stage = (Stage) loginButton.getScene().getWindow();
                 stage.close();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/TampilanAwal.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/catatan-keuangan-view.fxml"));
                 Stage homeStage = new Stage();
                 Scene scene = new Scene(loader.load());
                 homeStage.setTitle("Dashboard");

@@ -1,14 +1,10 @@
 package org.Project.Controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import org.Project.Database.DBConnection;
+import org.Project.Database.CatatanDB;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -35,7 +31,7 @@ public class GrafikController implements Initializable {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Jumlah Catatan");
 
-        try (Connection conn = DBConnection.getConnection();
+        try (Connection conn = CatatanDB.getConnection();
              PreparedStatement ps = conn.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
 
