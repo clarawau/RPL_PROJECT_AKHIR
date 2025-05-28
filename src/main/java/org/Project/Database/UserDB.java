@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class UserDB {
 
-    private static final String DB_URL = "jdbc:sqlite:./user.db";
+    private static final String DB_URL = "jdbc:sqlite:user.db";
 
     private Connection connect() throws SQLException {
         return DriverManager.getConnection(DB_URL);
@@ -21,7 +21,6 @@ public class UserDB {
                 ");";
         try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
-            System.out.println("Table 'users' berhasil dibuat atau sudah ada.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -29,7 +28,10 @@ public class UserDB {
 
 
     public UserDB() {
+
         createTableIfNotExists();
+
+
     }
 
     public boolean insertUser(String username, String password, String pet, String food, String book, String color) {

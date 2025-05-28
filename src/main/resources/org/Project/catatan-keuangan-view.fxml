@@ -54,6 +54,10 @@
             <Button text="Filter" onAction="#filterTanggal"/>
          </HBox>
          <HBox spacing="10">
+            <Button text="Hapus" onAction="#hapusCatatan"/>
+            <Button text="Kembali" onAction="#kembaliKeWelcome"/>
+         </HBox>
+         <HBox spacing="10">
             <Label text="Total Pemasukan:"/>
             <Label fx:id="lblTotalPemasukan"/>
             <Label text="Total Pengeluaran:"/>

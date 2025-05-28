@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.TampilanWelController">
+
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <!-- Baris Selamat Datang & Tombol Navigasi -->
+            <HBox spacing="20" alignment="CENTER_LEFT">
+                <Label fx:id="lblWelcome" text="Selamat datang, User"/>
+                <Button text="← Kembali" onAction="#nexDaftarCatatanKeuangan"/>
+                <Button text="Logout" onAction="#logout"/>
+            </HBox>
+
+            <!-- Baris Pencarian dan Filter -->
+            <HBox spacing="10">
+                <Label text="Cari Judul:"/>
+                <TextField fx:id="tfSearch" promptText="Masukkan judul..." />
+                <Label text="Filter Tanggal:"/>
+                <DatePicker fx:id="dpFilterMulai"/>
+                <Label text="s/d"/>
+                <DatePicker fx:id="dpFilterSelesai"/>
+                <Button text="Filter" onAction="#filterData"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <!-- TableView -->
+        <TableView fx:id="tableRekap">
+            <columns>
+                <TableColumn fx:id="colJudul" text="Judul" />
+                <TableColumn fx:id="colJumlah" text="Jumlah" />
+                <TableColumn fx:id="colKategori" text="Kategori" />
+                <TableColumn fx:id="colTipe" text="Tipe" />
+                <TableColumn fx:id="colTanggal" text="Tanggal" />
+            </columns>
+        </TableView>
+
+    </center>
+
+</BorderPane>

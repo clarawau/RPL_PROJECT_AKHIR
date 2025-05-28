@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.Project.Database.UserDB;
 import org.Project.Manager.Session;
+import javafx.scene.Parent;
+
 import org.Project.Database.CatatanDB;
 
 
@@ -39,33 +41,46 @@ public class LoginController {
         String password = passwordField.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal", "Username dan Password harus diisi.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal",
+                    "Username dan Password harus diisi.", false);
             return;
         }
 
         UserDB userDb = new UserDB();
         if (userDb.validateLogin(username, password)) {
-            int userId = userDb.getUserId(username);
+
+            int userId = userDb.getUserId(username);          // ← ID dari DB
             Session.getInstance().setSession(userId, username);
 
-            showAlert(Alert.AlertType.INFORMATION, owner, "Login Berhasil", "Selamat datang, " + username, false);
+            showAlert(Alert.AlertType.INFORMATION, owner, "Login Berhasil",
+                    "Selamat datang, " + username, false);
             try {
-                Stage stage = (Stage) loginButton.getScene().getWindow();
-                stage.close();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/catatan-keuangan-view.fxml"));
-                Stage homeStage = new Stage();
-                Scene scene = new Scene(loader.load());
-                homeStage.setTitle("Dashboard");
-                homeStage.setScene(scene);
-                homeStage.setResizable(false);
-                homeStage.show();
+                FXMLLoader loader =
+                        new FXMLLoader(getClass().getResource("/org/Project/catatan-keuangan-view.fxml"));
+                Parent root = loader.load();
+                KeuanganController controller = loader.getController();
+                controller.setUserId(userId);
+                Stage stage = new Stage();
+                stage.setTitle("Dashboard");
+                stage.setScene(new Scene(root));
+                stage.setResizable(false);
+                stage.show();
+
+                // tutup jendela login
+                ((Stage) loginButton.getScene().getWindow()).close();
+
             } catch (IOException e) {
                 e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, owner, "Error",
+                        "Gagal membuka dashboard.", false);
             }
         } else {
-            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal", "Username atau Password salah.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal",
+                    "Username atau Password salah.", false);
         }
     }
+
+
 
     @FXML
     void handleRegisterLink(ActionEvent event) {

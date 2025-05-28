@@ -3,12 +3,19 @@ package org.Project.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 import org.Project.model.CatatanKeuangan;
 import org.Project.Database.CatatanDB;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
@@ -153,6 +160,8 @@ public class KeuanganController implements Initializable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        } else {
+            showAlert("Hapus Gagal", "Pilih catatan yang ingin dihapus.");
         }
     }
 
@@ -177,7 +186,7 @@ public class KeuanganController implements Initializable {
             while (rs.next()) {
                 dataKeuangan.add(new CatatanKeuangan(
                         rs.getInt("id"),
-                        rs.getInt("user_id"),
+                        rs.getInt("userId"),
                         rs.getString("judul"),
                         rs.getDouble("jumlah"),
                         rs.getString("kategori"),
@@ -219,5 +228,22 @@ public class KeuanganController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void kembaliKeWelcome(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/TampilanWel-view.fxml"));
+            Parent root = loader.load();
+            TampilanWelController controller = loader.getController();
+            controller.setUserId(userId);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Tampilan Awal");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Gagal kembali ke halaman utama.");
+        }
     }
 }
