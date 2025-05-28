@@ -30,6 +30,12 @@
                 <DatePicker fx:id="dpFilterSelesai"/>
                 <Button text="Filter" onAction="#filterData"/>
             </HBox>
+            <HBox spacing="10">
+                <Label text="Total Pemasukan:"/>
+                <Label fx:id="lblTotalPemasukan"/>
+                <Label text="Total Pengeluaran:"/>
+                <Label fx:id="lblTotalPengeluaran"/>
+            </HBox>
         </VBox>
     </top>
 

@@ -40,8 +40,12 @@ public class TampilanWelController {
     private DatePicker dpFilterMulai;
     @FXML
     private DatePicker dpFilterSelesai;
+    @FXML
+    private Label lblTotalPemasukan;
+    @FXML
+    private Label lblTotalPengeluaran;
 
-    private ObservableList<CatatanKeuangan> dataRekap = FXCollections.observableArrayList();
+    private ObservableList<CatatanKeuangan> dataKeuangan = FXCollections.observableArrayList();
     private int userId;
 
     // Dipanggil oleh controller lain setelah load FXML
@@ -60,19 +64,35 @@ public class TampilanWelController {
         colTipe.setCellValueFactory(new PropertyValueFactory<>("tipe"));
         colTanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
 
-        dpFilterMulai.setValue(LocalDate.now().minusDays(7));
-        dpFilterSelesai.setValue(LocalDate.now());
+        // Jangan set default tanggal, biarkan kosong (null)
+        dpFilterMulai.setValue(null);
+        dpFilterSelesai.setValue(null);
+
+        // Listener untuk reset data jika tanggal dihapus
+        dpFilterMulai.valueProperty().addListener((obs, oldVal, newVal) -> {
+            filterData();  // otomatis filter ulang setiap tanggal berubah
+        });
+        dpFilterSelesai.valueProperty().addListener((obs, oldVal, newVal) -> {
+            filterData();
+        });
+
+        // Listener pencarian otomatis
+        tfSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterData();
+        });
     }
 
+
+    @FXML
     private void loadData() {
-        dataRekap.clear();
+        dataKeuangan.clear();
         String sql = "SELECT * FROM catatan_keuangan WHERE userId = ?";
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:catatan.db");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                dataRekap.add(new CatatanKeuangan(
+                dataKeuangan.add(new CatatanKeuangan(
                         rs.getInt("id"),
                         rs.getInt("userId"),
                         rs.getString("judul"),
@@ -82,7 +102,8 @@ public class TampilanWelController {
                         rs.getString("tanggal")
                 ));
             }
-            tableRekap.setItems(dataRekap);
+            tableRekap.setItems(dataKeuangan);
+            updateTotals(); // update total pemasukan & pengeluaran setelah load data
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -129,24 +150,65 @@ public class TampilanWelController {
         }
     }
 
+    private void updateTotals() {
+        double totalPemasukan = dataKeuangan.stream()
+                .filter(c -> c.getTipe().equals("Pemasukan"))
+                .mapToDouble(CatatanKeuangan::getJumlah)
+                .sum();
+        double totalPengeluaran = dataKeuangan.stream()
+                .filter(c -> c.getTipe().equals("Pengeluaran"))
+                .mapToDouble(CatatanKeuangan::getJumlah)
+                .sum();
+        lblTotalPemasukan.setText("Total Pemasukan: " + totalPemasukan);
+        lblTotalPengeluaran.setText("Total Pengeluaran: " + totalPengeluaran);
+    }
+
+
     @FXML
     private void filterData() {
-        String searchQuery = tfSearch.getText();
+        String searchQuery = tfSearch.getText().trim().toLowerCase();
         LocalDate filterMulai = dpFilterMulai.getValue();
         LocalDate filterSelesai = dpFilterSelesai.getValue();
 
-        dataRekap.clear();
-        String sql = "SELECT * FROM catatan_keuangan WHERE userId = ? AND tanggal BETWEEN ? AND ? AND judul LIKE ?";
+        dataKeuangan.clear();
+
+        // Jika search kosong dan tanggal kosong, tampilkan semua data tanpa filter
+        if ((searchQuery.isEmpty()) && (filterMulai == null || filterSelesai == null)) {
+            loadData();
+            return;
+        }
+
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM catatan_keuangan WHERE userId = ?");
+        if (filterMulai != null && filterSelesai != null) {
+            sqlBuilder.append(" AND tanggal BETWEEN ? AND ?");
+        }
+        if (!searchQuery.isEmpty()) {
+            // Cari di judul, kategori, tipe, tanggal (bisa tambah kolom lain jika perlu)
+            sqlBuilder.append(" AND (LOWER(judul) LIKE ? OR LOWER(kategori) LIKE ? OR LOWER(tipe) LIKE ? OR LOWER(tanggal) LIKE ?)");
+        }
+
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:catatan.db");
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
-            stmt.setString(2, filterMulai.toString());
-            stmt.setString(3, filterSelesai.toString());
-            stmt.setString(4, "%" + searchQuery + "%");
+             PreparedStatement stmt = conn.prepareStatement(sqlBuilder.toString())) {
+
+            int paramIndex = 1;
+            stmt.setInt(paramIndex++, userId);
+
+            if (filterMulai != null && filterSelesai != null) {
+                stmt.setString(paramIndex++, filterMulai.toString());
+                stmt.setString(paramIndex++, filterSelesai.toString());
+            }
+
+            if (!searchQuery.isEmpty()) {
+                String likeQuery = "%" + searchQuery + "%";
+                stmt.setString(paramIndex++, likeQuery);
+                stmt.setString(paramIndex++, likeQuery);
+                stmt.setString(paramIndex++, likeQuery);
+                stmt.setString(paramIndex++, likeQuery);
+            }
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                dataRekap.add(new CatatanKeuangan(
+                dataKeuangan.add(new CatatanKeuangan(
                         rs.getInt("id"),
                         rs.getInt("userId"),
                         rs.getString("judul"),
@@ -156,11 +218,14 @@ public class TampilanWelController {
                         rs.getString("tanggal")
                 ));
             }
-            tableRekap.setItems(dataRekap);
+            tableRekap.setItems(dataKeuangan);
+            updateTotals();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
