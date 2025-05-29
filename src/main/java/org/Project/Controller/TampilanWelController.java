@@ -57,18 +57,13 @@ public class TampilanWelController {
 
     @FXML
     private void initialize() {
-        // Konfigurasi kolom tabel
         colJudul.setCellValueFactory(new PropertyValueFactory<>("judul"));
         colJumlah.setCellValueFactory(new PropertyValueFactory<>("jumlah"));
         colKategori.setCellValueFactory(new PropertyValueFactory<>("kategori"));
         colTipe.setCellValueFactory(new PropertyValueFactory<>("tipe"));
         colTanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
-
-        // Jangan set default tanggal, biarkan kosong (null)
         dpFilterMulai.setValue(null);
         dpFilterSelesai.setValue(null);
-
-        // Listener untuk reset data jika tanggal dihapus
         dpFilterMulai.valueProperty().addListener((obs, oldVal, newVal) -> {
             filterData();  // otomatis filter ulang setiap tanggal berubah
         });
@@ -122,6 +117,7 @@ public class TampilanWelController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Catatan Keuangan");
+            stage.setFullScreen(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -138,7 +134,7 @@ public class TampilanWelController {
             Stage stage = new Stage();
             stage.setTitle("Login");
             stage.setScene(new Scene(root));
-            stage.setResizable(false);
+            stage.setMaximized(true);
             stage.show();
 
             Stage currentStage = (Stage) lblWelcome.getScene().getWindow();

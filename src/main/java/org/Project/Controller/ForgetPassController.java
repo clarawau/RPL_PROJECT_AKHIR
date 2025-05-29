@@ -80,7 +80,7 @@ public class ForgetPassController {
             Scene scene = new Scene(loader.load());
             loginStage.setTitle("Login");
             loginStage.setScene(scene);
-            loginStage.setResizable(false);
+            loginStage.setMaximized(true);
             loginStage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -116,7 +116,7 @@ public class ForgetPassController {
         Scene scene = new Scene(loader.load());
         loginStage.setTitle("Login");
         loginStage.setScene(scene);
-        loginStage.setResizable(false);
+        loginStage.setMaximized(true);
         loginStage.show();
     }
 }

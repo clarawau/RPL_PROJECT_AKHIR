@@ -74,10 +74,24 @@ public class KeuanganController implements Initializable {
         cbTipe.setItems(FXCollections.observableArrayList("Pemasukan", "Pengeluaran"));
         cbKategori.setItems(FXCollections.observableArrayList("Gaji", "Makan", "Transportasi", "Hiburan", "Lainnya"));
 
-        dpTanggal.setValue(LocalDate.now()); // Set default tanggal
+        // Set default tanggal hari ini
+        dpTanggal.setValue(LocalDate.now());
+
+        // Mencegah pemilihan tanggal sebelum hari ini
+        dpTanggal.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;"); // optional: warna merah muda
+                }
+            }
+        });
 
         // Jangan load data di sini karena userId belum tersedia
     }
+
 
     public void setUserId(int userId) {
         this.userId = userId;
@@ -237,13 +251,17 @@ public class KeuanganController implements Initializable {
             Parent root = loader.load();
             TampilanWelController controller = loader.getController();
             controller.setUserId(userId);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
+            Scene scene = ((Node) event.getSource()).getScene();
+            scene.setRoot(root);
+
+            Stage stage = (Stage) scene.getWindow();
             stage.setTitle("Tampilan Awal");
-            stage.show();
+            stage.setMaximized(true);
+
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Error", "Gagal kembali ke halaman utama.");
         }
     }
+
 }

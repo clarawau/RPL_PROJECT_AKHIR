@@ -1,67 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500" prefWidth="700" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Project.Controller.RegisterController">
-    <children>
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="916.0" prefWidth="1798.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Project.Controller.RegisterController">
 
-        <!-- Header -->
-        <Pane prefHeight="100" prefWidth="700" style="-fx-background-color: #ADD8E6;">
-            <children>
-                <Label layoutX="250" layoutY="20" text="SIGN UP">
-                    <font>
-                        <Font name="Arial Black" size="48" />
-                    </font>
-                </Label>
-                <Label layoutX="280" layoutY="75" text="Have any account?" />
-                <Hyperlink fx:id="login" layoutX="410" layoutY="72" onAction="#onactionlg" text="Login" />
-            </children>
-        </Pane>
+      
+          <!-- Header -->
+    <Pane prefHeight="100.0" style="-fx-background-color: #ADD8E6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 
-        <!-- Form -->
-        <GridPane hgap="10" layoutX="100" layoutY="110" vgap="10">
-            <columnConstraints>
-                <ColumnConstraints minWidth="150" />
-                <ColumnConstraints minWidth="300" />
-            </columnConstraints>
-
-            <children>
-                <Label text="Username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <TextField fx:id="fullNameField" promptText=" Username" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-                <Label text="Password" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <PasswordField fx:id="pass1" promptText="Password " GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                <Label fx:id="labelPasswordInfo" maxWidth="280" textFill="RED" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-                <Label text="Confirm Password" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <PasswordField fx:id="pass2" promptText="Confirm password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Label fx:id="labelConfirmPasswordWarning" maxWidth="280" textFill="RED" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-
-                <Label text="Favorite Book?" GridPane.rowIndex="5" />
-                <TextField fx:id="book" promptText="Favorite book" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-
-                <Label text="Favorite Colour" GridPane.rowIndex="6" />
-                <ColorPicker fx:id="color" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-
-                <Label text="Favorite Pet?" GridPane.rowIndex="7" />
-                <TextField fx:id="pet" promptText="Favorite pet" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-
-                <Label text="Favorite Food?" GridPane.rowIndex="8" />
-                <TextField fx:id="food" promptText="Favorite food" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            </children>
-         <rowConstraints>
+    <!-- Form -->
+    <GridPane hgap="10" layoutX="522.0" layoutY="298.0" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints minWidth="150" />
+            <ColumnConstraints minWidth="300" />
+        </columnConstraints>
+        <rowConstraints>
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
@@ -71,13 +26,44 @@
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
-        </GridPane>
+        </rowConstraints>
+        <children>
+            <Label text="Username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="fullNameField" promptText=" Username" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-        <!-- Footer -->
-        <Pane layoutY="470" prefHeight="30" prefWidth="700" style="-fx-background-color: #ADD8E6;" />
+            <Label text="Password" GridPane.rowIndex="1" />
+            <PasswordField fx:id="pass1" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-          <Button fx:id="submitButton" layoutX="500.0" layoutY="412.0" onAction="#register" text="Register" />
-    </children>
+            <Label fx:id="labelPasswordInfo" maxWidth="280" textFill="RED" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+            <Label text="Confirm Password" GridPane.rowIndex="3" />
+            <PasswordField fx:id="pass2" promptText="Confirm password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="labelConfirmPasswordWarning" maxWidth="280" textFill="RED" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+            <Label text="Favorite Book?" GridPane.rowIndex="5" />
+            <TextField fx:id="book" promptText="Favorite book" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+            <Label text="Favorite Colour" GridPane.rowIndex="6" />
+            <ColorPicker fx:id="color" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+            <Label text="Favorite Pet?" GridPane.rowIndex="7" />
+            <TextField fx:id="pet" promptText="Favorite pet" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+            <Label text="Favorite Food?" GridPane.rowIndex="8" />
+            <TextField fx:id="food" promptText="Favorite food" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+        </children>
+    </GridPane>
+
+    <!-- Register Button -->
+    <Button fx:id="submitButton" layoutX="1043.0" layoutY="728.0" onAction="#register" text="Register" AnchorPane.bottomAnchor="163.0" AnchorPane.rightAnchor="695.5" />
+
+    <!-- Footer -->
+    <Pane prefHeight="30.0" style="-fx-background-color: #ADD8E6;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <Label layoutX="640.0" layoutY="183.0" text="SIGN UP">
+          <font>
+              <Font name="Arial Black" size="48" />
+          </font>
+      </Label>
+      <Label layoutX="653.0" layoutY="247.0" text="Have any account?" />
+      <Hyperlink fx:id="login" layoutX="783.0" layoutY="244.0" onAction="#onactionlg" text="Login" />
 </AnchorPane>

@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.Project.Database.UserDB;
 
+
 import java.io.IOException;
 
 public class RegisterController {
@@ -95,7 +96,7 @@ public class RegisterController {
             Scene scene = new Scene(loader.load());
             loginStage.setTitle("Login");
             loginStage.setScene(scene);
-            loginStage.setResizable(false);
+            stage.setFullScreen(true);
             loginStage.show();
         } else {
             showAlert(Alert.AlertType.ERROR, owner, "Registrasi Gagal!", "Terjadi kesalahan saat menyimpan data.", false);
@@ -112,7 +113,7 @@ public class RegisterController {
         Scene scene = new Scene(loader.load());
         loginStage.setTitle("Login");
         loginStage.setScene(scene);
-        loginStage.setResizable(false);
+        loginStage.setMaximized(true);
         loginStage.show();
     }
 
@@ -134,4 +135,6 @@ public class RegisterController {
             alert.show();
         }
     }
+
+
 }

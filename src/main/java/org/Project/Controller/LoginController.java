@@ -63,7 +63,7 @@ public class LoginController {
                 Stage stage = new Stage();
                 stage.setTitle("Dashboard");
                 stage.setScene(new Scene(root));
-                stage.setResizable(false);
+                stage.setMaximized(true);
                 stage.show();
 
                 // tutup jendela login
@@ -92,7 +92,7 @@ public class LoginController {
             Scene scene = new Scene(loader.load());
             regStage.setTitle("Register");
             regStage.setScene(scene);
-            regStage.setResizable(false);
+            stage.setMaximized(true);
             regStage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -106,7 +106,7 @@ public class LoginController {
             Stage stage = new Stage();
             stage.setTitle("Lupa Password");
             stage.setScene(scene);
-            stage.setResizable(false);
+            stage.setMaximized(true);
             stage.show();
             ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
         } catch (IOException e) {

@@ -11,34 +11,17 @@ import java.io.IOException;
 
 public class Apps extends Application {
 
-    private static Stage primaryStage; // simpan referensi stage utama agar bisa diakses statis
-
     @Override
     public void start(Stage stage) throws IOException {
-        primaryStage = stage;
-
-        // Inisialisasi database users, akan membuat tabel jika belum ada
         new UserDB();
-
-        // Load tampilan pertama aplikasi (Registrasi, atau bisa kamu ubah ke Login jika mau)
-        Parent root = FXMLLoader.load(getClass().getResource("/org/Project/TampilanWel-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/Registrasi-view.fxml"));
+        Parent root = loader.load();
         Scene scene = new Scene(root);
-
-        primaryStage.setTitle("Login Page");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
-    }
-
-    // Method statis untuk mengganti root scene
-    public static void setRoot(String fxml, String title, boolean isResizable) throws IOException {
-        Parent root = FXMLLoader.load(Apps.class.getResource("/org/Project/" + fxml + ".fxml"));
-        primaryStage.getScene().setRoot(root);
-        primaryStage.sizeToScene();
-        primaryStage.setResizable(isResizable);
-        if (title != null) {
-            primaryStage.setTitle(title);
-        }
+        stage.setTitle("Registrasi");
+        stage.setScene(scene);
+        stage.setMaximized(true);
+        stage.setResizable(true);
+        stage.show();
     }
 
     public static void main(String[] args) {
