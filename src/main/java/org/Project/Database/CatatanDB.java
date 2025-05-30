@@ -30,7 +30,7 @@ public class CatatanDB {
         jumlah REAL NOT NULL,
         kategori TEXT NOT NULL,
         tipe TEXT NOT NULL,
-        tanggal TEXT NOT NULL
+        tanggal TEXT NOT NULL,
     );
     """;
 
@@ -44,7 +44,7 @@ public class CatatanDB {
 
     // Menyisipkan catatan ke dalam tabel catatan_keuangan
     public boolean insertCatatan(CatatanKeuangan catatan) {
-        String sql = "INSERT INTO catatan_keuangan(userId, judul, jumlah, kategori, tipe, tanggal) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO catatan_keuangan(userId, judul, jumlah, kategori, tipe, tanggal) VALUES ( ?, ?, ?, ?, ?, ?)";
         try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, catatan.getUserId());
             stmt.setString(2, catatan.getJudul());

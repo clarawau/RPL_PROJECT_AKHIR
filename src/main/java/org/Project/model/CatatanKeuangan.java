@@ -10,15 +10,6 @@ public class CatatanKeuangan {
     private String tipe;
     private String tanggal;
 
-    public CatatanKeuangan(int userId, String judul, double jumlah, String kategori, String tipe, String tanggal) {
-        this.userId = userId;
-        this.judul = judul;
-        this.jumlah = jumlah;
-        this.kategori = kategori;
-        this.tipe = tipe;
-        this.tanggal = tanggal;
-    }
-
     public CatatanKeuangan(int id, int userId, String judul, double jumlah, String kategori, String tipe, String tanggal) {
         this.id = id;
         this.userId = userId;

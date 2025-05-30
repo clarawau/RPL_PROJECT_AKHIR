@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class UserDB {
 
-    private static final String DB_URL = "jdbc:sqlite:user.db";
+    private static final String DB_URL = "jdbc:sqlite:catatan.db";
 
     private Connection connect() throws SQLException {
         return DriverManager.getConnection(DB_URL);
