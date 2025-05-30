@@ -110,7 +110,7 @@ public class TampilanWelController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/catatan-keuangan-view.fxml"));
             Parent root = loader.load();
 
-            
+
             KeuanganController controller = loader.getController();
             controller.setUserId(userId);
 
@@ -168,7 +168,7 @@ public class TampilanWelController {
 
         dataKeuangan.clear();
 
-        // Jika search kosong dan tanggal kosong, tampilkan semua data tanpa filter
+        
         if ((searchQuery.isEmpty()) && (filterMulai == null || filterSelesai == null)) {
             loadData();
             return;
