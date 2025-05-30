@@ -12,27 +12,14 @@ import org.Project.Database.UserDB;
 import org.Project.Manager.Session;
 import javafx.scene.Parent;
 
-import org.Project.Database.CatatanDB;
-
-
 import java.io.IOException;
 
 public class LoginController {
 
-    @FXML
-    private TextField usernameField;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private Button loginButton;
-
-    @FXML
-    private Hyperlink registerLink;
-
-    @FXML
-    private Hyperlink forgotPasswordLink;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Button loginButton;
+    @FXML private Hyperlink forgotPasswordLink;
 
     @FXML
     void handleLogin(ActionEvent event) {
@@ -41,22 +28,18 @@ public class LoginController {
         String password = passwordField.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal",
-                    "Username dan Password harus diisi.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal", "Username dan Password harus diisi.", false);
             return;
         }
 
         UserDB userDb = new UserDB();
         if (userDb.validateLogin(username, password)) {
-
-            int userId = userDb.getUserId(username);          // ← ID dari DB
+            int userId = userDb.getUserId(username);
             Session.getInstance().setSession(userId, username);
 
-            showAlert(Alert.AlertType.INFORMATION, owner, "Login Berhasil",
-                    "Selamat datang, " + username, false);
+            showAlert(Alert.AlertType.INFORMATION, owner, "Login Berhasil", "Selamat datang, " + username, false);
             try {
-                FXMLLoader loader =
-                        new FXMLLoader(getClass().getResource("/org/Project/TampilanWel-view.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/TampilanWel-view.fxml"));
                 Parent root = loader.load();
                 TampilanWelController controller = loader.getController();
                 controller.setUserId(userId);
@@ -66,39 +49,41 @@ public class LoginController {
                 stage.setMaximized(true);
                 stage.show();
 
-                // tutup jendela login
                 ((Stage) loginButton.getScene().getWindow()).close();
-
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, owner, "Error",
-                        "Gagal membuka dashboard.", false);
+                showAlert(Alert.AlertType.ERROR, owner, "Error", "Gagal membuka dashboard.", false);
             }
         } else {
-            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal",
-                    "Username atau Password salah.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal", "Username atau Password salah.", false);
         }
     }
-
-
 
     @FXML
     void handleRegisterLink(ActionEvent event) {
         try {
-            Stage stage = (Stage) registerLink.getScene().getWindow();
-            stage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/register-view.fxml"));
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/Registrasi-view.fxml"));
+            Parent root = loader.load();
+
             Stage regStage = new Stage();
-            Scene scene = new Scene(loader.load());
             regStage.setTitle("Register");
-            regStage.setScene(scene);
-            stage.setMaximized(true);
+            regStage.setScene(new Scene(root));
+            regStage.setMaximized(true);
             regStage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Gagal membuka halaman registrasi");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 
+    @FXML
     public void handleForgotPassword(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/ForgetPass-view.fxml"));
@@ -110,7 +95,7 @@ public class LoginController {
             stage.show();
             ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
         } catch (IOException e) {
-            System.err.println("Gagal memuat forgot-password-view.fxml");
+            System.err.println("Gagal memuat ForgetPass-view.fxml");
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

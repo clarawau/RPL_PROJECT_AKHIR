@@ -13,7 +13,7 @@ public class Apps extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        new UserDB();
+        new UserDB(); // Inisialisasi koneksi DB atau setup awal
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/Registrasi-view.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);

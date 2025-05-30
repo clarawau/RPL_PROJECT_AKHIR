@@ -125,8 +125,8 @@ public class RegisterController {
             currentStage.close();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
-            Stage loginStage = new Stage();
             Scene scene = new Scene(loader.load());
+            Stage loginStage = new Stage();
             loginStage.setTitle("Login");
             loginStage.setScene(scene);
             loginStage.setMaximized(true);

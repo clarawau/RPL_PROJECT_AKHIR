@@ -22,4 +22,3 @@ Kebutuhan non-fungsional:
 - Transaksi tidak dapat di edit lagi dalam kurun waktu 1 bulan.
 - Password memiliki aturan (huruf besar, huruf kecil, angka, karakter spesial).
 - Aplikasi dapat diakses secara offline.
-

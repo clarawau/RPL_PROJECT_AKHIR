@@ -32,7 +32,15 @@
          <TextField fx:id="usernameField" maxWidth="250.0" promptText="Username" />
          <PasswordField fx:id="passwordField" maxWidth="250.0" promptText="Password" />
          <Button fx:id="loginButton" maxWidth="150.0" onAction="#handleLogin" text="Login" />
+
          <Hyperlink onAction="#handleForgotPassword" text="Forgot Password?" />
+
+         <!-- Hanya 'Sign up' yang bisa diklik -->
+         <HBox alignment="CENTER">
+            <Label text="Don't have an account? " />
+            <Hyperlink text="Sign up" onAction="#handleRegisterLink" />
+         </HBox>
+
       </VBox>
    </center>
 
