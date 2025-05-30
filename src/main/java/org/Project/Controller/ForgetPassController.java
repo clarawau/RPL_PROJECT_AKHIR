@@ -1,17 +1,22 @@
 package org.Project.Controller;
 
-import org.Project.Database.UserDB;
-
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.Project.Database.UserDB;
+
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class ForgetPassController {
+
     @FXML private TextField usernameField;
     @FXML private TextField petField;
     @FXML private TextField foodField;
@@ -21,6 +26,48 @@ public class ForgetPassController {
     @FXML private PasswordField confirmPasswordField;
     @FXML private Button resetButton;
     @FXML private Hyperlink backToLogin;
+    @FXML private VBox resetContainer; // pastikan ini ada di FXML (di bagian luar)
+
+    @FXML
+    public void initialize() {
+        setupPlaceholder(usernameField, "Username");
+        setupPlaceholder(petField, "Pet Name");
+        setupPlaceholder(bookField, "Favorite Book");
+        setupPlaceholder(foodField, "Favorite Food");
+        setupPlaceholder(newPasswordField, "New Password");
+        setupPlaceholder(confirmPasswordField, "Confirm Password");
+
+        List<TextField> allFields = Arrays.asList(
+                usernameField, petField, bookField,
+                foodField, newPasswordField, confirmPasswordField
+        );
+
+        for (TextField field : allFields) {
+            field.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal) {
+                    field.setStyle("-fx-border-color: #1e88e5; -fx-border-width: 2px; -fx-background-radius: 6; -fx-border-radius: 6;");
+                } else {
+                    field.setStyle("-fx-border-color: #cfd8dc; -fx-border-width: 1.5px; -fx-background-radius: 6; -fx-border-radius: 6;");
+                }
+            });
+        }
+
+        // Hindari autofokus pada TextField saat tampilan awal
+        Platform.runLater(() -> {
+            if (resetContainer != null) resetContainer.requestFocus();
+        });
+    }
+
+    private void setupPlaceholder(TextField field, String prompt) {
+        field.setPromptText(prompt);
+        field.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal && field.getText().isEmpty()) {
+                field.setPromptText("");
+            } else if (!newVal && field.getText().isEmpty()) {
+                field.setPromptText(prompt);
+            }
+        });
+    }
 
     @FXML
     void resetPassword(ActionEvent event) {
@@ -32,32 +79,29 @@ public class ForgetPassController {
         String color = "";
 
         if (colorPicker.getValue() != null) {
-            color = colorPicker.getValue().toString().trim().toLowerCase(); // pastikan konsisten dengan database
+            color = colorPicker.getValue().toString().trim().toLowerCase();
         }
 
         String newPassword = newPasswordField.getText().trim();
         String confirmPassword = confirmPasswordField.getText().trim();
 
-        // Validasi isian kosong
         if (username.isEmpty() || pet.isEmpty() || food.isEmpty() || book.isEmpty() || color.isEmpty()
                 || newPassword.isEmpty() || confirmPassword.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Semua field harus diisi.", false);
             return;
         }
 
-        // Validasi kecocokan password
         if (!newPassword.equals(confirmPassword)) {
             showAlert(Alert.AlertType.ERROR, owner, "Password Error", "Password tidak cocok.", false);
             return;
         }
 
-        // Validasi kompleksitas password
-        if (newPassword.length() < 8 && newPassword.length() > 16 || !isValidPassword(newPassword)) {
-            showAlert(Alert.AlertType.ERROR, owner, "ok","Password harus 8-16 karakter, mengandung huruf besar, huruf kecil, angka, dan karakter spesial.", false);
+        if ((newPassword.length() < 8 || newPassword.length() > 16) || !isValidPassword(newPassword)) {
+            showAlert(Alert.AlertType.ERROR, owner, "Password Error",
+                    "Password harus 8-16 karakter, mengandung huruf besar, huruf kecil, angka, dan karakter spesial.", false);
             return;
         }
 
-        // Verifikasi jawaban keamanan
         UserDB dao = new UserDB();
         boolean verified = dao.verifySecurityAnswers(username, pet, food, book, color);
         if (!verified) {
@@ -65,24 +109,8 @@ public class ForgetPassController {
             return;
         }
 
-        // Update password
         dao.updatePassword(username, newPassword);
         showAlert(Alert.AlertType.INFORMATION, owner, "Berhasil", "Password berhasil diperbarui!", true);
-
-//        // Kembali ke login kok 2 ya mb clara??
-//        try {
-//            Stage stage = (Stage) resetButton.getScene().getWindow();
-//            stage.close();
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
-//            Stage loginStage = new Stage();
-//            Scene scene = new Scene(loader.load());
-//            loginStage.setTitle("Login");
-//            loginStage.setScene(scene);
-//            loginStage.setMaximized(true);
-//            loginStage.show();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     private boolean isValidPassword(String password) {

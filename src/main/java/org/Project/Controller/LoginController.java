@@ -1,16 +1,18 @@
 package org.Project.Controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.Project.Database.UserDB;
 import org.Project.Manager.Session;
-import javafx.scene.Parent;
 
 import java.io.IOException;
 
@@ -20,6 +22,9 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
     @FXML private Hyperlink forgotPasswordLink;
+
+    // Fokus awal diarahkan ke container, bukan TextField
+    @FXML private VBox loginContainer;
 
     @FXML
     void handleLogin(ActionEvent event) {
@@ -37,12 +42,13 @@ public class LoginController {
             int userId = userDb.getUserId(username);
             Session.getInstance().setSession(userId, username);
 
-            showAlert(Alert.AlertType.INFORMATION, owner, "Login Berhasil", "Selamat datang, " + username, false);
+//            showAlert(Alert.AlertType.INFORMATION, owner, "Login Successfu", "Welcome, " + username, false);
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/TampilanWel-view.fxml"));
                 Parent root = loader.load();
                 TampilanWelController controller = loader.getController();
                 controller.setUserId(userId);
+
                 Stage stage = new Stage();
                 stage.setTitle("Home");
                 stage.setScene(new Scene(root));
@@ -55,7 +61,7 @@ public class LoginController {
                 showAlert(Alert.AlertType.ERROR, owner, "Error", "Gagal membuka dashboard.", false);
             }
         } else {
-            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal", "Username atau Password salah.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Login Failed", "Incorrect username or password.", false);
         }
     }
 
@@ -88,11 +94,13 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/ForgetPass-view.fxml"));
             Scene scene = new Scene(loader.load());
+
             Stage stage = new Stage();
             stage.setTitle("Ubah Password");
             stage.setScene(scene);
             stage.setMaximized(true);
             stage.show();
+
             ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
         } catch (IOException e) {
             System.err.println("Gagal memuat ForgetPass-view.fxml");
@@ -116,5 +124,27 @@ public class LoginController {
         } else {
             alert.show();
         }
+    }
+
+    @FXML
+    public void initialize() {
+        usernameField.setPromptText("Username");
+        passwordField.setPromptText("Password");
+
+        setupPlaceholder(usernameField, "Username");
+        setupPlaceholder(passwordField, "Password");
+
+        // Fokus awal diarahkan ke VBox, supaya TextField tidak langsung difokus (tidak muncul border biru)
+        Platform.runLater(() -> loginContainer.requestFocus());
+    }
+
+    private void setupPlaceholder(TextField field, String prompt) {
+        field.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal && field.getText().isEmpty()) {
+                field.setPromptText("");
+            } else if (!newVal && field.getText().isEmpty()) {
+                field.setPromptText(prompt);
+            }
+        });
     }
 }

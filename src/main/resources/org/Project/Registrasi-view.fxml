@@ -3,67 +3,77 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="916.0" prefWidth="1798.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Project.Controller.RegisterController">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.Project.Controller.RegisterController"
+            prefHeight="900.0" prefWidth="1600.0"
+            style="-fx-background-color: linear-gradient(to bottom right, #eaf6ff, #ffffff);">
 
-      
-          <!-- Header -->
-    <Pane prefHeight="100.0" style="-fx-background-color: #ADD8E6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    <!-- Kiri: Panel Branding -->
+    <left>
+        <VBox alignment="CENTER" spacing="20.0" prefWidth="400"
+              style="-fx-background-color: #b3e0ff;">
+            <VBox alignment="CENTER" spacing="10.0">
+                <Label text="💰" style="-fx-font-size: 48;" />
+                <Label text="MoneyWise" style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #005bb5;" />
+                <Label text="Create your account to manage finances easily"
+                       style="-fx-font-size: 14; -fx-text-fill: #003366;" wrapText="true"
+                       maxWidth="250"/>
+            </VBox>
+        </VBox>
+    </left>
 
-    <!-- Form -->
-    <GridPane hgap="10" layoutX="522.0" layoutY="298.0" vgap="10">
-        <columnConstraints>
-            <ColumnConstraints minWidth="150" />
-            <ColumnConstraints minWidth="300" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-        </rowConstraints>
-        <children>
-            <Label text="Username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <TextField fx:id="fullNameField" promptText=" Username" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <!-- Tengah: Form Registrasi -->
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="15.0">
+            <padding>
+                <Insets top="40" right="40" bottom="40" left="40"/>
+            </padding>
 
-            <Label text="Password" GridPane.rowIndex="1" />
-            <PasswordField fx:id="pass1" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <!-- Judul lebih menarik -->
+            <Label text="✨ Create Your MoneyWise Account ✨">
+                <font>
+                    <Font size="28.0"/>
+                </font>
+                <style>
+                    -fx-font-weight: bold;
+                    -fx-text-fill: #003366;
+                </style>
+            </Label>
 
-            <Label fx:id="labelPasswordInfo" maxWidth="280" textFill="RED" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Have any account?">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
 
-            <Label text="Confirm Password" GridPane.rowIndex="3" />
-            <PasswordField fx:id="pass2" promptText="Confirm password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label fx:id="labelConfirmPasswordWarning" maxWidth="280" textFill="RED" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Hyperlink fx:id="login" text="Login" onAction="#onactionlg" />
 
-            <Label text="Favorite Colour" GridPane.rowIndex="5" />
-            <ColorPicker fx:id="color" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <!-- Form Registrasi -->
+            <VBox alignment="CENTER" spacing="10.0"
+                  style="-fx-background-color: white; -fx-padding: 35 45 35 45; -fx-background-radius: 10;
+                         -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 0);">
 
-            <Label text="Pet Name" GridPane.rowIndex="6" />
-            <TextField fx:id="pet" promptText="Pet Name" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <TextField fx:id="fullNameField" promptText="Username" maxWidth="320" />
+                <PasswordField fx:id="pass1" promptText="Password" maxWidth="320" />
+                <PasswordField fx:id="pass2" promptText="Confirm Password" maxWidth="320" />
+                <Label fx:id="labelConfirmPasswordWarning" textFill="red" visible="false" wrapText="true" maxWidth="300" />
+                <Label fx:id="labelPasswordInfo" textFill="red" visible="false" wrapText="true" maxWidth="300" />
 
-            <Label text="Favorite Book" GridPane.rowIndex="7" />
-            <TextField fx:id="book" promptText="Favorite book" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="320">
+                    <Label text="Favorite Color" />
+                    <ColorPicker fx:id="color" style="-fx-pref-width: 200;" />
+                </HBox>
 
-            <Label text="Favorite Food" GridPane.rowIndex="8" />
-            <TextField fx:id="food" promptText="Favorite food" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-        </children>
-    </GridPane>
+                <TextField fx:id="pet" promptText="Pet Name" maxWidth="320" />
+                <TextField fx:id="book" promptText="Favorite Book" maxWidth="320" />
+                <TextField fx:id="food" promptText="Favorite Food" maxWidth="320" />
 
-    <!-- Register Button -->
-    <Button fx:id="submitButton" layoutX="1043.0" layoutY="728.0" onAction="#register" text="Register" AnchorPane.bottomAnchor="163.0" AnchorPane.rightAnchor="695.5" />
-
-    <!-- Footer -->
-    <Pane prefHeight="30.0" style="-fx-background-color: #ADD8E6;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-      <Label layoutX="640.0" layoutY="183.0" text="SIGN UP">
-          <font>
-              <Font name="Arial Black" size="48" />
-          </font>
-      </Label>
-      <Label layoutX="653.0" layoutY="247.0" text="Have any account?" />
-      <Hyperlink fx:id="login" layoutX="783.0" layoutY="244.0" onAction="#onactionlg" text="Login" />
-</AnchorPane>
+                <Button fx:id="submitButton" text="Register" onAction="#register"
+                        style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-padding: 8 20; -fx-background-radius: 25; -fx-cursor: hand;" />
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

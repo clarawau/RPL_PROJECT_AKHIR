@@ -2,46 +2,84 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Project.Controller.LoginController">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.Project.Controller.LoginController"
+            prefWidth="800" prefHeight="600"
+            style="-fx-background-color: #F5F5F5;">
 
-   <!-- Sisi kiri: Gambar -->
+   <!-- Panel kiri -->
    <left>
-      <ImageView fitWidth="400.0" preserveRatio="true" smooth="true">
-         <image>
-            <Image url="@../../img/tampil.jpg" />
-         </image>
-      </ImageView>
+      <VBox prefWidth="300.0" alignment="CENTER" spacing="20" style="-fx-background-color: #BBDEFB;">
+         <padding><Insets top="60" left="20" right="20" bottom="20"/></padding>
+
+         <Label text="💰" style="-fx-font-size: 48px;" />
+
+         <Label text="MoneyWise">
+            <font><Font name="Segoe UI Black" size="28"/></font>
+            <style>-fx-text-fill: #0D47A1;</style>
+         </Label>
+
+         <Label text="Manage your personal finance with ease" wrapText="true" textAlignment="CENTER">
+            <font><Font name="Segoe UI" size="14"/></font>
+            <style>-fx-text-fill: #1A237E;</style>
+         </Label>
+      </VBox>
    </left>
 
-   <!-- Sisi tengah: Form login -->
+   <!-- Panel tengah -->
    <center>
-      <VBox alignment="CENTER" prefHeight="2973.0" prefWidth="5822.0" spacing="10.0">
-         <padding>
-            <Insets bottom="20" left="20" right="20" top="20" />
-         </padding>
+      <VBox fx:id="loginContainer" alignment="CENTER" spacing="15">
+         <padding><Insets top="60" left="30" right="30" bottom="30"/></padding>
 
-         <ImageView fitHeight="55.0" fitWidth="75.0" preserveRatio="true">
-            <image>
-               <Image url="@../../img/login.jpg" />
-            </image>
-         </ImageView>
+         <Label text="👤" style="-fx-font-size: 36px;" />
 
-         <TextField fx:id="usernameField" maxWidth="250.0" promptText="Username" />
-         <PasswordField fx:id="passwordField" maxWidth="250.0" promptText="Password" />
-         <Button fx:id="loginButton" maxWidth="150.0" onAction="#handleLogin" text="Login" />
+         <Label text="Login to your account">
+            <font><Font name="Segoe UI Semibold" size="20"/></font>
+         </Label>
 
-         <Hyperlink onAction="#handleForgotPassword" text="Forgot Password?" />
-
-         <!-- Hanya 'Sign up' yang bisa diklik -->
-         <HBox alignment="CENTER">
-            <Label text="Don't have an account? " />
-            <Hyperlink text="Sign up" onAction="#handleRegisterLink" />
+         <!-- Username -->
+         <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="250">
+            <Label text="👤" style="-fx-font-size: 16px;" />
+            <TextField fx:id="usernameField"
+                       promptText="Username"
+                       focusTraversable="false"
+                       style="-fx-background-radius: 10; -fx-padding: 8; -fx-font-size: 14px;"
+                       HBox.hgrow="ALWAYS"/>
          </HBox>
 
+         <!-- Password -->
+         <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="250">
+            <Label text="🔒" style="-fx-font-size: 16px;" />
+            <PasswordField fx:id="passwordField"
+                           promptText="Password"
+                           style="-fx-background-radius: 10; -fx-padding: 8; -fx-font-size: 14px;"
+                           HBox.hgrow="ALWAYS"/>
+         </HBox>
+
+         <!-- Login Button -->
+         <Button fx:id="loginButton"
+                 text="Login"
+                 maxWidth="200"
+                 onAction="#handleLogin"
+                 style="-fx-background-color: #1976D2; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 14px;" />
+
+         <!-- Forgot Password -->
+         <Hyperlink fx:id="forgotPasswordLink"
+                    onAction="#handleForgotPassword"
+                    text="Forgot Password?"
+                    style="-fx-text-fill: #1565C0;" />
+
+         <!-- Sign Up -->
+         <HBox alignment="CENTER">
+            <Label text="Don't have an account?" />
+            <Hyperlink text=" Sign up"
+                       onAction="#handleRegisterLink"
+                       style="-fx-text-fill: #1565C0;" />
+         </HBox>
       </VBox>
    </center>
-
 </BorderPane>

@@ -1,33 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="org.Project.Controller.ForgetPassController">
-    <children>
-        <VBox alignment="CENTER" layoutX="30.0" layoutY="101.0" spacing="10" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="101.0">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.Project.Controller.ForgetPassController"
+            prefWidth="800" prefHeight="500"
+            style="-fx-background-color: linear-gradient(to bottom right, #e3f2fd, #ffffff);">
 
-            <TextField fx:id="usernameField" promptText="Username" />
-            <TextField fx:id="petField" promptText="Pet Name" />
-            <TextField fx:id="bookField" promptText="Favorite Book" />
-            <TextField fx:id="foodField" promptText="Favorite Food" />
-            <ColorPicker fx:id="colorPicker" />
-            <PasswordField fx:id="newPasswordField" promptText="New Password"/>
-            <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" />
+    <center>
+        <VBox fx:id="resetContainer" alignment="CENTER" spacing="20">
+            <StackPane>
+                <VBox alignment="CENTER" spacing="15"
+                      style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.5, 0, 0);"
+                      maxWidth="400">
+
+                    <!-- Nama Aplikasi -->
+                    <Label text="MoneyWise" style="-fx-font-size: 14px; -fx-text-fill: #777;" />
+
+                    <!-- Title -->
+                    <Label text="Reset Your Password"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+                    <!-- Username Field with icon -->
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="👤" style="-fx-font-size: 14px;" />
+                        <TextField fx:id="usernameField" promptText="Username" maxWidth="320"
+                                   style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 6 10;" />
+                    </HBox>
+
+                    <!-- Pet Name -->
+                    <TextField fx:id="petField" promptText="Pet Name" maxWidth="360"
+                               style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 6 10;" />
+
+                    <!-- Favorite Book -->
+                    <TextField fx:id="bookField" promptText="Favorite Book" maxWidth="360"
+                               style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 6 10;" />
+
+                    <!-- Favorite Food -->
+                    <TextField fx:id="foodField" promptText="Favorite Food" maxWidth="360"
+                               style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 6 10;" />
+
+                    <!-- Favorite Color -->
+                    <VBox alignment="CENTER_LEFT" spacing="5" maxWidth="360">
+                        <Label text="Favorite Color" style="-fx-font-weight: bold;" />
+                        <ColorPicker fx:id="colorPicker" />
+                    </VBox>
+
+                    <!-- New Password -->
+                    <PasswordField fx:id="newPasswordField" promptText="New Password" maxWidth="360"
+                                   style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 6 10;" />
+
+                    <!-- Confirm Password -->
+                    <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" maxWidth="360"
+                                   style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 6 10;" />
+
+                    <!-- Reset Button -->
+                    <Button fx:id="resetButton" text="Reset Password" onAction="#resetPassword"
+                            style="-fx-background-color: #1976d2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20; -fx-padding: 8 24;" />
+
+                    <!-- Back Link -->
+                    <Hyperlink fx:id="backToLogin" text="← Back to Login" onAction="#backToLogin"
+                               style="-fx-text-fill: #1976d2;" />
+                </VBox>
+            </StackPane>
         </VBox>
-      <Pane layoutY="-8.0" prefHeight="83.0" prefWidth="400.0" style="-fx-background-color: #ADD8E6;">
-         <children>
-            <Label layoutX="65.0" layoutY="22.0" text="Reset Password">
-               <font>
-                  <Font name="Arial Black" size="32.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-         <Hyperlink fx:id="backToLogin" layoutX="151.0" layoutY="385.0" onAction="#backToLogin" text="Back to Login" />
-
-         <Button fx:id="resetButton" layoutX="142.0" layoutY="360.0" onAction="#resetPassword" text="Reset Password" />
-      <Pane layoutY="450.0" prefHeight="83.0" prefWidth="400.0" style="-fx-background-color: #ADD8E6;" />
-    </children>
-</AnchorPane>
+    </center>
+</BorderPane>

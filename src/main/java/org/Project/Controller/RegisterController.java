@@ -33,7 +33,7 @@ public class RegisterController {
         pass1.textProperty().addListener((obs, oldText, newText) -> {
             labelPasswordInfo.setVisible(true);
             if (!isValidPassword(newText)) {
-                labelPasswordInfo.setText("Password harus 8-16 karakter, mengandung huruf besar, huruf kecil, angka, dan karakter spesial.");
+                labelPasswordInfo.setText("Password must be 8–16 characters long and include uppercase letters, lowercase letters, numbers, and special characters.");
             } else {
                 labelPasswordInfo.setVisible(false);
             }
@@ -42,7 +42,7 @@ public class RegisterController {
         // Validasi konfirmasi password
         pass2.textProperty().addListener((obs, oldText, newText) -> {
             if (!newText.equals(pass1.getText())) {
-                labelConfirmPasswordWarning.setText("Konfirmasi password tidak cocok.");
+                labelConfirmPasswordWarning.setText("Password confirmation does not match.");
                 labelConfirmPasswordWarning.setVisible(true);
             } else {
                 labelConfirmPasswordWarning.setVisible(false);
@@ -87,7 +87,7 @@ public class RegisterController {
         boolean inserted = jdbcDao.insertUser(username, password, petAnswer, foodAnswer, bookAnswer, colorValue.toString());
 
         if (inserted) {
-            showAlert(Alert.AlertType.INFORMATION, owner, "Registrasi Berhasil!", "Hallo, " + username + "!" + "" + "Silahkan login untuk masuk", true);
+            showAlert(Alert.AlertType.INFORMATION, owner, "Registration Successful!", "Hello, " + username + "!" + "" + "Log in to access your account", true);
             openLoginWindow();
         } else {
             showAlert(Alert.AlertType.ERROR, owner, "Registrasi Gagal!", "Terjadi kesalahan saat menyimpan data.", false);
