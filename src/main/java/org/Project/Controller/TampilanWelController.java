@@ -1,5 +1,7 @@
 package org.Project.Controller;
 
+import org.Project.model.CatatanKeuangan;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,14 +13,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
-import org.Project.model.CatatanKeuangan;
-
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 
 public class TampilanWelController {
-
     @FXML
     private TableView<CatatanKeuangan> tableRekap;
     @FXML
@@ -109,15 +108,12 @@ public class TampilanWelController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/catatan-keuangan-view.fxml"));
             Parent root = loader.load();
-
-
             KeuanganController controller = loader.getController();
             controller.setUserId(userId);
-
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Catatan Keuangan");
-            stage.setFullScreen(true);
+            stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,7 +126,6 @@ public class TampilanWelController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
             Parent root = loader.load();
-
             Stage stage = new Stage();
             stage.setTitle("Login");
             stage.setScene(new Scene(root));
@@ -155,8 +150,8 @@ public class TampilanWelController {
                 .filter(c -> c.getTipe().equals("Pengeluaran"))
                 .mapToDouble(CatatanKeuangan::getJumlah)
                 .sum();
-        lblTotalPemasukan.setText("Total Pemasukan: " + totalPemasukan);
-        lblTotalPengeluaran.setText("Total Pengeluaran: " + totalPengeluaran);
+        lblTotalPemasukan.setText("Total Pemasukan: Rp. " + totalPemasukan);
+        lblTotalPengeluaran.setText("Total Pengeluaran: Rp. " + totalPengeluaran);
     }
 
 
@@ -165,9 +160,7 @@ public class TampilanWelController {
         String searchQuery = tfSearch.getText().trim().toLowerCase();
         LocalDate filterMulai = dpFilterMulai.getValue();
         LocalDate filterSelesai = dpFilterSelesai.getValue();
-
         dataKeuangan.clear();
-
 
         if ((searchQuery.isEmpty()) && (filterMulai == null || filterSelesai == null)) {
             loadData();
@@ -246,10 +239,6 @@ public class TampilanWelController {
             showAlert("Error", "Gagal membuka halaman grafik.");
         }
     }
-
-
-
-
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

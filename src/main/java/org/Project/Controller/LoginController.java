@@ -44,7 +44,7 @@ public class LoginController {
                 TampilanWelController controller = loader.getController();
                 controller.setUserId(userId);
                 Stage stage = new Stage();
-                stage.setTitle("Dashboard");
+                stage.setTitle("Home");
                 stage.setScene(new Scene(root));
                 stage.setMaximized(true);
                 stage.show();
@@ -89,7 +89,7 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/ForgetPass-view.fxml"));
             Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
-            stage.setTitle("Lupa Password");
+            stage.setTitle("Ubah Password");
             stage.setScene(scene);
             stage.setMaximized(true);
             stage.show();

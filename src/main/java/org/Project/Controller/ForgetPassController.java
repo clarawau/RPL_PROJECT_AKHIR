@@ -1,5 +1,7 @@
 package org.Project.Controller;
 
+import org.Project.Database.UserDB;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.Project.Database.UserDB;
-
 import java.io.IOException;
 
 public class ForgetPassController {
-
     @FXML private TextField usernameField;
     @FXML private TextField petField;
     @FXML private TextField foodField;
@@ -26,7 +25,6 @@ public class ForgetPassController {
     @FXML
     void resetPassword(ActionEvent event) {
         Window owner = resetButton.getScene().getWindow();
-
         String username = usernameField.getText().trim();
         String pet = petField.getText().trim().toLowerCase();
         String food = foodField.getText().trim().toLowerCase();
@@ -71,23 +69,21 @@ public class ForgetPassController {
         dao.updatePassword(username, newPassword);
         showAlert(Alert.AlertType.INFORMATION, owner, "Berhasil", "Password berhasil diperbarui!", true);
 
-        // Kembali ke login
-        try {
-            Stage stage = (Stage) resetButton.getScene().getWindow();
-            stage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
-            Stage loginStage = new Stage();
-            Scene scene = new Scene(loader.load());
-            loginStage.setTitle("Login");
-            loginStage.setScene(scene);
-            loginStage.setMaximized(true);
-            loginStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        // Kembali ke login kok 2 ya mb clara??
+//        try {
+//            Stage stage = (Stage) resetButton.getScene().getWindow();
+//            stage.close();
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
+//            Stage loginStage = new Stage();
+//            Scene scene = new Scene(loader.load());
+//            loginStage.setTitle("Login");
+//            loginStage.setScene(scene);
+//            loginStage.setMaximized(true);
+//            loginStage.show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
-
-
 
     private boolean isValidPassword(String password) {
         String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,16}$";

@@ -40,16 +40,16 @@
             <PasswordField fx:id="pass2" promptText="Confirm password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label fx:id="labelConfirmPasswordWarning" maxWidth="280" textFill="RED" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-            <Label text="Favorite Book?" GridPane.rowIndex="5" />
-            <TextField fx:id="book" promptText="Favorite book" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Favorite Colour" GridPane.rowIndex="5" />
+            <ColorPicker fx:id="color" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-            <Label text="Favorite Colour" GridPane.rowIndex="6" />
-            <ColorPicker fx:id="color" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label text="Pet Name" GridPane.rowIndex="6" />
+            <TextField fx:id="pet" promptText="Pet Name" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-            <Label text="Favorite Pet?" GridPane.rowIndex="7" />
-            <TextField fx:id="pet" promptText="Favorite pet" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Label text="Favorite Book" GridPane.rowIndex="7" />
+            <TextField fx:id="book" promptText="Favorite book" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
-            <Label text="Favorite Food?" GridPane.rowIndex="8" />
+            <Label text="Favorite Food" GridPane.rowIndex="8" />
             <TextField fx:id="food" promptText="Favorite food" GridPane.columnIndex="1" GridPane.rowIndex="8" />
         </children>
     </GridPane>

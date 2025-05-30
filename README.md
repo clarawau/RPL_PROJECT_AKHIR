@@ -19,6 +19,5 @@ Kebutuhan non-fungsional:
 - Aksesibilitas: Transaksi tidak dapat di edit lagi dalam kurun waktu 1 bulan.
 - Keamanan: Password memiliki aturan (huruf besar, huruf kecil, angka, karakter spesial).
 - Aksesibilitas: Aplikasi dapat diakses secara offline.
-- Transaksi tidak dapat di edit lagi dalam kurun waktu 1 bulan.
 - Password memiliki aturan (huruf besar, huruf kecil, angka, karakter spesial).
 - Aplikasi dapat diakses secara offline.

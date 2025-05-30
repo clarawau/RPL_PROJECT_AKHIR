@@ -5,7 +5,6 @@
 <?import javafx.geometry.Insets?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.KeuanganController">
-
    <top>
       <VBox spacing="10">
          <padding>
@@ -58,9 +57,7 @@
             <Button text="Kembali" onAction="#kembaliKeWelcome"/>
          </HBox>
          <HBox spacing="10">
-            <Label text="Total Pemasukan:"/>
             <Label fx:id="lblTotalPemasukan"/>
-            <Label text="Total Pengeluaran:"/>
             <Label fx:id="lblTotalPengeluaran"/>
          </HBox>
       </VBox>

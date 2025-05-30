@@ -1,5 +1,8 @@
 package org.Project.Controller;
 
+import org.Project.model.CatatanKeuangan;
+import org.Project.Database.CatatanDB;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,9 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
-import org.Project.model.CatatanKeuangan;
-import org.Project.Database.CatatanDB;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -88,7 +88,6 @@ public class KeuanganController implements Initializable {
                 }
             }
         });
-
         // Jangan load data di sini karena userId belum tersedia
     }
 
@@ -224,8 +223,8 @@ public class KeuanganController implements Initializable {
                 .filter(c -> c.getTipe().equals("Pengeluaran"))
                 .mapToDouble(CatatanKeuangan::getJumlah)
                 .sum();
-        lblTotalPemasukan.setText("Total Pemasukan: " + totalPemasukan);
-        lblTotalPengeluaran.setText("Total Pengeluaran: " + totalPengeluaran);
+        lblTotalPemasukan.setText("Total Pemasukan: Rp. " + totalPemasukan);
+        lblTotalPengeluaran.setText("Total Pengeluaran: Rp. " + totalPengeluaran);
     }
 
     private void clearForm() {
@@ -253,9 +252,8 @@ public class KeuanganController implements Initializable {
             controller.setUserId(userId);
             Scene scene = ((Node) event.getSource()).getScene();
             scene.setRoot(root);
-
             Stage stage = (Stage) scene.getWindow();
-            stage.setTitle("Tampilan Awal");
+            stage.setTitle("Home");
             stage.setMaximized(true);
 
         } catch (IOException e) {

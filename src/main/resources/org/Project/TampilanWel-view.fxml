@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.TampilanWelController">
 
@@ -16,7 +15,7 @@
             <!-- Baris Selamat Datang & Tombol Navigasi -->
             <HBox spacing="20" alignment="CENTER_LEFT">
                 <Label fx:id="lblWelcome" text="Selamat datang, User"/>
-                <Button text="← Kembali" onAction="#nexDaftarCatatanKeuangan"/>
+                <Button text="Edit" onAction="#nexDaftarCatatanKeuangan"/>
                 <Button text="Grafik" onAction="#tampilkanGrafik"/>
                 <Button text="Logout" onAction="#logout"/>
             </HBox>
@@ -24,7 +23,7 @@
             <!-- Baris Pencarian dan Filter -->
             <HBox spacing="10">
                 <Label text="Cari Judul:"/>
-                <TextField fx:id="tfSearch" promptText="Masukkan judul..." />
+                <TextField fx:id="tfSearch" promptText="masukkan judul" />
                 <Label text="Filter Tanggal:"/>
                 <DatePicker fx:id="dpFilterMulai"/>
                 <Label text="s/d"/>
@@ -32,9 +31,7 @@
                 <Button text="Filter" onAction="#filterData"/>
             </HBox>
             <HBox spacing="10">
-                <Label text="Total Pemasukan:"/>
                 <Label fx:id="lblTotalPemasukan"/>
-                <Label text="Total Pengeluaran:"/>
                 <Label fx:id="lblTotalPengeluaran"/>
             </HBox>
         </VBox>

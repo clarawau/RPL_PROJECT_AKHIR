@@ -1,5 +1,7 @@
 package org.Project.Controller;
 
+import org.Project.Database.UserDB;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,8 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.Project.Database.UserDB;
-
 import java.io.IOException;
 
 public class RegisterController {
@@ -53,7 +53,6 @@ public class RegisterController {
     @FXML
     void register(ActionEvent event) {
         Window owner = submitButton.getScene().getWindow();
-
         String username = fullNameField.getText().trim();
         String password = pass1.getText().trim();
         String confirmPassword = pass2.getText().trim();
@@ -88,7 +87,7 @@ public class RegisterController {
         boolean inserted = jdbcDao.insertUser(username, password, petAnswer, foodAnswer, bookAnswer, colorValue.toString());
 
         if (inserted) {
-            showAlert(Alert.AlertType.INFORMATION, owner, "Registrasi Berhasil!", "Hallo, " + username + "!", true);
+            showAlert(Alert.AlertType.INFORMATION, owner, "Registrasi Berhasil!", "Hallo, " + username + "!" + "" + "Silahkan login untuk masuk", true);
             openLoginWindow();
         } else {
             showAlert(Alert.AlertType.ERROR, owner, "Registrasi Gagal!", "Terjadi kesalahan saat menyimpan data.", false);

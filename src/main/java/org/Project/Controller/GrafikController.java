@@ -13,8 +13,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import org.Project.model.CatatanKeuangan;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -113,7 +111,7 @@ public class GrafikController {
 
             Stage stage = (Stage) barChart.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Tampilan Wel");
+            stage.setTitle("Home");
             stage.setMaximized(true);
             stage.show();
 
