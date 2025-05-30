@@ -17,6 +17,7 @@
             <HBox spacing="20" alignment="CENTER_LEFT">
                 <Label fx:id="lblWelcome" text="Selamat datang, User"/>
                 <Button text="← Kembali" onAction="#nexDaftarCatatanKeuangan"/>
+                <Button text="Grafik" onAction="#tampilkanGrafik"/>
                 <Button text="Logout" onAction="#logout"/>
             </HBox>
 
@@ -50,7 +51,6 @@
                 <TableColumn fx:id="colTanggal" text="Tanggal" />
             </columns>
         </TableView>
-
     </center>
 
 </BorderPane>

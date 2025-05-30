@@ -168,7 +168,7 @@ public class TampilanWelController {
 
         dataKeuangan.clear();
 
-        
+
         if ((searchQuery.isEmpty()) && (filterMulai == null || filterSelesai == null)) {
             loadData();
             return;
@@ -220,6 +220,34 @@ public class TampilanWelController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void tampilkanGrafik() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/grafik-view.fxml"));
+            Parent root = loader.load();
+
+            // Kirim userId ke controller grafik jika perlu
+            GrafikController controller = loader.getController();
+            controller.setUserId(userId); // pastikan GrafikController memiliki method ini
+
+            Stage stage = new Stage();
+            stage.setTitle("Grafik Keuangan");
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.show();
+
+            // Tutup stage tampilanWel saat ini
+            Stage currentStage = (Stage) lblWelcome.getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Gagal membuka halaman grafik.");
+        }
+    }
+
+
 
 
 
