@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.Project.Database.UserDB;
 
-
 import java.io.IOException;
 
 public class RegisterController {
@@ -30,6 +29,7 @@ public class RegisterController {
 
     @FXML
     public void initialize() {
+        // Validasi password saat mengetik
         pass1.textProperty().addListener((obs, oldText, newText) -> {
             labelPasswordInfo.setVisible(true);
             if (!isValidPassword(newText)) {
@@ -39,6 +39,7 @@ public class RegisterController {
             }
         });
 
+        // Validasi konfirmasi password
         pass2.textProperty().addListener((obs, oldText, newText) -> {
             if (!newText.equals(pass1.getText())) {
                 labelConfirmPasswordWarning.setText("Konfirmasi password tidak cocok.");
@@ -50,7 +51,7 @@ public class RegisterController {
     }
 
     @FXML
-    void register(ActionEvent event) throws IOException {
+    void register(ActionEvent event) {
         Window owner = submitButton.getScene().getWindow();
 
         String username = fullNameField.getText().trim();
@@ -85,36 +86,18 @@ public class RegisterController {
         }
 
         boolean inserted = jdbcDao.insertUser(username, password, petAnswer, foodAnswer, bookAnswer, colorValue.toString());
+
         if (inserted) {
             showAlert(Alert.AlertType.INFORMATION, owner, "Registrasi Berhasil!", "Hallo, " + username + "!", true);
-
-            Stage stage = (Stage) submitButton.getScene().getWindow();
-            stage.close();
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
-            Stage loginStage = new Stage();
-            Scene scene = new Scene(loader.load());
-            loginStage.setTitle("Login");
-            loginStage.setScene(scene);
-            stage.setMaximized(true);
-            loginStage.show();
+            openLoginWindow();
         } else {
             showAlert(Alert.AlertType.ERROR, owner, "Registrasi Gagal!", "Terjadi kesalahan saat menyimpan data.", false);
         }
     }
 
     @FXML
-    void onactionlg(ActionEvent event) throws IOException {
-        Stage stage = (Stage) login.getScene().getWindow();
-        stage.close();
-
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
-//        Stage loginStage = new Stage();
-//        Scene scene = new Scene(loader.load());
-//        loginStage.setTitle("Login");
-//        loginStage.setScene(scene);
-////        loginStage.setMaximized(true);
-//        loginStage.show();
+    void onactionlg(ActionEvent event) {
+        openLoginWindow();
     }
 
     private boolean isValidPassword(String password) {
@@ -136,5 +119,21 @@ public class RegisterController {
         }
     }
 
+    private void openLoginWindow() {
+        try {
+            Stage currentStage = (Stage) submitButton.getScene().getWindow();
+            currentStage.close();
 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
+            Stage loginStage = new Stage();
+            Scene scene = new Scene(loader.load());
+            loginStage.setTitle("Login");
+            loginStage.setScene(scene);
+            loginStage.setMaximized(true);
+            loginStage.show();
+
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, null, "Error", "Gagal membuka halaman login: " + e.getMessage(), false);
+        }
+    }
 }
