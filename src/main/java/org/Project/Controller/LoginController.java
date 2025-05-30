@@ -56,9 +56,9 @@ public class LoginController {
                     "Selamat datang, " + username, false);
             try {
                 FXMLLoader loader =
-                        new FXMLLoader(getClass().getResource("/org/Project/catatan-keuangan-view.fxml"));
+                        new FXMLLoader(getClass().getResource("/org/Project/TampilanWel-view.fxml"));
                 Parent root = loader.load();
-                KeuanganController controller = loader.getController();
+                TampilanWelController controller = loader.getController();
                 controller.setUserId(userId);
                 Stage stage = new Stage();
                 stage.setTitle("Dashboard");

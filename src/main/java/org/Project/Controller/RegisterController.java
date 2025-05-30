@@ -96,7 +96,7 @@ public class RegisterController {
             Scene scene = new Scene(loader.load());
             loginStage.setTitle("Login");
             loginStage.setScene(scene);
-            stage.setFullScreen(true);
+            stage.setMaximized(true);
             loginStage.show();
         } else {
             showAlert(Alert.AlertType.ERROR, owner, "Registrasi Gagal!", "Terjadi kesalahan saat menyimpan data.", false);
@@ -108,13 +108,13 @@ public class RegisterController {
         Stage stage = (Stage) login.getScene().getWindow();
         stage.close();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
-        Stage loginStage = new Stage();
-        Scene scene = new Scene(loader.load());
-        loginStage.setTitle("Login");
-        loginStage.setScene(scene);
-        loginStage.setMaximized(true);
-        loginStage.show();
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
+//        Stage loginStage = new Stage();
+//        Scene scene = new Scene(loader.load());
+//        loginStage.setTitle("Login");
+//        loginStage.setScene(scene);
+////        loginStage.setMaximized(true);
+//        loginStage.show();
     }
 
     private boolean isValidPassword(String password) {
