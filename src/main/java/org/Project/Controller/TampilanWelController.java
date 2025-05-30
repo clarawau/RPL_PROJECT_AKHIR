@@ -48,7 +48,7 @@ public class TampilanWelController {
     private ObservableList<CatatanKeuangan> dataKeuangan = FXCollections.observableArrayList();
     private int userId;
 
-    // Dipanggil oleh controller lain setelah load FXML
+
     public void setUserId(int userId) {
         this.userId = userId;
         lblWelcome.setText("Selamat datang, User ID: " + userId);
@@ -65,13 +65,13 @@ public class TampilanWelController {
         dpFilterMulai.setValue(null);
         dpFilterSelesai.setValue(null);
         dpFilterMulai.valueProperty().addListener((obs, oldVal, newVal) -> {
-            filterData();  // otomatis filter ulang setiap tanggal berubah
+            filterData();
         });
         dpFilterSelesai.valueProperty().addListener((obs, oldVal, newVal) -> {
             filterData();
         });
 
-        // Listener pencarian otomatis
+
         tfSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             filterData();
         });
@@ -110,7 +110,7 @@ public class TampilanWelController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/catatan-keuangan-view.fxml"));
             Parent root = loader.load();
 
-            // Kirim userId ke KeuanganController
+            
             KeuanganController controller = loader.getController();
             controller.setUserId(userId);
 
