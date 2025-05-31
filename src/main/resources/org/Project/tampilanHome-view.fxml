@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.TampilanWelController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.TampilanHomeController">
 
     <top>
         <VBox spacing="10">
@@ -14,19 +14,19 @@
 
             <!-- Baris Selamat Datang & Tombol Navigasi -->
             <HBox spacing="20" alignment="CENTER_LEFT">
-                <Label fx:id="lblWelcome" text="Selamat datang, User"/>
+                <Label fx:id="lblWelcome" text="User"/>
                 <Button text="Edit" onAction="#nexDaftarCatatanKeuangan"/>
-                <Button text="Grafik" onAction="#tampilkanGrafik"/>
+                <Button text="Graph" onAction="#tampilkanGrafik"/>
                 <Button text="Logout" onAction="#logout"/>
             </HBox>
 
             <!-- Baris Pencarian dan Filter -->
             <HBox spacing="10">
-                <Label text="Cari Judul:"/>
-                <TextField fx:id="tfSearch" promptText="masukkan judul" />
-                <Label text="Filter Tanggal:"/>
+                <Label text="search"/>
+                <TextField fx:id="tfSearch" promptText="search" />
+                <Label text="Filter date:"/>
                 <DatePicker fx:id="dpFilterMulai"/>
-                <Label text="s/d"/>
+                <Label text="until"/>
                 <DatePicker fx:id="dpFilterSelesai"/>
                 <Button text="Filter" onAction="#filterData"/>
             </HBox>
@@ -41,11 +41,11 @@
         <!-- TableView -->
         <TableView fx:id="tableRekap">
             <columns>
-                <TableColumn fx:id="colJudul" text="Judul" />
-                <TableColumn fx:id="colJumlah" text="Jumlah" />
-                <TableColumn fx:id="colKategori" text="Kategori" />
-                <TableColumn fx:id="colTipe" text="Tipe" />
-                <TableColumn fx:id="colTanggal" text="Tanggal" />
+                <TableColumn fx:id="colJudul" text="title" />
+                <TableColumn fx:id="colJumlah" text="amount" />
+                <TableColumn fx:id="colKategori" text="category" />
+                <TableColumn fx:id="colTipe" text="Type" />
+                <TableColumn fx:id="colTanggal" text="date" />
             </columns>
         </TableView>
     </center>

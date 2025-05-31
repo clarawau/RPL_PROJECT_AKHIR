@@ -4,26 +4,26 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.KeuanganController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.MengelolaCatatanController">
    <top>
       <VBox spacing="10">
          <padding>
             <Insets top="10" right="10" bottom="10" left="10"/>
          </padding>
          <HBox spacing="10">
-            <Label text="Judul:"/>
+            <Label text="title:"/>
             <TextField fx:id="tfJudul"/>
-            <Label text="Jumlah:"/>
+            <Label text="amount: Rp. "/>
             <TextField fx:id="tfJumlah"/>
          </HBox>
          <HBox spacing="10">
-            <Label text="Kategori:"/>
+            <Label text="category:"/>
             <ComboBox fx:id="cbKategori"/>
-            <Label text="Tipe:"/>
+            <Label text="Type:"/>
             <ComboBox fx:id="cbTipe"/>
-            <Label text="Tanggal:"/>
+            <Label text="date:"/>
             <DatePicker fx:id="dpTanggal"/>
-            <Button text="Tambah" onAction="#tambahCatatan"/>
+            <Button text="add" onAction="#tambahCatatan"/>
          </HBox>
       </VBox>
    </top>
@@ -31,11 +31,11 @@
    <center>
       <TableView fx:id="tableKeuangan">
          <columns>
-            <TableColumn fx:id="colJudul" text="Judul"/>
-            <TableColumn fx:id="colJumlah" text="Jumlah"/>
-            <TableColumn fx:id="colKategori" text="Kategori"/>
-            <TableColumn fx:id="colTipe" text="Tipe"/>
-            <TableColumn fx:id="colTanggal" text="Tanggal"/>
+            <TableColumn fx:id="colJudul" text="title"/>
+            <TableColumn fx:id="colJumlah" text="amount"/>
+            <TableColumn fx:id="colKategori" text="category"/>
+            <TableColumn fx:id="colTipe" text="type"/>
+            <TableColumn fx:id="colTanggal" text="date"/>
          </columns>
       </TableView>
    </center>
@@ -46,15 +46,15 @@
             <Insets top="10" right="10" bottom="10" left="10"/>
          </padding>
          <HBox spacing="10">
-            <Label text="Filter Tanggal:"/>
+            <Label text="Filter date:"/>
             <DatePicker fx:id="dpFilterMulai"/>
-            <Label text="s/d"/>
+            <Label text="until"/>
             <DatePicker fx:id="dpFilterSelesai"/>
             <Button text="Filter" onAction="#filterTanggal"/>
          </HBox>
          <HBox spacing="10">
-            <Button text="Hapus" onAction="#hapusCatatan"/>
-            <Button text="Kembali" onAction="#kembaliKeWelcome"/>
+            <Button text="delete" onAction="#hapusCatatan"/>
+            <Button text="back" onAction="#kembaliKeWelcome"/>
          </HBox>
          <HBox spacing="10">
             <Label fx:id="lblTotalPemasukan"/>

@@ -7,20 +7,20 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.GrafikController">
 
    <top>
-      <Label text="Grafik Keuangan per Kategori"
+      <Label text="income and spent graph"
              style="-fx-font-size: 20px; -fx-font-weight: bold;"
              BorderPane.alignment="CENTER"/>
    </top>
 
    <center>
-      <BarChart fx:id="barChart" title="Pemasukan dan Pengeluaran "
+      <BarChart fx:id="barChart" title="Income and spent "
                 legendVisible="true"
                 prefHeight="500.0" prefWidth="800.0">
          <xAxis>
-            <CategoryAxis fx:id="xAxis" label="Kategori"/>
+            <CategoryAxis fx:id="xAxis" label="category"/>
          </xAxis>
          <yAxis>
-            <NumberAxis fx:id="yAxis" label="Jumlah"/>
+            <NumberAxis fx:id="yAxis" label="amount"/>
          </yAxis>
       </BarChart>
    </center>

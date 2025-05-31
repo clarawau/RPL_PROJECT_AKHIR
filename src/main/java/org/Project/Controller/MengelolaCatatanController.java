@@ -21,7 +21,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class KeuanganController implements Initializable {
+public class MengelolaCatatanController implements Initializable {
 
     @FXML
     private TableView<CatatanKeuangan> tableKeuangan;
@@ -71,8 +71,8 @@ public class KeuanganController implements Initializable {
         colTanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
 
         // Inisialisasi combo box
-        cbTipe.setItems(FXCollections.observableArrayList("Pemasukan", "Pengeluaran"));
-        cbKategori.setItems(FXCollections.observableArrayList("Gaji", "Makan", "Transportasi", "Hiburan", "Lainnya"));
+        cbTipe.setItems(FXCollections.observableArrayList("income", "spent"));
+        cbKategori.setItems(FXCollections.observableArrayList("salary", "food", "Transports", "entertaiment", "others"));
 
         // Set default tanggal hari ini
         dpTanggal.setValue(LocalDate.now());
@@ -130,7 +130,7 @@ public class KeuanganController implements Initializable {
         try {
             jumlah = Double.parseDouble(tfJumlah.getText());
         } catch (NumberFormatException e) {
-            showAlert("Input Error", "Jumlah harus berupa angka.");
+            showAlert("Input Error", "input must be number");
             return;
         }
 
@@ -139,7 +139,7 @@ public class KeuanganController implements Initializable {
         LocalDate tanggal = dpTanggal.getValue();
 
         if (judul.isEmpty() || jumlah <= 0 || kategori == null || tipe == null || tanggal == null) {
-            showAlert("Input Error", "Semua field harus diisi dengan benar.");
+            showAlert("Error", "all must be filled");
             return;
         }
 
@@ -174,7 +174,7 @@ public class KeuanganController implements Initializable {
                 e.printStackTrace();
             }
         } else {
-            showAlert("Hapus Gagal", "Pilih catatan yang ingin dihapus.");
+            showAlert("delete failed", "select the note you want to delete");
         }
     }
 
@@ -184,7 +184,7 @@ public class KeuanganController implements Initializable {
         LocalDate selesai = dpFilterSelesai.getValue();
 
         if (mulai == null || selesai == null) {
-            showAlert("Filter Error", "Silakan pilih tanggal mulai dan selesai.");
+            showAlert("Error", "select the date you want to filter");
             return;
         }
 
@@ -223,8 +223,8 @@ public class KeuanganController implements Initializable {
                 .filter(c -> c.getTipe().equals("Pengeluaran"))
                 .mapToDouble(CatatanKeuangan::getJumlah)
                 .sum();
-        lblTotalPemasukan.setText("Total Pemasukan: Rp. " + totalPemasukan);
-        lblTotalPengeluaran.setText("Total Pengeluaran: Rp. " + totalPengeluaran);
+        lblTotalPemasukan.setText("Total Income: Rp. " + totalPemasukan);
+        lblTotalPengeluaran.setText("Total Spent: Rp. " + totalPengeluaran);
     }
 
     private void clearForm() {
@@ -246,9 +246,9 @@ public class KeuanganController implements Initializable {
     @FXML
     private void kembaliKeWelcome(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/TampilanWel-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/tampilanHome-view.fxml"));
             Parent root = loader.load();
-            TampilanWelController controller = loader.getController();
+            TampilanHomeController controller = loader.getController();
             controller.setUserId(userId);
             Scene scene = ((Node) event.getSource()).getScene();
             scene.setRoot(root);
@@ -258,7 +258,7 @@ public class KeuanganController implements Initializable {
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Error", "Gagal kembali ke halaman utama.");
+            showAlert("Error", "failed back to homepage");
         }
     }
 

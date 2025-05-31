@@ -33,7 +33,7 @@ public class LoginController {
         String password = passwordField.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, owner, "Login Gagal", "Username dan Password harus diisi.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Login failed!", "Username and Password must be filled!", false);
             return;
         }
 
@@ -44,9 +44,9 @@ public class LoginController {
 
 //            showAlert(Alert.AlertType.INFORMATION, owner, "Login Successfu", "Welcome, " + username, false);
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/TampilanWel-view.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/tampilanHome-view.fxml"));
                 Parent root = loader.load();
-                TampilanWelController controller = loader.getController();
+                TampilanHomeController controller = loader.getController();
                 controller.setUserId(userId);
 
                 Stage stage = new Stage();
@@ -58,10 +58,10 @@ public class LoginController {
                 ((Stage) loginButton.getScene().getWindow()).close();
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, owner, "Error", "Gagal membuka dashboard.", false);
+                showAlert(Alert.AlertType.ERROR, owner, "Error!", "Failed open homepage!", false);
             }
         } else {
-            showAlert(Alert.AlertType.ERROR, owner, "Login Failed", "Incorrect username or password.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Login Failed!", "Incorrect username or password!", false);
         }
     }
 
@@ -71,11 +71,11 @@ public class LoginController {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/Registrasi-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/signup-view.fxml"));
             Parent root = loader.load();
 
             Stage regStage = new Stage();
-            regStage.setTitle("Register");
+            regStage.setTitle("Sign Up");
             regStage.setScene(new Scene(root));
             regStage.setMaximized(true);
             regStage.show();
@@ -83,7 +83,7 @@ public class LoginController {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("Gagal membuka halaman registrasi");
+            alert.setHeaderText("Failed open sign up page");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
@@ -92,22 +92,22 @@ public class LoginController {
     @FXML
     public void handleForgotPassword(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/ForgetPass-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/forgetPass-view.fxml"));
             Scene scene = new Scene(loader.load());
 
             Stage stage = new Stage();
-            stage.setTitle("Ubah Password");
+            stage.setTitle("Reset Password");
             stage.setScene(scene);
             stage.setMaximized(true);
             stage.show();
 
             ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
         } catch (IOException e) {
-            System.err.println("Gagal memuat ForgetPass-view.fxml");
+            System.err.println("Failed load forgetPass-view.fxml!");
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Gagal membuka halaman reset password");
+            alert.setTitle("Error!");
+            alert.setHeaderText("Failed open reset password page!");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }

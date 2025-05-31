@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: linear-gradient(to bottom right, #eaf6ff, #ffffff);" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Project.Controller.SignUpController">
+
+    <!-- Kiri: Panel Branding -->
+    <left>
+        <VBox alignment="CENTER" prefWidth="400" spacing="20.0" style="-fx-background-color: #b3e0ff;">
+            <VBox alignment="CENTER" spacing="10.0">
+                <Label style="-fx-font-size: 48;" text="💰" />
+                <Label style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #005bb5;" text="MoneyWise" />
+                <Label maxWidth="250" style="-fx-font-size: 14; -fx-text-fill: #003366;" text="Create your account to manage finances easily" wrapText="true" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Tengah: Form Registrasi -->
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="15.0">
+            <padding>
+                <Insets bottom="40" left="40" right="40" top="40" />
+            </padding>
+
+            <!-- Judul lebih menarik -->
+            <Label text="✨ Create Your MoneyWise Account ✨">
+                <font>
+                    <Font size="28.0" />
+                </font>
+                <style>
+                    -fx-font-weight: bold;
+                    -fx-text-fill: #003366;
+                </style>
+            </Label>
+
+            <Label text="Have any account?">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+
+            <Hyperlink fx:id="login" onAction="#onactionlg" text="Login" />
+
+            <!-- Form Registrasi -->
+            <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: white; -fx-padding: 35 45 35 45; -fx-background-radius: 10;                          -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 0);">
+
+                <TextField fx:id="fullNameField" maxWidth="320" promptText="Username" />
+                <PasswordField fx:id="pass1" maxWidth="320" promptText="Password" />
+                <PasswordField fx:id="pass2" maxWidth="320" promptText="Confirm Password" />
+                <Label fx:id="labelConfirmPasswordWarning" maxWidth="300" textFill="red" visible="false" wrapText="true" />
+                <Label fx:id="labelPasswordInfo" maxWidth="300" textFill="red" visible="false" wrapText="true" />
+
+                <HBox alignment="CENTER_LEFT" maxWidth="320" spacing="10">
+                    <Label text="Favorite Color" />
+                    <ColorPicker fx:id="color" style="-fx-pref-width: 200;" />
+                </HBox>
+
+                <TextField fx:id="pet" maxWidth="320" promptText="Pet Name" />
+                <TextField fx:id="book" maxWidth="320" promptText="Favorite Book" />
+                <TextField fx:id="food" maxWidth="320" promptText="Favorite Food" />
+
+                <Button fx:id="submitButton" onAction="#register" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;                                -fx-padding: 8 20; -fx-background-radius: 25; -fx-cursor: hand;" text="Sign Up" />
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

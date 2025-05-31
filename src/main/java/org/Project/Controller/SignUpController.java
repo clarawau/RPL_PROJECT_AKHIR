@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import java.io.IOException;
 
-public class RegisterController {
+public class SignUpController {
 
     @FXML private TextField fullNameField;
     @FXML private PasswordField pass1;
@@ -63,24 +63,23 @@ public class RegisterController {
 
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ||
                 petAnswer.isEmpty() || foodAnswer.isEmpty() || bookAnswer.isEmpty() || colorValue == null) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Semua field harus diisi.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "all field must be filled", false);
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Password dan konfirmasi tidak cocok.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Password and confirm password doesnt match", false);
             return;
         }
 
         if (!isValidPassword(password)) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                    "Password harus 8-16 karakter, mengandung huruf besar, huruf kecil, angka, dan karakter spesial.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Password must be 8–16 characters long and include uppercase letters, lowercase letters, numbers, and special characters.", false);
             return;
         }
 
         UserDB jdbcDao = new UserDB();
         if (jdbcDao.isUsernameExist(username)) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Username sudah terdaftar.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Username has been registered", false);
             return;
         }
 
@@ -90,7 +89,7 @@ public class RegisterController {
             showAlert(Alert.AlertType.INFORMATION, owner, "Registration Successful!", "Hello, " + username + "!" + "" + "Log in to access your account", true);
             openLoginWindow();
         } else {
-            showAlert(Alert.AlertType.ERROR, owner, "Registrasi Gagal!", "Terjadi kesalahan saat menyimpan data.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "sign up failed!", "something wrong when saving your data", false);
         }
     }
 
@@ -132,7 +131,7 @@ public class RegisterController {
             loginStage.show();
 
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, null, "Error", "Gagal membuka halaman login: " + e.getMessage(), false);
+            showAlert(Alert.AlertType.ERROR, null, "Error", "failed open login page: " + e.getMessage(), false);
         }
     }
 }

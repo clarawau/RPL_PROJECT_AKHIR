@@ -5,26 +5,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.Project.Controller.LoginController"
-            prefWidth="800" prefHeight="600"
-            style="-fx-background-color: #F5F5F5;">
+<BorderPane prefHeight="600" prefWidth="800" style="-fx-background-color: #F5F5F5;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Project.Controller.LoginController">
 
    <!-- Panel kiri -->
    <left>
-      <VBox prefWidth="300.0" alignment="CENTER" spacing="20" style="-fx-background-color: #BBDEFB;">
-         <padding><Insets top="60" left="20" right="20" bottom="20"/></padding>
+      <VBox alignment="CENTER" prefWidth="300.0" spacing="20" style="-fx-background-color: #BBDEFB;">
+         <padding><Insets bottom="20" left="20" right="20" top="60" /></padding>
 
-         <Label text="💰" style="-fx-font-size: 48px;" />
+         <Label style="-fx-font-size: 48px;" text="💰" />
 
          <Label text="MoneyWise">
-            <font><Font name="Segoe UI Black" size="28"/></font>
+            <font><Font name="Segoe UI Black" size="28" /></font>
             <style>-fx-text-fill: #0D47A1;</style>
          </Label>
 
-         <Label text="Manage your personal finance with ease" wrapText="true" textAlignment="CENTER">
-            <font><Font name="Segoe UI" size="14"/></font>
+         <Label text="Manage your personal finance with ease" textAlignment="CENTER" wrapText="true">
+            <font><Font name="Segoe UI" size="14" /></font>
             <style>-fx-text-fill: #1A237E;</style>
          </Label>
       </VBox>
@@ -33,52 +29,44 @@
    <!-- Panel tengah -->
    <center>
       <VBox fx:id="loginContainer" alignment="CENTER" spacing="15">
-         <padding><Insets top="60" left="30" right="30" bottom="30"/></padding>
+         <padding><Insets bottom="30" left="30" right="30" top="60" /></padding>
 
-         <Label text="👤" style="-fx-font-size: 36px;" />
+         <Label style="-fx-font-size: 36px;" text="👤" />
+         <Label text="LOG IN">
+            <font>
+               <Font name="System Bold" size="40.0" />
+            </font>
+         </Label>
 
          <Label text="Login to your account">
-            <font><Font name="Segoe UI Semibold" size="20"/></font>
+            <font><Font name="Segoe UI Semibold" size="17.0" /></font>
          </Label>
 
          <!-- Username -->
-         <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="250">
-            <Label text="👤" style="-fx-font-size: 16px;" />
-            <TextField fx:id="usernameField"
-                       promptText="Username"
-                       focusTraversable="false"
-                       style="-fx-background-radius: 10; -fx-padding: 8; -fx-font-size: 14px;"
-                       HBox.hgrow="ALWAYS"/>
+         <HBox alignment="CENTER_LEFT" maxWidth="250" spacing="10">
+            <Label style="-fx-font-size: 16px;" text="👤" />
+            <TextField fx:id="usernameField" focusTraversable="false" promptText="Username" style="-fx-background-radius: 10; -fx-padding: 8; -fx-font-size: 14px;" HBox.hgrow="ALWAYS" />
          </HBox>
 
          <!-- Password -->
-         <HBox alignment="CENTER_LEFT" spacing="10" maxWidth="250">
-            <Label text="🔒" style="-fx-font-size: 16px;" />
-            <PasswordField fx:id="passwordField"
-                           promptText="Password"
-                           style="-fx-background-radius: 10; -fx-padding: 8; -fx-font-size: 14px;"
-                           HBox.hgrow="ALWAYS"/>
+         <HBox alignment="CENTER_LEFT" maxWidth="250" spacing="10">
+            <Label style="-fx-font-size: 16px;" text="🔒" />
+            <PasswordField fx:id="passwordField" promptText="Password" style="-fx-background-radius: 10; -fx-padding: 8; -fx-font-size: 14px;" HBox.hgrow="ALWAYS" />
          </HBox>
 
          <!-- Login Button -->
-         <Button fx:id="loginButton"
-                 text="Login"
-                 maxWidth="200"
-                 onAction="#handleLogin"
-                 style="-fx-background-color: #1976D2; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 14px;" />
+         <Button fx:id="loginButton" maxWidth="200" onAction="#handleLogin" style="-fx-background-color: #1976D2; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-size: 14px;" text="Log In">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font></Button>
 
          <!-- Forgot Password -->
-         <Hyperlink fx:id="forgotPasswordLink"
-                    onAction="#handleForgotPassword"
-                    text="Forgot Password?"
-                    style="-fx-text-fill: #1565C0;" />
+         <Hyperlink fx:id="forgotPasswordLink" onAction="#handleForgotPassword" style="-fx-text-fill: #1565C0;" text="Forgot Password?" />
 
          <!-- Sign Up -->
          <HBox alignment="CENTER">
             <Label text="Don't have an account?" />
-            <Hyperlink text=" Sign up"
-                       onAction="#handleRegisterLink"
-                       style="-fx-text-fill: #1565C0;" />
+            <Hyperlink onAction="#handleRegisterLink" style="-fx-text-fill: #1565C0;" text=" Sign up" />
          </HBox>
       </VBox>
    </center>

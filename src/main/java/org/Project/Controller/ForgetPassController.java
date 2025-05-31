@@ -87,30 +87,30 @@ public class ForgetPassController {
 
         if (username.isEmpty() || pet.isEmpty() || food.isEmpty() || book.isEmpty() || color.isEmpty()
                 || newPassword.isEmpty() || confirmPassword.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "Semua field harus diisi.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!", "all field must be filled.", false);
             return;
         }
 
         if (!newPassword.equals(confirmPassword)) {
-            showAlert(Alert.AlertType.ERROR, owner, "Password Error", "Password tidak cocok.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Password Error", "Password doesn't match.", false);
             return;
         }
 
         if ((newPassword.length() < 8 || newPassword.length() > 16) || !isValidPassword(newPassword)) {
             showAlert(Alert.AlertType.ERROR, owner, "Password Error",
-                    "Password harus 8-16 karakter, mengandung huruf besar, huruf kecil, angka, dan karakter spesial.", false);
+                    "Password must contain 8-16 character, uppercase, lowercase, number, dan special character.", false);
             return;
         }
 
         UserDB dao = new UserDB();
         boolean verified = dao.verifySecurityAnswers(username, pet, food, book, color);
         if (!verified) {
-            showAlert(Alert.AlertType.ERROR, owner, "Verifikasi Gagal", "Jawaban security question salah.", false);
+            showAlert(Alert.AlertType.ERROR, owner, "verification failed", "security question answer is wrong.", false);
             return;
         }
 
         dao.updatePassword(username, newPassword);
-        showAlert(Alert.AlertType.INFORMATION, owner, "Berhasil", "Password berhasil diperbarui!", true);
+        showAlert(Alert.AlertType.INFORMATION, owner, "Success!", "Password has been re-new!", true);
     }
 
     private boolean isValidPassword(String password) {

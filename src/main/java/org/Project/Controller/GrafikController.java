@@ -50,22 +50,22 @@ public class GrafikController {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String kategori = rs.getString("kategori");
-                String tipe = rs.getString("tipe");
-                double jumlah = rs.getDouble("total");
+                String kategori = rs.getString("Category");
+                String tipe = rs.getString("Type");
+                double jumlah = rs.getDouble("Total");
 
-                if (tipe.equalsIgnoreCase("Pemasukan")) {
+                if (tipe.equalsIgnoreCase("Income")) {
                     pemasukanMap.put(kategori, jumlah);
-                } else if (tipe.equalsIgnoreCase("Pengeluaran")) {
+                } else if (tipe.equalsIgnoreCase("Spent")) {
                     pengeluaranMap.put(kategori, jumlah);
                 }
             }
 
             XYChart.Series<String, Number> pemasukanSeries = new XYChart.Series<>();
-            pemasukanSeries.setName("Pemasukan");
+            pemasukanSeries.setName("Income");
 
             XYChart.Series<String, Number> pengeluaranSeries = new XYChart.Series<>();
-            pengeluaranSeries.setName("Pengeluaran");
+            pengeluaranSeries.setName("Spent");
 
             for (String kategori : pemasukanMap.keySet()) {
                 pemasukanSeries.getData().add(new XYChart.Data<>(kategori, pemasukanMap.get(kategori)));
@@ -103,10 +103,10 @@ public class GrafikController {
     @FXML
     private void handleBack() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/tampilanwel-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/tampilanHome-view.fxml"));
             Parent root = loader.load();
 
-            TampilanWelController controller = loader.getController();
+            TampilanHomeController controller = loader.getController();
             controller.setUserId(userId); // Kirim userId ke tampilanWel agar bisa load data user ini
 
             Stage stage = (Stage) barChart.getScene().getWindow();
@@ -119,9 +119,9 @@ public class GrafikController {
             e.printStackTrace();
             // Optional: alert error
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
+            alert.setTitle("Error!");
             alert.setHeaderText(null);
-            alert.setContentText("Gagal kembali ke Tampilan Wel.");
+            alert.setContentText("Failed back to homepage.");
             alert.showAndWait();
         }
     }
@@ -134,9 +134,9 @@ public class GrafikController {
                 String text = label.getText();
                 Node symbol = label.getGraphic();
                 if (symbol != null) {
-                    if ("Pemasukan".equalsIgnoreCase(text)) {
+                    if ("Income".equalsIgnoreCase(text)) {
                         symbol.setStyle("-fx-background-color: #4CAF50;");
-                    } else if ("Pengeluaran".equalsIgnoreCase(text)) {
+                    } else if ("Spent".equalsIgnoreCase(text)) {
                         symbol.setStyle("-fx-background-color: #F44336;");
                     }
                 }

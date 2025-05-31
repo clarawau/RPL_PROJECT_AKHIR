@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 
-public class TampilanWelController {
+public class TampilanHomeController {
     @FXML
     private TableView<CatatanKeuangan> tableRekap;
     @FXML
@@ -50,7 +50,7 @@ public class TampilanWelController {
 
     public void setUserId(int userId) {
         this.userId = userId;
-        lblWelcome.setText("Selamat datang, User ID: " + userId);
+        lblWelcome.setText("Welcome, User: " + userId);
         loadData();
     }
 
@@ -106,18 +106,18 @@ public class TampilanWelController {
     @FXML
     private void nexDaftarCatatanKeuangan(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/catatan-keuangan-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/mengelolaCatatan-view.fxml"));
             Parent root = loader.load();
-            KeuanganController controller = loader.getController();
+            MengelolaCatatanController controller = loader.getController();
             controller.setUserId(userId);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Catatan Keuangan");
+            stage.setTitle("note controller");
             stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Error", "Gagal memuat halaman Catatan Keuangan.");
+            showAlert("Error", "failed load note controller");
         }
     }
 
@@ -137,7 +137,7 @@ public class TampilanWelController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Error", "Gagal membuka login page.");
+            showAlert("Error", "failed open login page.");
         }
     }
 
@@ -150,8 +150,8 @@ public class TampilanWelController {
                 .filter(c -> c.getTipe().equals("Pengeluaran"))
                 .mapToDouble(CatatanKeuangan::getJumlah)
                 .sum();
-        lblTotalPemasukan.setText("Total Pemasukan: Rp. " + totalPemasukan);
-        lblTotalPengeluaran.setText("Total Pengeluaran: Rp. " + totalPengeluaran);
+        lblTotalPemasukan.setText("Total income: Rp. " + totalPemasukan);
+        lblTotalPengeluaran.setText("Total spent: Rp. " + totalPengeluaran);
     }
 
 
@@ -225,7 +225,7 @@ public class TampilanWelController {
             controller.setUserId(userId); // pastikan GrafikController memiliki method ini
 
             Stage stage = new Stage();
-            stage.setTitle("Grafik Keuangan");
+            stage.setTitle("Graphics");
             stage.setScene(new Scene(root));
             stage.setMaximized(true);
             stage.show();
@@ -236,7 +236,7 @@ public class TampilanWelController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Error", "Gagal membuka halaman grafik.");
+            showAlert("Error", "failed open graphic page.");
         }
     }
 
