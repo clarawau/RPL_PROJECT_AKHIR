@@ -54,6 +54,7 @@
          </HBox>
          <HBox spacing="10">
             <Button text="delete" onAction="#hapusCatatan"/>
+            <Button text="Edit" onAction="#editCatatan"/>
             <Button text="back" onAction="#kembaliKeWelcome"/>
          </HBox>
          <HBox spacing="10">
@@ -62,5 +63,4 @@
          </HBox>
       </VBox>
    </bottom>
-
 </BorderPane>

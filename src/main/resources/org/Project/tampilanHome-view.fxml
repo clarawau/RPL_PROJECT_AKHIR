@@ -15,7 +15,7 @@
             <!-- Baris Selamat Datang & Tombol Navigasi -->
             <HBox spacing="20" alignment="CENTER_LEFT">
                 <Label fx:id="lblWelcome" text="User"/>
-                <Button text="Edit" onAction="#nexDaftarCatatanKeuangan"/>
+                <Button text="manage" onAction="#nexDaftarCatatanKeuangan"/>
                 <Button text="Graph" onAction="#tampilkanGrafik"/>
                 <Button text="Logout" onAction="#logout"/>
             </HBox>

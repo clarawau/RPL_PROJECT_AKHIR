@@ -84,13 +84,12 @@ public class MengelolaCatatanController implements Initializable {
                 super.updateItem(date, empty);
                 if (date.isBefore(LocalDate.now())) {
                     setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;"); // optional: warna merah muda
+                    setStyle("-fx-background-color: #ffc0cb;");
                 }
             }
         });
         // Jangan load data di sini karena userId belum tersedia
     }
-
 
     public void setUserId(int userId) {
         this.userId = userId;
@@ -262,4 +261,28 @@ public class MengelolaCatatanController implements Initializable {
         }
     }
 
+    // Tambahan untuk fitur edit maksimal 1 bulan
+    private boolean bisaEdit(String tanggalCatatan) {
+        LocalDate tanggal = LocalDate.parse(tanggalCatatan);
+        LocalDate batasAkhir = tanggal.plusMonths(1);
+        return !LocalDate.now().isAfter(batasAkhir);
+    }
+
+    @FXML
+    private void editCatatan() {
+        CatatanKeuangan selected = tableKeuangan.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            if (!bisaEdit(selected.getTanggal())) {
+                showAlert("alert", "editing not allowed. notes can only be edited within 1 month of being created!");
+                return;
+            }
+            tfJudul.setText(selected.getJudul());
+            tfJumlah.setText(String.valueOf(selected.getJumlah()));
+            cbKategori.setValue(selected.getKategori());
+            cbTipe.setValue(selected.getTipe());
+            dpTanggal.setValue(LocalDate.parse(selected.getTanggal()));
+        } else {
+            showAlert("select note", "please select note you want to edit.");
+        }
+    }
 }
