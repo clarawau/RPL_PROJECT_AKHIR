@@ -22,8 +22,6 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
     @FXML private Hyperlink forgotPasswordLink;
-
-    // Fokus awal diarahkan ke container, bukan TextField
     @FXML private VBox loginContainer;
 
     @FXML
@@ -33,21 +31,25 @@ public class LoginController {
         String password = passwordField.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, owner, "Login failed!", "Username and Password must be filled!", false);
+            showAlert(Alert.AlertType.ERROR, owner, "Login Failed!", "Username and Password must be filled!", false);
             return;
         }
 
         UserDB userDb = new UserDB();
         if (userDb.validateLogin(username, password)) {
             int userId = userDb.getUserId(username);
+
+            // Simpan session
             Session.getInstance().setSession(userId, username);
 
-//            showAlert(Alert.AlertType.INFORMATION, owner, "Login Successfu", "Welcome, " + username, false);
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/tampilanHome-view.fxml"));
                 Parent root = loader.load();
+
+                // Ambil controller dan kirim data user
                 TampilanHomeController controller = loader.getController();
                 controller.setUserId(userId);
+                controller.setUsername(username); // Wajib untuk munculkan nama
 
                 Stage stage = new Stage();
                 stage.setTitle("Home");
@@ -55,10 +57,11 @@ public class LoginController {
                 stage.setMaximized(true);
                 stage.show();
 
+                // Tutup login window
                 ((Stage) loginButton.getScene().getWindow()).close();
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, owner, "Error!", "Failed open homepage!", false);
+                showAlert(Alert.AlertType.ERROR, owner, "Error!", "Failed to open home page!", false);
             }
         } else {
             showAlert(Alert.AlertType.ERROR, owner, "Login Failed!", "Incorrect username or password!", false);
@@ -68,24 +71,19 @@ public class LoginController {
     @FXML
     void handleRegisterLink(ActionEvent event) {
         try {
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            currentStage.close();
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/signup-view.fxml"));
             Parent root = loader.load();
 
-            Stage regStage = new Stage();
-            regStage.setTitle("Sign Up");
-            regStage.setScene(new Scene(root));
-            regStage.setMaximized(true);
-            regStage.show();
+            Stage stage = new Stage();
+            stage.setTitle("Sign Up");
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.show();
+
+            ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
         } catch (IOException e) {
             e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Failed open sign up page");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            showAlert(Alert.AlertType.ERROR, loginButton.getScene().getWindow(), "Error", "Failed to open sign up page", false);
         }
     }
 
@@ -93,23 +91,18 @@ public class LoginController {
     public void handleForgotPassword(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/forgetPass-view.fxml"));
-            Scene scene = new Scene(loader.load());
+            Parent root = loader.load();
 
             Stage stage = new Stage();
             stage.setTitle("Reset Password");
-            stage.setScene(scene);
+            stage.setScene(new Scene(root));
             stage.setMaximized(true);
             stage.show();
 
             ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
         } catch (IOException e) {
-            System.err.println("Failed load forgetPass-view.fxml!");
             e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error!");
-            alert.setHeaderText("Failed open reset password page!");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            showAlert(Alert.AlertType.ERROR, loginButton.getScene().getWindow(), "Error!", "Failed to open reset password page!", false);
         }
     }
 
@@ -134,7 +127,6 @@ public class LoginController {
         setupPlaceholder(usernameField, "Username");
         setupPlaceholder(passwordField, "Password");
 
-        // Fokus awal diarahkan ke VBox, supaya TextField tidak langsung difokus (tidak muncul border biru)
         Platform.runLater(() -> loginContainer.requestFocus());
     }
 

@@ -13,45 +13,38 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 
 public class TampilanHomeController {
-    @FXML
-    private TableView<CatatanKeuangan> tableRekap;
-    @FXML
-    private TableColumn<CatatanKeuangan, String> colJudul;
-    @FXML
-    private TableColumn<CatatanKeuangan, Double> colJumlah;
-    @FXML
-    private TableColumn<CatatanKeuangan, String> colKategori;
-    @FXML
-    private TableColumn<CatatanKeuangan, String> colTipe;
-    @FXML
-    private TableColumn<CatatanKeuangan, String> colTanggal;
+    @FXML private TableView<CatatanKeuangan> tableRekap;
+    @FXML private TableColumn<CatatanKeuangan, String> colJudul;
+    @FXML private TableColumn<CatatanKeuangan, Double> colJumlah;
+    @FXML private TableColumn<CatatanKeuangan, String> colKategori;
+    @FXML private TableColumn<CatatanKeuangan, String> colTipe;
+    @FXML private TableColumn<CatatanKeuangan, String> colTanggal;
 
-    @FXML
-    private Label lblWelcome;
-    @FXML
-    private TextField tfSearch;
-    @FXML
-    private DatePicker dpFilterMulai;
-    @FXML
-    private DatePicker dpFilterSelesai;
-    @FXML
-    private Label lblTotalPemasukan;
-    @FXML
-    private Label lblTotalPengeluaran;
+    @FXML private Label lblWelcome;
+    @FXML private TextField tfSearch;
+    @FXML private DatePicker dpFilterMulai;
+    @FXML private DatePicker dpFilterSelesai;
+    @FXML private Label lblTotalPemasukan;
+    @FXML private Label lblTotalPengeluaran;
 
     private ObservableList<CatatanKeuangan> dataKeuangan = FXCollections.observableArrayList();
     private int userId;
-
+    private String username;
 
     public void setUserId(int userId) {
         this.userId = userId;
-        lblWelcome.setText("Welcome, User: " + userId);
-        loadData();
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+        lblWelcome.setText("Welcome, " + username + "!");
+        loadData(); // Panggil setelah keduanya diset
     }
 
     @FXML
@@ -61,21 +54,14 @@ public class TampilanHomeController {
         colKategori.setCellValueFactory(new PropertyValueFactory<>("kategori"));
         colTipe.setCellValueFactory(new PropertyValueFactory<>("tipe"));
         colTanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
+
         dpFilterMulai.setValue(null);
         dpFilterSelesai.setValue(null);
-        dpFilterMulai.valueProperty().addListener((obs, oldVal, newVal) -> {
-            filterData();
-        });
-        dpFilterSelesai.valueProperty().addListener((obs, oldVal, newVal) -> {
-            filterData();
-        });
 
-
-        tfSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterData();
-        });
+        dpFilterMulai.valueProperty().addListener((obs, oldVal, newVal) -> filterData());
+        dpFilterSelesai.valueProperty().addListener((obs, oldVal, newVal) -> filterData());
+        tfSearch.textProperty().addListener((observable, oldValue, newValue) -> filterData());
     }
-
 
     @FXML
     private void loadData() {
@@ -97,7 +83,7 @@ public class TampilanHomeController {
                 ));
             }
             tableRekap.setItems(dataKeuangan);
-            updateTotals(); // update total pemasukan & pengeluaran setelah load data
+            updateTotals();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -112,12 +98,12 @@ public class TampilanHomeController {
             controller.setUserId(userId);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("note controller");
+            stage.setTitle("Manage Records");
             stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Error", "failed load note controller");
+            showAlert("Error", "Failed to load record management page.");
         }
     }
 
@@ -137,23 +123,23 @@ public class TampilanHomeController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Error", "failed open login page.");
+            showAlert("Error", "Failed to open login page.");
         }
     }
 
     private void updateTotals() {
         double totalPemasukan = dataKeuangan.stream()
-                .filter(c -> c.getTipe().equals("Pemasukan"))
+                .filter(c -> c.getTipe().equalsIgnoreCase("Pemasukan"))
                 .mapToDouble(CatatanKeuangan::getJumlah)
                 .sum();
         double totalPengeluaran = dataKeuangan.stream()
-                .filter(c -> c.getTipe().equals("Pengeluaran"))
+                .filter(c -> c.getTipe().equalsIgnoreCase("Pengeluaran"))
                 .mapToDouble(CatatanKeuangan::getJumlah)
                 .sum();
+
         lblTotalPemasukan.setText("Total income: Rp. " + totalPemasukan);
         lblTotalPengeluaran.setText("Total spent: Rp. " + totalPengeluaran);
     }
-
 
     @FXML
     private void filterData() {
@@ -162,7 +148,7 @@ public class TampilanHomeController {
         LocalDate filterSelesai = dpFilterSelesai.getValue();
         dataKeuangan.clear();
 
-        if ((searchQuery.isEmpty()) && (filterMulai == null || filterSelesai == null)) {
+        if (searchQuery.isEmpty() && (filterMulai == null || filterSelesai == null)) {
             loadData();
             return;
         }
@@ -172,7 +158,6 @@ public class TampilanHomeController {
             sqlBuilder.append(" AND tanggal BETWEEN ? AND ?");
         }
         if (!searchQuery.isEmpty()) {
-            // Cari di judul, kategori, tipe, tanggal (bisa tambah kolom lain jika perlu)
             sqlBuilder.append(" AND (LOWER(judul) LIKE ? OR LOWER(kategori) LIKE ? OR LOWER(tipe) LIKE ? OR LOWER(tanggal) LIKE ?)");
         }
 
@@ -220,9 +205,8 @@ public class TampilanHomeController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/grafik-view.fxml"));
             Parent root = loader.load();
 
-            // Kirim userId ke controller grafik jika perlu
             GrafikController controller = loader.getController();
-            controller.setUserId(userId); // pastikan GrafikController memiliki method ini
+            controller.setUserId(userId);
 
             Stage stage = new Stage();
             stage.setTitle("Graphics");
@@ -230,13 +214,12 @@ public class TampilanHomeController {
             stage.setMaximized(true);
             stage.show();
 
-            // Tutup stage tampilanWel saat ini
             Stage currentStage = (Stage) lblWelcome.getScene().getWindow();
             currentStage.close();
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Error", "failed open graphic page.");
+            showAlert("Error", "Failed to open graphic page.");
         }
     }
 

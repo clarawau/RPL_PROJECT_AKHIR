@@ -5,25 +5,32 @@
 <?import javafx.geometry.Insets?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.MengelolaCatatanController">
+
    <top>
-      <VBox spacing="10">
+      <VBox spacing="15" style="-fx-background-color: #f9f9f9;">
          <padding>
-            <Insets top="10" right="10" bottom="10" left="10"/>
+            <Insets top="20" right="25" bottom="20" left="25"/>
          </padding>
+
+         <Label text="Manage Your Finance Record"
+                style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
          <HBox spacing="10">
-            <Label text="title:"/>
-            <TextField fx:id="tfJudul"/>
-            <Label text="amount: Rp. "/>
-            <TextField fx:id="tfJumlah"/>
+            <Label text="Title:"/>
+            <TextField fx:id="tfJudul" promptText="e.g. Buy groceries"/>
+            <Label text="Amount (Rp):"/>
+            <TextField fx:id="tfJumlah" promptText="e.g. 50000"/>
          </HBox>
+
          <HBox spacing="10">
-            <Label text="category:"/>
-            <ComboBox fx:id="cbKategori"/>
+            <Label text="Category:"/>
+            <ComboBox fx:id="cbKategori" promptText="Select category"/>
             <Label text="Type:"/>
-            <ComboBox fx:id="cbTipe"/>
-            <Label text="date:"/>
+            <ComboBox fx:id="cbTipe" promptText="Income / Expense"/>
+            <Label text="Date:"/>
             <DatePicker fx:id="dpTanggal"/>
-            <Button text="add" onAction="#tambahCatatan"/>
+            <Button text="Add" onAction="#tambahCatatan"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;"/>
          </HBox>
       </VBox>
    </top>
@@ -31,35 +38,42 @@
    <center>
       <TableView fx:id="tableKeuangan">
          <columns>
-            <TableColumn fx:id="colJudul" text="title"/>
-            <TableColumn fx:id="colJumlah" text="amount"/>
-            <TableColumn fx:id="colKategori" text="category"/>
-            <TableColumn fx:id="colTipe" text="type"/>
-            <TableColumn fx:id="colTanggal" text="date"/>
+            <TableColumn fx:id="colJudul" text="Title"/>
+            <TableColumn fx:id="colJumlah" text="Amount"/>
+            <TableColumn fx:id="colKategori" text="Category"/>
+            <TableColumn fx:id="colTipe" text="Type"/>
+            <TableColumn fx:id="colTanggal" text="Date"/>
          </columns>
       </TableView>
    </center>
 
    <bottom>
-      <VBox spacing="10">
+      <VBox spacing="12" style="-fx-background-color: #ffffff;">
          <padding>
-            <Insets top="10" right="10" bottom="10" left="10"/>
+            <Insets top="20" right="25" bottom="20" left="25"/>
          </padding>
-         <HBox spacing="10">
+
+         <HBox spacing="10" alignment="CENTER_LEFT">
             <Label text="Filter date:"/>
             <DatePicker fx:id="dpFilterMulai"/>
             <Label text="until"/>
             <DatePicker fx:id="dpFilterSelesai"/>
-            <Button text="Filter" onAction="#filterTanggal"/>
+            <Button text="Filter" onAction="#filterTanggal"
+                    style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;"/>
          </HBox>
-         <HBox spacing="10">
-            <Button text="delete" onAction="#hapusCatatan"/>
-            <Button text="Edit" onAction="#editCatatan"/>
-            <Button text="back" onAction="#kembaliKeWelcome"/>
+
+         <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="Delete" onAction="#hapusCatatan"
+                    style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Button text="Edit" onAction="#editCatatan"
+                    style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Button text="Back" onAction="#kembaliKeWelcome"
+                    style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-weight: bold;"/>
          </HBox>
-         <HBox spacing="10">
-            <Label fx:id="lblTotalPemasukan"/>
-            <Label fx:id="lblTotalPengeluaran"/>
+
+         <HBox spacing="20" alignment="CENTER_LEFT">
+            <Label fx:id="lblTotalPemasukan" style="-fx-text-fill: #27ae60; -fx-font-weight: bold;"/>
+            <Label fx:id="lblTotalPengeluaran" style="-fx-text-fill: #c0392b; -fx-font-weight: bold;"/>
          </HBox>
       </VBox>
    </bottom>

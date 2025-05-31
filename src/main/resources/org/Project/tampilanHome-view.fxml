@@ -4,48 +4,61 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.TampilanHomeController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.TampilanHomeController"
+            style="-fx-background-color: #f4f7fa;">
 
     <top>
-        <VBox spacing="10">
+        <VBox spacing="15">
             <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
+                <Insets top="20" right="20" bottom="10" left="20"/>
             </padding>
 
-            <!-- Baris Selamat Datang & Tombol Navigasi -->
-            <HBox spacing="20" alignment="CENTER_LEFT">
-                <Label fx:id="lblWelcome" text="User"/>
-                <Button text="manage" onAction="#nexDaftarCatatanKeuangan"/>
-                <Button text="Graph" onAction="#tampilkanGrafik"/>
-                <Button text="Logout" onAction="#logout"/>
+            <!-- Header: Logo & Nama App -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="💰" style="-fx-font-size: 28px;"/>
+                <Label text="MoneyWise" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1e88e5;"/>
             </HBox>
 
-            <!-- Baris Pencarian dan Filter -->
-            <HBox spacing="10">
-                <Label text="search"/>
-                <TextField fx:id="tfSearch" promptText="search" />
-                <Label text="Filter date:"/>
+            <!-- Welcome & Navigasi -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label fx:id="lblWelcome" text="Welcome, User!" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <Button text="Manage" onAction="#nexDaftarCatatanKeuangan"
+                        style="-fx-background-color: #1976d2; -fx-text-fill: white;"/>
+                <Button text="Graph" onAction="#tampilkanGrafik"
+                        style="-fx-background-color: #1976d2; -fx-text-fill: white;"/>
+                <Region fx:id="spacer1" HBox.hgrow="ALWAYS"/>
+                <Button text="Logout" onAction="#logout"
+                        style="-fx-background-color: #e53935; -fx-text-fill: white;"/>
+            </HBox>
+
+            <!-- Search & Filter -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="🔎 Search:"/>
+                <TextField fx:id="tfSearch" promptText="Enter keyword..." style="-fx-pref-width: 200px;"/>
+                <Label text=" Filter date:"/>
                 <DatePicker fx:id="dpFilterMulai"/>
                 <Label text="until"/>
                 <DatePicker fx:id="dpFilterSelesai"/>
-                <Button text="Filter" onAction="#filterData"/>
+                <Button text="Filter" onAction="#filterData"
+                        style="-fx-background-color: #43a047; -fx-text-fill: white;"/>
             </HBox>
-            <HBox spacing="10">
-                <Label fx:id="lblTotalPemasukan"/>
-                <Label fx:id="lblTotalPengeluaran"/>
+
+            <!-- Ringkasan -->
+            <HBox spacing="30">
+                <Label fx:id="lblTotalPemasukan" style="-fx-font-weight: bold; -fx-text-fill: green;"/>
+                <Label fx:id="lblTotalPengeluaran" style="-fx-font-weight: bold; -fx-text-fill: red;"/>
             </HBox>
         </VBox>
     </top>
 
     <center>
-        <!-- TableView -->
-        <TableView fx:id="tableRekap">
+        <TableView fx:id="tableRekap" style="-fx-background-color: white;">
             <columns>
-                <TableColumn fx:id="colJudul" text="title" />
-                <TableColumn fx:id="colJumlah" text="amount" />
-                <TableColumn fx:id="colKategori" text="category" />
+                <TableColumn fx:id="colJudul" text="Title" />
+                <TableColumn fx:id="colJumlah" text="Amount" />
+                <TableColumn fx:id="colKategori" text="Category" />
                 <TableColumn fx:id="colTipe" text="Type" />
-                <TableColumn fx:id="colTanggal" text="date" />
+                <TableColumn fx:id="colTanggal" text="Date" />
             </columns>
         </TableView>
     </center>

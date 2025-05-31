@@ -1,33 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.chart.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.GrafikController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.GrafikController"
+            style="-fx-background-color: #f4f7f9;">
 
+   <!-- Header -->
    <top>
-      <Label text="income and spent graph"
-             style="-fx-font-size: 20px; -fx-font-weight: bold;"
-             BorderPane.alignment="CENTER"/>
+      <HBox spacing="10" alignment="CENTER_LEFT"
+            style="-fx-background-color: #ffffff; -fx-padding: 15; -fx-border-color: #dcdcdc; -fx-border-width: 0 0 1 0;">
+         <Label text="💰 MoneyWise"
+                style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+      </HBox>
    </top>
 
+   <!-- Chart Area -->
    <center>
-      <BarChart fx:id="barChart" title="Income and spent "
-                legendVisible="true"
-                prefHeight="500.0" prefWidth="800.0">
-         <xAxis>
-            <CategoryAxis fx:id="xAxis" label="category"/>
-         </xAxis>
-         <yAxis>
-            <NumberAxis fx:id="yAxis" label="amount"/>
-         </yAxis>
-      </BarChart>
+      <VBox alignment="TOP_CENTER" spacing="15" style="-fx-padding: 20;">
+         <Label text="Income and Spent Overview"
+                style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
+         <BarChart fx:id="barChart" title="Income and Spent"
+                   legendVisible="true"
+                   style="-fx-background-color: #ffffff; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-padding: 10;"
+                   prefHeight="500.0" prefWidth="900.0">
+            <xAxis>
+               <CategoryAxis fx:id="xAxis" label="Category"/>
+            </xAxis>
+            <yAxis>
+               <NumberAxis fx:id="yAxis" label="Amount"/>
+            </yAxis>
+         </BarChart>
+      </VBox>
    </center>
 
+   <!-- Footer -->
    <bottom>
-      <HBox alignment="CENTER" spacing="10" style="-fx-padding: 10;">
-         <Button text="Back" fx:id="btnBack" onAction="#handleBack"/>
+      <HBox alignment="CENTER" spacing="10" style="-fx-padding: 15;">
+         <Button fx:id="btnBack" text="Back" onAction="#handleBack"
+                 style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 8 20;"/>
       </HBox>
    </bottom>
 
