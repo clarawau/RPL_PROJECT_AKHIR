@@ -1,5 +1,6 @@
 package org.Project.Controller;
 
+import org.Project.Manager.Session;
 import org.Project.model.CatatanKeuangan;
 
 import javafx.collections.FXCollections;
@@ -44,7 +45,7 @@ public class TampilanHomeController {
     public void setUsername(String username) {
         this.username = username;
         lblWelcome.setText("Welcome, " + username + "!");
-        loadData(); // Panggil setelah keduanya diset
+        loadData();
     }
 
     @FXML
@@ -61,6 +62,13 @@ public class TampilanHomeController {
         dpFilterMulai.valueProperty().addListener((obs, oldVal, newVal) -> filterData());
         dpFilterSelesai.valueProperty().addListener((obs, oldVal, newVal) -> filterData());
         tfSearch.textProperty().addListener((observable, oldValue, newValue) -> filterData());
+
+
+        this.userId = Session.getInstance().getUserId();
+        this.username = Session.getInstance().getUsername();
+        lblWelcome.setText("Welcome, " + username + "!");
+
+        loadData();
     }
 
     @FXML
