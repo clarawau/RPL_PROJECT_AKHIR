@@ -1,5 +1,6 @@
 package org.Project.Controller;
 
+import org.Project.Manager.LoginSession;
 import org.Project.Manager.Session;
 import org.Project.model.CatatanKeuangan;
 
@@ -198,6 +199,7 @@ public class TampilanHomeController {
 
     @FXML
     private void logout() {
+        LoginSession.clearSession();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
             Parent root = loader.load();
