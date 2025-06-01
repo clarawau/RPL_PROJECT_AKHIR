@@ -11,7 +11,6 @@ Kebutuhan fungsional:
 - Pengguna dapat menyaring transaksi berdasarkan kategori.
 - User dapat melakukan autentikasi (log in)
 - User dapat menerima notifikasi batasan pengeluaran
-- User dapat menandai catatan penting (prioritas)
 - User dapat melakukan pencarian berdasarkan kata kunci
 - Pengguna dapat melakukan pemulihan password melalui PIN atau pertanyaan keamanan.
 
