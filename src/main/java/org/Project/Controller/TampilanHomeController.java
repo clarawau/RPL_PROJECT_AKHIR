@@ -226,15 +226,50 @@ public class TampilanHomeController {
 
     @FXML
     private void nexDaftarCatatanKeuangan(ActionEvent event) {
-        // TODO: Navigasi ke halaman daftar catatan
-        System.out.println("Navigasi ke daftar catatan keuangan...");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/mengelolaCatatan-view.fxml"));
+            Parent root = loader.load();
+
+            MengelolaCatatanController controller = loader.getController();
+            controller.setUserId(userId);
+//
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Manage Records");
+            stage.setMaximized(true);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to load record management page.");
+        }
     }
 
     @FXML
-    private void tampilkanGrafik(ActionEvent event) {
-        // TODO: Tampilkan grafik keuangan
-        System.out.println("Menampilkan grafik keuangan...");
+    private void tampilkanGrafik() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/grafik-view.fxml"));
+            Parent root = loader.load();
+
+            GrafikController controller = loader.getController();
+            controller.setUserId(userId);
+
+            Stage stage = new Stage();
+            stage.setTitle("Graphics");
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.show();
+
+
+            ((Stage) lblWelcome.getScene().getWindow()).close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to open graphic page.");
+        }
     }
+
 
     @FXML
     private void logout() {
