@@ -51,7 +51,7 @@ public class UserDB {
         }
     }
 
-    // Cek apakah username sudah ada
+
     public boolean isUsernameExist(String username) {
         String sql = "SELECT 1 FROM users WHERE LOWER(username) = ?";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -64,7 +64,7 @@ public class UserDB {
         return false;
     }
 
-    // Cek login username dan password
+
     public boolean checkLogin(String username, String password) {
         String sql = "SELECT id FROM users WHERE LOWER(username) = ? AND password = ?";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -78,7 +78,7 @@ public class UserDB {
         return false;
     }
 
-    // Verifikasi jawaban keamanan untuk reset password
+
     public boolean verifySecurityAnswers(String username, String pet, String food, String book, String color) {
         String sql = "SELECT 1 FROM users WHERE LOWER(username) = ? AND LOWER(pet) = ? AND LOWER(food) = ? AND LOWER(book) = ? AND LOWER(color) = ?";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -95,7 +95,7 @@ public class UserDB {
         return false;
     }
 
-    // Update password user
+
     public void updatePassword(String username, String newPassword) {
         String sql = "UPDATE users SET password = ? WHERE LOWER(username) = ?";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -107,7 +107,7 @@ public class UserDB {
         }
     }
 
-    // Reset password dengan verifikasi jawaban keamanan
+
     public boolean resetPassword(String username, String pet, String food, String book, String color, String newPassword) {
         if (verifySecurityAnswers(username, pet, food, book, color)) {
             updatePassword(username, newPassword);
@@ -117,7 +117,7 @@ public class UserDB {
         }
     }
 
-    // Mendapatkan user ID berdasarkan username
+
     public int getUserId(String username) {
         String sql = "SELECT id FROM users WHERE LOWER(username) = ?";
         try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -132,7 +132,7 @@ public class UserDB {
         return -1;
     }
 
-    // Validasi login (alias dari checkLogin)
+
     public boolean validateLogin(String username, String password) {
         return checkLogin(username, password);
     }

@@ -29,7 +29,7 @@ public class SignUpController {
 
     @FXML
     public void initialize() {
-        // Validasi password saat mengetik
+
         pass1.textProperty().addListener((obs, oldText, newText) -> {
             labelPasswordInfo.setVisible(true);
             if (!isValidPassword(newText)) {
@@ -39,7 +39,7 @@ public class SignUpController {
             }
         });
 
-        // Validasi konfirmasi password
+
         pass2.textProperty().addListener((obs, oldText, newText) -> {
             if (!newText.equals(pass1.getText())) {
                 labelConfirmPasswordWarning.setText("Password confirmation does not match.");

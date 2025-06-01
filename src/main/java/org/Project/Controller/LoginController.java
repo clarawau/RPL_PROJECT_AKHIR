@@ -39,17 +39,17 @@ public class LoginController {
         if (userDb.validateLogin(username, password)) {
             int userId = userDb.getUserId(username);
 
-            // Simpan session
+
             Session.getInstance().setSession(userId, username);
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/tampilanHome-view.fxml"));
                 Parent root = loader.load();
 
-                // Ambil controller dan kirim data user
+
                 TampilanHomeController controller = loader.getController();
                 controller.setUserId(userId);
-                controller.setUsername(username); // Wajib untuk munculkan nama
+                controller.setUsername(username);
 
                 Stage stage = new Stage();
                 stage.setTitle("Home");
@@ -57,7 +57,7 @@ public class LoginController {
                 stage.setMaximized(true);
                 stage.show();
 
-                // Tutup login window
+
                 ((Stage) loginButton.getScene().getWindow()).close();
             } catch (IOException e) {
                 e.printStackTrace();

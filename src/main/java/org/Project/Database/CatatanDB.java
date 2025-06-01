@@ -10,10 +10,10 @@ import java.sql.Statement;
 
 public class CatatanDB {
 
-    // Method untuk membuat koneksi ke file SQLite
+
     public static Connection getConnection() {
         try {
-            // Gunakan path relatif yang aman
+
             return DriverManager.getConnection("jdbc:sqlite:catatan.db");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -23,15 +23,15 @@ public class CatatanDB {
 
     public void createTableIfNotExists() {
         String sql = """
-    CREATE TABLE IF NOT EXISTS catatan_keuangan (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        userId INTEGER NOT NULL,
-        judul TEXT NOT NULL,
-        jumlah REAL NOT NULL,
-        kategori TEXT NOT NULL,
-        tipe TEXT NOT NULL,
-        tanggal TEXT NOT NULL,
-    );
+        CREATE TABLE IF NOT EXISTS catatan_keuangan (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            userId INTEGER NOT NULL,
+            judul TEXT NOT NULL,
+            jumlah REAL NOT NULL,
+            kategori TEXT NOT NULL,
+            tipe TEXT NOT NULL,
+            tanggal TEXT NOT NULL
+        );
     """;
 
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
@@ -42,7 +42,6 @@ public class CatatanDB {
     }
 
 
-    // Menyisipkan catatan ke dalam tabel catatan_keuangan
     public boolean insertCatatan(CatatanKeuangan catatan) {
         String sql = "INSERT INTO catatan_keuangan(userId, judul, jumlah, kategori, tipe, tanggal) VALUES ( ?, ?, ?, ?, ?, ?)";
         try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {

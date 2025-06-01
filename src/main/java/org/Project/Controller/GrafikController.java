@@ -13,13 +13,13 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 public class GrafikController {
 
@@ -38,10 +38,10 @@ public class GrafikController {
     }
 
     private void loadBarChartData() {
-        HashMap<String, Double> pemasukanMap = new HashMap<>();
-        HashMap<String, Double> pengeluaranMap = new HashMap<>();
+        double totalIncome = 0;
+        double totalExpense = 0;
 
-        String sql = "SELECT kategori, tipe, SUM(jumlah) as total FROM catatan_keuangan WHERE userId = ? GROUP BY kategori, tipe";
+        String sql = "SELECT tipe, SUM(jumlah) as total FROM catatan_keuangan WHERE userId = ? GROUP BY tipe";
 
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:catatan.db");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -50,39 +50,29 @@ public class GrafikController {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String kategori = rs.getString("Category");
-                String tipe = rs.getString("Type");
-                double jumlah = rs.getDouble("Total");
+                String tipe = rs.getString("tipe");
+                double jumlah = rs.getDouble("total");
 
-                if (tipe.equalsIgnoreCase("Income")) {
-                    pemasukanMap.put(kategori, jumlah);
-                } else if (tipe.equalsIgnoreCase("Spent")) {
-                    pengeluaranMap.put(kategori, jumlah);
+                if (tipe.equalsIgnoreCase("income")) {
+                    totalIncome = jumlah;
+                } else if (tipe.equalsIgnoreCase("expense")) {
+                    totalExpense = jumlah;
                 }
             }
 
-            XYChart.Series<String, Number> pemasukanSeries = new XYChart.Series<>();
-            pemasukanSeries.setName("Income");
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName("Comparison");
 
-            XYChart.Series<String, Number> pengeluaranSeries = new XYChart.Series<>();
-            pengeluaranSeries.setName("Spent");
-
-            for (String kategori : pemasukanMap.keySet()) {
-                pemasukanSeries.getData().add(new XYChart.Data<>(kategori, pemasukanMap.get(kategori)));
-            }
-
-            for (String kategori : pengeluaranMap.keySet()) {
-                pengeluaranSeries.getData().add(new XYChart.Data<>(kategori, pengeluaranMap.get(kategori)));
-            }
+            series.getData().add(new XYChart.Data<>("Income", totalIncome));
+            series.getData().add(new XYChart.Data<>("Expense", totalExpense));
 
             barChart.getData().clear();
-            barChart.getData().addAll(pemasukanSeries, pengeluaranSeries);
+            barChart.getData().add(series);
 
-            // Ubah warna batang & legend setelah chart ditampilkan
             Platform.runLater(() -> {
-                setSeriesColor(pemasukanSeries, "#4CAF50");   // Hijau
-                setSeriesColor(pengeluaranSeries, "#F44336"); // Merah
-                fixLegendColor(); // Perbaiki warna legend
+                setSingleBarColor(series, "#4CAF50", 0); // income: hijau
+                setSingleBarColor(series, "#F44336", 1); // expense: merah
+                fixLegendColor(); // optional kalau pakai legend custom
             });
 
         } catch (SQLException e) {
@@ -90,10 +80,9 @@ public class GrafikController {
         }
     }
 
-    // Set warna batang berdasarkan warna HEX
-    private void setSeriesColor(XYChart.Series<String, Number> series, String color) {
-        for (XYChart.Data<String, Number> data : series.getData()) {
-            Node node = data.getNode();
+    private void setSingleBarColor(XYChart.Series<String, Number> series, String color, int index) {
+        if (series.getData().size() > index) {
+            Node node = series.getData().get(index).getNode();
             if (node != null) {
                 node.setStyle("-fx-bar-fill: " + color + ";");
             }
@@ -107,7 +96,7 @@ public class GrafikController {
             Parent root = loader.load();
 
             TampilanHomeController controller = loader.getController();
-            controller.setUserId(userId); // Kirim userId ke tampilanWel agar bisa load data user ini
+            controller.setUserId(userId);
 
             Stage stage = (Stage) barChart.getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -117,17 +106,14 @@ public class GrafikController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            // Optional: alert error
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error!");
             alert.setHeaderText(null);
-            alert.setContentText("Failed back to homepage.");
+            alert.setContentText("Failed to return to homepage.");
             alert.showAndWait();
         }
     }
 
-
-    // Perbaiki warna legend sesuai nama series
     private void fixLegendColor() {
         for (Node node : barChart.lookupAll(".chart-legend-item")) {
             if (node instanceof Label label) {
@@ -136,7 +122,7 @@ public class GrafikController {
                 if (symbol != null) {
                     if ("Income".equalsIgnoreCase(text)) {
                         symbol.setStyle("-fx-background-color: #4CAF50;");
-                    } else if ("Spent".equalsIgnoreCase(text)) {
+                    } else if ("Expense".equalsIgnoreCase(text)) {
                         symbol.setStyle("-fx-background-color: #F44336;");
                     }
                 }

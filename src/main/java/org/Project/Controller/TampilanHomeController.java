@@ -59,6 +59,7 @@ public class TampilanHomeController {
         dpFilterMulai.setValue(null);
         dpFilterSelesai.setValue(null);
 
+
         dpFilterMulai.valueProperty().addListener((obs, oldVal, newVal) -> filterData());
         dpFilterSelesai.valueProperty().addListener((obs, oldVal, newVal) -> filterData());
         tfSearch.textProperty().addListener((observable, oldValue, newValue) -> filterData());
@@ -67,7 +68,6 @@ public class TampilanHomeController {
         this.userId = Session.getInstance().getUserId();
         this.username = Session.getInstance().getUsername();
         lblWelcome.setText("Welcome, " + username + "!");
-
         loadData();
     }
 
@@ -77,6 +77,7 @@ public class TampilanHomeController {
         String sql = "SELECT * FROM catatan_keuangan WHERE userId = ?";
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:catatan.db");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -98,96 +99,37 @@ public class TampilanHomeController {
     }
 
     @FXML
-    private void nexDaftarCatatanKeuangan(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/mengelolaCatatan-view.fxml"));
-            Parent root = loader.load();
-            MengelolaCatatanController controller = loader.getController();
-            controller.setUserId(userId);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Manage Records");
-            stage.setMaximized(true);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Failed to load record management page.");
-        }
-    }
-
-    @FXML
-    private void logout() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Login");
-            stage.setScene(new Scene(root));
-            stage.setMaximized(true);
-            stage.show();
-
-            Stage currentStage = (Stage) lblWelcome.getScene().getWindow();
-            currentStage.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Failed to open login page.");
-        }
-    }
-
-    private void updateTotals() {
-        double totalPemasukan = dataKeuangan.stream()
-                .filter(c -> c.getTipe().equalsIgnoreCase("Pemasukan"))
-                .mapToDouble(CatatanKeuangan::getJumlah)
-                .sum();
-        double totalPengeluaran = dataKeuangan.stream()
-                .filter(c -> c.getTipe().equalsIgnoreCase("Pengeluaran"))
-                .mapToDouble(CatatanKeuangan::getJumlah)
-                .sum();
-
-        lblTotalPemasukan.setText("Total income: Rp. " + totalPemasukan);
-        lblTotalPengeluaran.setText("Total spent: Rp. " + totalPengeluaran);
-    }
-
-    @FXML
     private void filterData() {
         String searchQuery = tfSearch.getText().trim().toLowerCase();
-        LocalDate filterMulai = dpFilterMulai.getValue();
-        LocalDate filterSelesai = dpFilterSelesai.getValue();
-        dataKeuangan.clear();
+        LocalDate mulai = dpFilterMulai.getValue();
+        LocalDate selesai = dpFilterSelesai.getValue();
 
-        if (searchQuery.isEmpty() && (filterMulai == null || filterSelesai == null)) {
-            loadData();
+        // Validasi tanggal
+        if (mulai != null && selesai != null && mulai.isAfter(selesai)) {
+            showAlert("Invalid Date", "Start date must be before or equal to end date.");
             return;
         }
 
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM catatan_keuangan WHERE userId = ?");
-        if (filterMulai != null && filterSelesai != null) {
-            sqlBuilder.append(" AND tanggal BETWEEN ? AND ?");
-        }
-        if (!searchQuery.isEmpty()) {
-            sqlBuilder.append(" AND (LOWER(judul) LIKE ? OR LOWER(kategori) LIKE ? OR LOWER(tipe) LIKE ? OR LOWER(tanggal) LIKE ?)");
-        }
+        StringBuilder sql = new StringBuilder("SELECT * FROM catatan_keuangan WHERE userId = ?");
+        if (mulai != null && selesai != null) sql.append(" AND tanggal BETWEEN ? AND ?");
+        if (!searchQuery.isEmpty())
+            sql.append(" AND (LOWER(judul) LIKE ? OR LOWER(kategori) LIKE ? OR LOWER(tipe) LIKE ? OR LOWER(tanggal) LIKE ?)");
 
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:catatan.db");
-             PreparedStatement stmt = conn.prepareStatement(sqlBuilder.toString())) {
+             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 
-            int paramIndex = 1;
-            stmt.setInt(paramIndex++, userId);
-
-            if (filterMulai != null && filterSelesai != null) {
-                stmt.setString(paramIndex++, filterMulai.toString());
-                stmt.setString(paramIndex++, filterSelesai.toString());
+            int idx = 1;
+            stmt.setInt(idx++, userId);
+            if (mulai != null && selesai != null) {
+                stmt.setString(idx++, mulai.toString());
+                stmt.setString(idx++, selesai.toString());
             }
-
             if (!searchQuery.isEmpty()) {
-                String likeQuery = "%" + searchQuery + "%";
-                stmt.setString(paramIndex++, likeQuery);
-                stmt.setString(paramIndex++, likeQuery);
-                stmt.setString(paramIndex++, likeQuery);
-                stmt.setString(paramIndex++, likeQuery);
+                String like = "%" + searchQuery + "%";
+                for (int i = 0; i < 4; i++) stmt.setString(idx++, like);
             }
 
+            dataKeuangan.clear();
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 dataKeuangan.add(new CatatanKeuangan(
@@ -202,8 +144,31 @@ public class TampilanHomeController {
             }
             tableRekap.setItems(dataKeuangan);
             updateTotals();
+
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void nexDaftarCatatanKeuangan(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/mengelolaCatatan-view.fxml"));
+            Parent root = loader.load();
+
+            MengelolaCatatanController controller = loader.getController();
+            controller.setUserId(userId);
+//
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Manage Records");
+            stage.setMaximized(true);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to load record management page.");
         }
     }
 
@@ -222,8 +187,8 @@ public class TampilanHomeController {
             stage.setMaximized(true);
             stage.show();
 
-            Stage currentStage = (Stage) lblWelcome.getScene().getWindow();
-            currentStage.close();
+
+            ((Stage) lblWelcome.getScene().getWindow()).close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -231,11 +196,42 @@ public class TampilanHomeController {
         }
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    @FXML
+    private void logout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Login");
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.show();
+
+            ((Stage) lblWelcome.getScene().getWindow()).close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to open login page.");
+        }
+    }
+
+    private void updateTotals() {
+        double pemasukan = dataKeuangan.stream()
+                .filter(k -> k.getTipe().equalsIgnoreCase("income"))
+                .mapToDouble(CatatanKeuangan::getJumlah).sum();
+
+        double pengeluaran = dataKeuangan.stream()
+                .filter(k -> k.getTipe().equalsIgnoreCase("expense"))
+                .mapToDouble(CatatanKeuangan::getJumlah).sum();
+
+        lblTotalPemasukan.setText("Total Income: Rp. " + pemasukan);
+        lblTotalPengeluaran.setText("Total Expense: Rp. " + pengeluaran);
+    }
+
+    private void showAlert(String title, String msg) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(msg);
         alert.showAndWait();
     }
 }

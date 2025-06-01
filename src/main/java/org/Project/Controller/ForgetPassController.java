@@ -26,7 +26,7 @@ public class ForgetPassController {
     @FXML private PasswordField confirmPasswordField;
     @FXML private Button resetButton;
     @FXML private Hyperlink backToLogin;
-    @FXML private VBox resetContainer; // pastikan ini ada di FXML (di bagian luar)
+    @FXML private VBox resetContainer;
 
     @FXML
     public void initialize() {
@@ -52,7 +52,7 @@ public class ForgetPassController {
             });
         }
 
-        // Hindari autofokus pada TextField saat tampilan awal
+
         Platform.runLater(() -> {
             if (resetContainer != null) resetContainer.requestFocus();
         });

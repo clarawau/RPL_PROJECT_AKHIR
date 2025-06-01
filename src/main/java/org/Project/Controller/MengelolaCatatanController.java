@@ -1,20 +1,16 @@
 package org.Project.Controller;
 
-import org.Project.model.CatatanKeuangan;
-import org.Project.Database.CatatanDB;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.event.ActionEvent;
+import javafx.fxml.*;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
+import org.Project.Database.CatatanDB;
+import org.Project.model.CatatanKeuangan;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -23,61 +19,44 @@ import java.util.ResourceBundle;
 
 public class MengelolaCatatanController implements Initializable {
 
-    @FXML
-    private TableView<CatatanKeuangan> tableKeuangan;
-    @FXML
-    private TableColumn<CatatanKeuangan, String> colJudul;
-    @FXML
-    private TableColumn<CatatanKeuangan, Double> colJumlah;
-    @FXML
-    private TableColumn<CatatanKeuangan, String> colKategori;
-    @FXML
-    private TableColumn<CatatanKeuangan, String> colTipe;
-    @FXML
-    private TableColumn<CatatanKeuangan, String> colTanggal;
-    @FXML
-    private TextField tfJudul;
-    @FXML
-    private TextField tfJumlah;
-    @FXML
-    private ComboBox<String> cbKategori;
-    @FXML
-    private ComboBox<String> cbTipe;
-    @FXML
-    private DatePicker dpTanggal;
-    @FXML
-    private DatePicker dpFilterMulai;
-    @FXML
-    private DatePicker dpFilterSelesai;
-    @FXML
-    private Label lblTotalPemasukan;
-    @FXML
-    private Label lblTotalPengeluaran;
+    private static final String DB_URL = "jdbc:sqlite:catatan.db";
+
+    @FXML private TableView<CatatanKeuangan> tableKeuangan;
+    @FXML private TableColumn<CatatanKeuangan, String> colJudul;
+    @FXML private TableColumn<CatatanKeuangan, Double> colJumlah;
+    @FXML private TableColumn<CatatanKeuangan, String> colKategori;
+    @FXML private TableColumn<CatatanKeuangan, String> colTipe;
+    @FXML private TableColumn<CatatanKeuangan, String> colTanggal;
+    @FXML private TextField tfJudul;
+    @FXML private TextField tfJumlah;
+    @FXML private ComboBox<String> cbKategori;
+    @FXML private ComboBox<String> cbTipe;
+    @FXML private DatePicker dpTanggal;
+    @FXML private DatePicker dpFilterMulai;
+    @FXML private DatePicker dpFilterSelesai;
+    @FXML private Label lblTotalPemasukan;
+    @FXML private Label lblTotalPengeluaran;
 
     private ObservableList<CatatanKeuangan> dataKeuangan = FXCollections.observableArrayList();
     private int userId;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Buat tabel jika belum ada
-        CatatanDB db = new CatatanDB();
-        db.createTableIfNotExists();
+        new CatatanDB().createTableIfNotExists();
 
-        // Inisialisasi kolom tabel
         colJudul.setCellValueFactory(new PropertyValueFactory<>("judul"));
         colJumlah.setCellValueFactory(new PropertyValueFactory<>("jumlah"));
         colKategori.setCellValueFactory(new PropertyValueFactory<>("kategori"));
         colTipe.setCellValueFactory(new PropertyValueFactory<>("tipe"));
         colTanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
 
-        // Inisialisasi combo box
-        cbTipe.setItems(FXCollections.observableArrayList("income", "spent"));
-        cbKategori.setItems(FXCollections.observableArrayList("salary", "food", "Transports", "entertaiment", "others"));
+        cbTipe.setItems(FXCollections.observableArrayList("income", "expense"));
+        cbKategori.setItems(FXCollections.observableArrayList("salary", "food", "transport", "entertainment", "others"));
 
-        // Set default tanggal hari ini
         dpTanggal.setValue(LocalDate.now());
+        dpFilterMulai.setValue(LocalDate.now().minusMonths(1));
+        dpFilterSelesai.setValue(LocalDate.now());
 
-        // Mencegah pemilihan tanggal sebelum hari ini
         dpTanggal.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
@@ -88,19 +67,19 @@ public class MengelolaCatatanController implements Initializable {
                 }
             }
         });
-        // Jangan load data di sini karena userId belum tersedia
     }
 
     public void setUserId(int userId) {
         this.userId = userId;
-        loadData();
+        loadAllData();
     }
 
-    private void loadData() {
+    private void loadAllData() {
         dataKeuangan.clear();
-        String sql = "SELECT * FROM catatan_keuangan WHERE userId = ?";
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:catatan.db");
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String query = "SELECT * FROM catatan_keuangan WHERE userId = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -117,7 +96,7 @@ public class MengelolaCatatanController implements Initializable {
             tableKeuangan.setItems(dataKeuangan);
             updateTotals();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert("Database Error", e.getMessage());
         }
     }
 
@@ -129,7 +108,7 @@ public class MengelolaCatatanController implements Initializable {
         try {
             jumlah = Double.parseDouble(tfJumlah.getText());
         } catch (NumberFormatException e) {
-            showAlert("Input Error", "input must be number");
+            showAlert("Input Error", "Jumlah harus berupa angka.");
             return;
         }
 
@@ -137,43 +116,48 @@ public class MengelolaCatatanController implements Initializable {
         String tipe = cbTipe.getValue();
         LocalDate tanggal = dpTanggal.getValue();
 
-        if (judul.isEmpty() || jumlah <= 0 || kategori == null || tipe == null || tanggal == null) {
-            showAlert("Error", "all must be filled");
+        if (judul.isEmpty() || kategori == null || tipe == null || tanggal == null || jumlah <= 0) {
+            showAlert("Form Incomplete", "Semua field wajib diisi dengan benar.");
             return;
         }
 
         String sql = "INSERT INTO catatan_keuangan (userId, judul, jumlah, kategori, tipe, tanggal) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:catatan.db");
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, userId);
             stmt.setString(2, judul);
             stmt.setDouble(3, jumlah);
             stmt.setString(4, kategori);
             stmt.setString(5, tipe);
             stmt.setString(6, tanggal.toString());
+
             stmt.executeUpdate();
-            loadData();
+            loadAllData();
             clearForm();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert("Database Error", e.getMessage());
         }
     }
 
     @FXML
     private void hapusCatatan() {
         CatatanKeuangan selected = tableKeuangan.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            String sql = "DELETE FROM catatan_keuangan WHERE id = ?";
-            try (Connection conn = DriverManager.getConnection("jdbc:sqlite:catatan.db");
-                 PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setInt(1, selected.getId());
-                stmt.executeUpdate();
-                loadData();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            showAlert("delete failed", "select the note you want to delete");
+        if (selected == null) {
+            showAlert("No Selection", "Pilih catatan yang ingin dihapus.");
+            return;
+        }
+
+        String sql = "DELETE FROM catatan_keuangan WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, selected.getId());
+            stmt.executeUpdate();
+            loadAllData();
+        } catch (SQLException e) {
+            showAlert("Database Error", e.getMessage());
         }
     }
 
@@ -182,18 +166,21 @@ public class MengelolaCatatanController implements Initializable {
         LocalDate mulai = dpFilterMulai.getValue();
         LocalDate selesai = dpFilterSelesai.getValue();
 
-        if (mulai == null || selesai == null) {
-            showAlert("Error", "select the date you want to filter");
+        if (mulai == null || selesai == null || mulai.isAfter(selesai)) {
+            showAlert("Invalid Filter", "Tanggal mulai harus sebelum tanggal selesai.");
             return;
         }
 
         dataKeuangan.clear();
-        String sql = "SELECT * FROM catatan_keuangan WHERE userId = ? AND tanggal BETWEEN ? AND ?";
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:catatan.db");
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String query = "SELECT * FROM catatan_keuangan WHERE userId = ? AND tanggal BETWEEN ? AND ?";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setInt(1, userId);
             stmt.setString(2, mulai.toString());
             stmt.setString(3, selesai.toString());
+
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 dataKeuangan.add(new CatatanKeuangan(
@@ -209,21 +196,23 @@ public class MengelolaCatatanController implements Initializable {
             tableKeuangan.setItems(dataKeuangan);
             updateTotals();
         } catch (SQLException e) {
-            e.printStackTrace();
+            showAlert("Filter Error", e.getMessage());
         }
     }
 
     private void updateTotals() {
-        double totalPemasukan = dataKeuangan.stream()
-                .filter(c -> c.getTipe().equals("Pemasukan"))
+        double totalIn = dataKeuangan.stream()
+                .filter(d -> d.getTipe().equalsIgnoreCase("income"))
                 .mapToDouble(CatatanKeuangan::getJumlah)
                 .sum();
-        double totalPengeluaran = dataKeuangan.stream()
-                .filter(c -> c.getTipe().equals("Pengeluaran"))
+
+        double totalOut = dataKeuangan.stream()
+                .filter(d -> d.getTipe().equalsIgnoreCase("expense"))
                 .mapToDouble(CatatanKeuangan::getJumlah)
                 .sum();
-        lblTotalPemasukan.setText("Total Income: Rp. " + totalPemasukan);
-        lblTotalPengeluaran.setText("Total Spent: Rp. " + totalPengeluaran);
+
+        lblTotalPemasukan.setText("Total Income: Rp. " + totalIn);
+        lblTotalPengeluaran.setText("Total Expense: Rp. " + totalOut);
     }
 
     private void clearForm() {
@@ -247,42 +236,41 @@ public class MengelolaCatatanController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/tampilanHome-view.fxml"));
             Parent root = loader.load();
+
             TampilanHomeController controller = loader.getController();
             controller.setUserId(userId);
-            Scene scene = ((Node) event.getSource()).getScene();
-            scene.setRoot(root);
-            Stage stage = (Stage) scene.getWindow();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
             stage.setTitle("Home");
             stage.setMaximized(true);
-
         } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "failed back to homepage");
+            showAlert("Navigation Error", "Gagal kembali ke halaman utama.");
         }
     }
 
-    // Tambahan untuk fitur edit maksimal 1 bulan
     private boolean bisaEdit(String tanggalCatatan) {
         LocalDate tanggal = LocalDate.parse(tanggalCatatan);
-        LocalDate batasAkhir = tanggal.plusMonths(1);
-        return !LocalDate.now().isAfter(batasAkhir);
+        return !LocalDate.now().isAfter(tanggal.plusMonths(1));
     }
 
     @FXML
     private void editCatatan() {
         CatatanKeuangan selected = tableKeuangan.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            if (!bisaEdit(selected.getTanggal())) {
-                showAlert("alert", "editing not allowed. notes can only be edited within 1 month of being created!");
-                return;
-            }
-            tfJudul.setText(selected.getJudul());
-            tfJumlah.setText(String.valueOf(selected.getJumlah()));
-            cbKategori.setValue(selected.getKategori());
-            cbTipe.setValue(selected.getTipe());
-            dpTanggal.setValue(LocalDate.parse(selected.getTanggal()));
-        } else {
-            showAlert("select note", "please select note you want to edit.");
+        if (selected == null) {
+            showAlert("No Selection", "Pilih catatan yang ingin diedit.");
+            return;
         }
+
+        if (!bisaEdit(selected.getTanggal())) {
+            showAlert("Edit Blocked", "Catatan hanya bisa diedit dalam waktu 1 bulan.");
+            return;
+        }
+
+        tfJudul.setText(selected.getJudul());
+        tfJumlah.setText(String.valueOf(selected.getJumlah()));
+        cbKategori.setValue(selected.getKategori());
+        cbTipe.setValue(selected.getTipe());
+        dpTanggal.setValue(LocalDate.parse(selected.getTanggal()));
     }
 }
