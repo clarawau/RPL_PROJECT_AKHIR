@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.Project.Database.UserDB;
+import org.Project.Manager.LoginSession;
 import org.Project.Manager.Session;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class LoginController {
         UserDB userDb = new UserDB();
         if (userDb.validateLogin(username, password)) {
             int userId = userDb.getUserId(username);
+            LoginSession.saveSession(username);
 
 
             Session.getInstance().setSession(userId, username);

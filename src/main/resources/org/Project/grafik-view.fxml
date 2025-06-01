@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.GrafikController"
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.GrafikController" prefHeight="900.0" prefWidth="1600.0"
             style="-fx-background-color: #f4f7f9;">
 
    <!-- Header -->

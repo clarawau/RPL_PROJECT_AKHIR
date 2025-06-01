@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.MengelolaCatatanController">
+<BorderPane prefHeight="600" prefWidth="800" xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.MengelolaCatatanController" >
 
    <top>
       <VBox spacing="15" style="-fx-background-color: #f9f9f9;">

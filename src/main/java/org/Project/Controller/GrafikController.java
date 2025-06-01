@@ -3,6 +3,7 @@ package org.Project.Controller;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -38,10 +39,15 @@ public class GrafikController {
     }
 
     private void loadBarChartData() {
-        double totalIncome = 0;
-        double totalExpense = 0;
+        String sql = "SELECT kategori, tipe, SUM(jumlah) as total " +
+                "FROM catatan_keuangan WHERE userId = ? " +
+                "GROUP BY kategori, tipe";
 
-        String sql = "SELECT tipe, SUM(jumlah) as total FROM catatan_keuangan WHERE userId = ? GROUP BY tipe";
+        XYChart.Series<String, Number> incomeSeries = new XYChart.Series<>();
+        incomeSeries.setName("Income");
+
+        XYChart.Series<String, Number> expenseSeries = new XYChart.Series<>();
+        expenseSeries.setName("Expense");
 
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:catatan.db");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -50,29 +56,25 @@ public class GrafikController {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
+                String kategori = rs.getString("kategori");
                 String tipe = rs.getString("tipe");
                 double jumlah = rs.getDouble("total");
 
                 if (tipe.equalsIgnoreCase("income")) {
-                    totalIncome = jumlah;
+                    incomeSeries.getData().add(new XYChart.Data<>(kategori, jumlah));
                 } else if (tipe.equalsIgnoreCase("expense")) {
-                    totalExpense = jumlah;
+                    expenseSeries.getData().add(new XYChart.Data<>(kategori, jumlah));
                 }
             }
 
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
-            series.setName("Comparison");
-
-            series.getData().add(new XYChart.Data<>("Income", totalIncome));
-            series.getData().add(new XYChart.Data<>("Expense", totalExpense));
-
             barChart.getData().clear();
-            barChart.getData().add(series);
+            barChart.getData().addAll(incomeSeries, expenseSeries);
 
             Platform.runLater(() -> {
-                setSingleBarColor(series, "#4CAF50", 0); // income: hijau
-                setSingleBarColor(series, "#F44336", 1); // expense: merah
-                fixLegendColor(); // optional kalau pakai legend custom
+                colorBarSeries(incomeSeries, "#4CAF50"); // Hijau
+                colorBarSeries(expenseSeries, "#F44336"); // Merah
+                addDataLabel(incomeSeries);
+                addDataLabel(expenseSeries);
             });
 
         } catch (SQLException e) {
@@ -80,11 +82,37 @@ public class GrafikController {
         }
     }
 
-    private void setSingleBarColor(XYChart.Series<String, Number> series, String color, int index) {
-        if (series.getData().size() > index) {
-            Node node = series.getData().get(index).getNode();
+    private void colorBarSeries(XYChart.Series<String, Number> series, String color) {
+        for (XYChart.Data<String, Number> data : series.getData()) {
+            if (data.getNode() != null) {
+                data.getNode().setStyle("-fx-bar-fill: " + color + ";");
+            } else {
+                data.nodeProperty().addListener((obs, oldNode, newNode) -> {
+                    if (newNode != null) {
+                        newNode.setStyle("-fx-bar-fill: " + color + ";");
+                    }
+                });
+            }
+        }
+    }
+
+    private void addDataLabel(XYChart.Series<String, Number> series) {
+        for (XYChart.Data<String, Number> data : series.getData()) {
+            Node node = data.getNode();
             if (node != null) {
-                node.setStyle("-fx-bar-fill: " + color + ";");
+                Label label = new Label(String.format("%,.0f", data.getYValue().doubleValue()));
+                label.setStyle("-fx-font-size: 12px; -fx-font-weight: bold;");
+
+                node.parentProperty().addListener((obs, oldParent, newParent) -> {
+                    if (newParent instanceof Group) {
+                        ((Group) newParent).getChildren().add(label);
+                    }
+                });
+
+                node.boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
+                    label.setLayoutX(newBounds.getMinX() + newBounds.getWidth() / 2 - label.prefWidth(-1) / 2);
+                    label.setLayoutY(newBounds.getMinY() - label.prefHeight(-1) - 5);
+                });
             }
         }
     }
@@ -111,22 +139,6 @@ public class GrafikController {
             alert.setHeaderText(null);
             alert.setContentText("Failed to return to homepage.");
             alert.showAndWait();
-        }
-    }
-
-    private void fixLegendColor() {
-        for (Node node : barChart.lookupAll(".chart-legend-item")) {
-            if (node instanceof Label label) {
-                String text = label.getText();
-                Node symbol = label.getGraphic();
-                if (symbol != null) {
-                    if ("Income".equalsIgnoreCase(text)) {
-                        symbol.setStyle("-fx-background-color: #4CAF50;");
-                    } else if ("Expense".equalsIgnoreCase(text)) {
-                        symbol.setStyle("-fx-background-color: #F44336;");
-                    }
-                }
-            }
         }
     }
 }

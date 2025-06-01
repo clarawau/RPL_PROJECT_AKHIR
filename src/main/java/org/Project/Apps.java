@@ -17,8 +17,8 @@ public class Apps extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        stage.setTitle("Login");
         stage.setScene(scene);
+        stage.setTitle("Login");
         stage.setMaximized(true);
         stage.show();
     }

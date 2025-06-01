@@ -57,8 +57,12 @@ public class MengelolaCatatanController implements Initializable {
         cbKategori.setItems(FXCollections.observableArrayList("salary", "food", "transport", "entertainment", "others"));
 
         dpTanggal.setValue(LocalDate.now());
-        dpFilterMulai.setValue(LocalDate.now().minusMonths(1));
-        dpFilterSelesai.setValue(LocalDate.now());
+        dpFilterMulai.setValue(null);
+        dpFilterSelesai.setValue(null);
+
+
+        dpFilterMulai.valueProperty().addListener((obs, oldVal, newVal) -> filterTanggal());
+        dpFilterSelesai.valueProperty().addListener((obs, oldVal, newVal) -> filterTanggal());
 
         dpTanggal.setDayCellFactory(picker -> new DateCell() {
             @Override
@@ -194,7 +198,12 @@ public class MengelolaCatatanController implements Initializable {
         LocalDate mulai = dpFilterMulai.getValue();
         LocalDate selesai = dpFilterSelesai.getValue();
 
-        if (mulai == null || selesai == null || mulai.isAfter(selesai)) {
+        if (mulai == null || selesai == null) {
+            loadAllData();
+            return;
+        }
+
+        if (mulai.isAfter(selesai)) {
             showAlert("Invalid Filter", "Tanggal mulai harus sebelum tanggal selesai.");
             return;
         }
@@ -305,4 +314,12 @@ public class MengelolaCatatanController implements Initializable {
         idCatatanYangDiedit = selected.getId();
         editMode = true;
     }
+
+    @FXML
+    private void resetFilter() {
+        dpFilterMulai.setValue(null);
+        dpFilterSelesai.setValue(null);
+        loadAllData();
+    }
+
 }
