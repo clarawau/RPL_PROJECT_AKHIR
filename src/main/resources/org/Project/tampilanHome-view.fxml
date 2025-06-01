@@ -58,11 +58,11 @@
     <center>
         <TableView fx:id="tableRekap" style="-fx-background-color: white;">
             <columns>
-                <TableColumn fx:id="colJudul" text="Title"/>
-                <TableColumn fx:id="colJumlah" text="Amount"/>
-                <TableColumn fx:id="colKategori" text="Category"/>
-                <TableColumn fx:id="colTipe" text="Type"/>
-                <TableColumn fx:id="colTanggal" text="Date"/>
+                <TableColumn fx:id="colJudul" prefWidth="300" text="Title"/>
+                <TableColumn fx:id="colJumlah" prefWidth="300" text="Amount"/>
+                <TableColumn fx:id="colKategori" prefWidth="300" text="Category"/>
+                <TableColumn fx:id="colTipe" prefWidth="300" text="Type"/>
+                <TableColumn fx:id="colTanggal" prefWidth="300" text="Date"/>
             </columns>
         </TableView>
     </center>
