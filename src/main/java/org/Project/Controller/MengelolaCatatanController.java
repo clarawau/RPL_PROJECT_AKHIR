@@ -280,8 +280,8 @@ public class MengelolaCatatanController implements Initializable {
             controller.setUserId(userId);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
             stage.setTitle("Home");
+            stage.setScene(new Scene(root));
             stage.setMaximized(true);
         } catch (IOException e) {
             showAlert("Navigation Error", "Gagal kembali ke halaman utama.");
