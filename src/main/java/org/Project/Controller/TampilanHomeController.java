@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
@@ -34,10 +35,17 @@ public class TampilanHomeController {
     @FXML private DatePicker dpFilterSelesai;
     @FXML private Label lblTotalPemasukan;
     @FXML private Label lblTotalPengeluaran;
+    @FXML private TextField tfBatasPengeluaran;
+    @FXML private Button btnSetBatasPengeluaran;
+    @FXML private Label lblPengeluaranBulanIni;
+    @FXML private Label lblBatasPengeluaranAktif;
+    @FXML private Region spacer1; // Diperlukan agar Region fx:id="spacer1" di FXML dikenali
 
     private ObservableList<CatatanKeuangan> dataKeuangan = FXCollections.observableArrayList();
     private int userId;
     private String username;
+    private double batasPengeluaran = -1;
+    private LocalDate tanggalSetBatas = null;
 
     public void setUserId(int userId) {
         this.userId = userId;
@@ -60,11 +68,9 @@ public class TampilanHomeController {
         dpFilterMulai.setValue(null);
         dpFilterSelesai.setValue(null);
 
-
         dpFilterMulai.valueProperty().addListener((obs, oldVal, newVal) -> filterData());
         dpFilterSelesai.valueProperty().addListener((obs, oldVal, newVal) -> filterData());
         tfSearch.textProperty().addListener((observable, oldValue, newValue) -> filterData());
-
 
         this.userId = Session.getInstance().getUserId();
         this.username = Session.getInstance().getUsername();
@@ -72,7 +78,6 @@ public class TampilanHomeController {
         loadData();
     }
 
-    @FXML
     private void loadData() {
         dataKeuangan.clear();
         String sql = "SELECT * FROM catatan_keuangan WHERE userId = ?";
@@ -105,7 +110,6 @@ public class TampilanHomeController {
         LocalDate mulai = dpFilterMulai.getValue();
         LocalDate selesai = dpFilterSelesai.getValue();
 
-        // Validasi tanggal
         if (mulai != null && selesai != null && mulai.isAfter(selesai)) {
             showAlert("Invalid Date", "Start date must be before or equal to end date.");
             return;
@@ -152,67 +156,56 @@ public class TampilanHomeController {
     }
 
     @FXML
-    private void nexDaftarCatatanKeuangan(ActionEvent event) {
+    private void setBatasPengeluaran() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/mengelolaCatatan-view.fxml"));
-            Parent root = loader.load();
+            if (tanggalSetBatas != null) {
+                LocalDate now = LocalDate.now();
+                if (tanggalSetBatas.getMonth() == now.getMonth() && tanggalSetBatas.getYear() == now.getYear()) {
+                    showAlert("Batas Sudah Ditentukan", "Batas pengeluaran sudah ditetapkan bulan ini.");
+                    return;
+                }
+            }
 
-            MengelolaCatatanController controller = loader.getController();
-            controller.setUserId(userId);
-//
+            String input = tfBatasPengeluaran.getText().trim();
+            if (input.isEmpty()) {
+                showAlert("Input Required", "Please enter a spending limit.");
+                return;
+            }
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Manage Records");
-            stage.setMaximized(true);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Failed to load record management page.");
+            batasPengeluaran = Double.parseDouble(input);
+            tanggalSetBatas = LocalDate.now();
+            lblBatasPengeluaranAktif.setText("Limit: Rp. " + batasPengeluaran);
+            showAlert("Limit Set", "Monthly spending limit set to Rp. " + batasPengeluaran);
+            periksaPengeluaranBulanan(true);
+        } catch (NumberFormatException e) {
+            showAlert("Invalid Input", "Please enter a valid number.");
         }
     }
 
-    @FXML
-    private void tampilkanGrafik() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/grafik-view.fxml"));
-            Parent root = loader.load();
+    private void periksaPengeluaranBulanan(boolean tampilkanPeringatan) {
+        double totalBulanIni = dataKeuangan.stream()
+                .filter(k -> k.getTipe().equalsIgnoreCase("expense"))
+                .filter(k -> {
+                    try {
+                        LocalDate tgl = LocalDate.parse(k.getTanggal());
+                        LocalDate now = LocalDate.now();
+                        return tgl.getMonth() == now.getMonth() && tgl.getYear() == now.getYear();
+                    } catch (Exception e) {
+                        return false;
+                    }
+                })
+                .mapToDouble(CatatanKeuangan::getJumlah).sum();
 
-            GrafikController controller = loader.getController();
-            controller.setUserId(userId);
+        lblPengeluaranBulanIni.setText("This Month: Rp. " + totalBulanIni);
 
-            Stage stage = new Stage();
-            stage.setTitle("Graphics");
-            stage.setScene(new Scene(root));
-            stage.setMaximized(true);
-            stage.show();
-
-
-            ((Stage) lblWelcome.getScene().getWindow()).close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Failed to open graphic page.");
-        }
-    }
-
-    @FXML
-    private void logout() {
-        LoginSession.clearSession();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Login");
-            stage.setScene(new Scene(root));
-            stage.setMaximized(true);
-            stage.show();
-
-            ((Stage) lblWelcome.getScene().getWindow()).close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Failed to open login page.");
+        if (batasPengeluaran > 0 && tanggalSetBatas != null) {
+            LocalDate now = LocalDate.now();
+            if (tanggalSetBatas.getMonth() == now.getMonth() && tanggalSetBatas.getYear() == now.getYear()) {
+                lblBatasPengeluaranAktif.setText("Limit: Rp. " + batasPengeluaran);
+                if (totalBulanIni > batasPengeluaran && tampilkanPeringatan) {
+                    showAlert("Limit Exceeded", "Warning! Spending this month exceeds the limit of Rp. " + batasPengeluaran);
+                }
+            }
         }
     }
 
@@ -227,6 +220,39 @@ public class TampilanHomeController {
 
         lblTotalPemasukan.setText("Total Income: Rp. " + pemasukan);
         lblTotalPengeluaran.setText("Total Expense: Rp. " + pengeluaran);
+
+        periksaPengeluaranBulanan(true);
+    }
+
+    @FXML
+    private void nexDaftarCatatanKeuangan(ActionEvent event) {
+        // TODO: Navigasi ke halaman daftar catatan
+        System.out.println("Navigasi ke daftar catatan keuangan...");
+    }
+
+    @FXML
+    private void tampilkanGrafik(ActionEvent event) {
+        // TODO: Tampilkan grafik keuangan
+        System.out.println("Menampilkan grafik keuangan...");
+    }
+
+    @FXML
+    private void logout() {
+        LoginSession.saveSession(username);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Login");
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.show();
+
+            ((Stage) lblWelcome.getScene().getWindow()).close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to open login page.");
+        }
     }
 
     private void showAlert(String title, String msg) {

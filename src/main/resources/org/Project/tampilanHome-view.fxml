@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="600" prefWidth="800" xmlns:fx="http://javafx.com/fxml" fx:controller="org.Project.Controller.TampilanHomeController"
+<BorderPane prefHeight="600" prefWidth="800" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.Project.Controller.TampilanHomeController"
             style="-fx-background-color: #f4f7fa;">
-
     <top>
         <VBox spacing="15">
             <padding>
                 <Insets top="20" right="20" bottom="10" left="20"/>
             </padding>
 
-            <!-- Header: Logo & Nama App -->
+            <!-- Header: Batas Pengeluaran -->
             <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label text="💰" style="-fx-font-size: 28px;"/>
-                <Label text="MoneyWise" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1e88e5;"/>
+                <Label text="💡 Set Monthly Limit:"/>
+                <TextField fx:id="tfBatasPengeluaran" promptText="Enter limit (e.g. 500000)" style="-fx-pref-width: 200px;"/>
+                <Button fx:id="btnSetBatasPengeluaran" text="Set" onAction="#setBatasPengeluaran"
+                        style="-fx-background-color: #1976d2; -fx-text-fill: white;"/>
+                <Label fx:id="lblBatasPengeluaranAktif" style="-fx-font-weight: bold; -fx-text-fill: #1976d2;"/>
+                <Label fx:id="lblPengeluaranBulanIni" style="-fx-font-weight: bold; -fx-text-fill: #f57c00;"/>
             </HBox>
 
             <!-- Welcome & Navigasi -->
@@ -48,19 +51,19 @@
                 <Label fx:id="lblTotalPemasukan" style="-fx-font-weight: bold; -fx-text-fill: green;"/>
                 <Label fx:id="lblTotalPengeluaran" style="-fx-font-weight: bold; -fx-text-fill: red;"/>
             </HBox>
+
         </VBox>
     </top>
 
     <center>
         <TableView fx:id="tableRekap" style="-fx-background-color: white;">
             <columns>
-                <TableColumn fx:id="colJudul" text="Title" />
-                <TableColumn fx:id="colJumlah" text="Amount" />
-                <TableColumn fx:id="colKategori" text="Category" />
-                <TableColumn fx:id="colTipe" text="Type" />
-                <TableColumn fx:id="colTanggal" text="Date" />
+                <TableColumn fx:id="colJudul" text="Title"/>
+                <TableColumn fx:id="colJumlah" text="Amount"/>
+                <TableColumn fx:id="colKategori" text="Category"/>
+                <TableColumn fx:id="colTipe" text="Type"/>
+                <TableColumn fx:id="colTanggal" text="Date"/>
             </columns>
         </TableView>
     </center>
-
 </BorderPane>
