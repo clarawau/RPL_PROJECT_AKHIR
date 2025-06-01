@@ -1,5 +1,6 @@
 package org.Project.Controller;
 
+
 import org.Project.Manager.LoginSession;
 import org.Project.Manager.Session;
 import org.Project.model.CatatanKeuangan;
@@ -39,7 +40,10 @@ public class TampilanHomeController {
     @FXML private Button btnSetBatasPengeluaran;
     @FXML private Label lblPengeluaranBulanIni;
     @FXML private Label lblBatasPengeluaranAktif;
-    @FXML private Region spacer1; // Diperlukan agar Region fx:id="spacer1" di FXML dikenali
+
+
+
+    @FXML private Region spacer1;
 
     private ObservableList<CatatanKeuangan> dataKeuangan = FXCollections.observableArrayList();
     private int userId;
@@ -266,9 +270,13 @@ public class TampilanHomeController {
     }
 
 
+
+
     @FXML
     private void logout() {
         LoginSession.saveSession(username);
+        LoginSession.clearSession();
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/Project/login-view.fxml"));
             Parent root = loader.load();

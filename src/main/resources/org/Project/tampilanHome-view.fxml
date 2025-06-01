@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="900.0" prefWidth="1400.0" xmlns:fx="http://javafx.com/fxml"
+<BorderPane prefHeight="900.0" prefWidth="1500.0" xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.Project.Controller.TampilanHomeController"
             style="-fx-background-color: #f4f7fa;">
     <top>
