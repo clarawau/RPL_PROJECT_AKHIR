@@ -40,6 +40,9 @@ public class MengelolaCatatanController implements Initializable {
     private ObservableList<CatatanKeuangan> dataKeuangan = FXCollections.observableArrayList();
     private int userId;
 
+    private boolean editMode = false;
+    private int idCatatanYangDiedit = -1;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         new CatatanDB().createTableIfNotExists();
@@ -121,24 +124,49 @@ public class MengelolaCatatanController implements Initializable {
             return;
         }
 
-        String sql = "INSERT INTO catatan_keuangan (userId, judul, jumlah, kategori, tipe, tanggal) VALUES (?, ?, ?, ?, ?, ?)";
+        if (editMode && idCatatanYangDiedit != -1) {
+            // Mode edit: update data
+            String sql = "UPDATE catatan_keuangan SET judul = ?, jumlah = ?, kategori = ?, tipe = ?, tanggal = ? WHERE id = ? AND userId = ?";
+            try (Connection conn = DriverManager.getConnection(DB_URL);
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, judul);
+                stmt.setDouble(2, jumlah);
+                stmt.setString(3, kategori);
+                stmt.setString(4, tipe);
+                stmt.setString(5, tanggal.toString());
+                stmt.setInt(6, idCatatanYangDiedit);
+                stmt.setInt(7, userId);
 
-            stmt.setInt(1, userId);
-            stmt.setString(2, judul);
-            stmt.setDouble(3, jumlah);
-            stmt.setString(4, kategori);
-            stmt.setString(5, tipe);
-            stmt.setString(6, tanggal.toString());
+                stmt.executeUpdate();
+                showAlert("Sukses", "Catatan berhasil diperbarui.");
+                editMode = false;
+                idCatatanYangDiedit = -1;
+            } catch (SQLException e) {
+                showAlert("Database Error", e.getMessage());
+            }
+        } else {
+            // Mode tambah baru
+            String sql = "INSERT INTO catatan_keuangan (userId, judul, jumlah, kategori, tipe, tanggal) VALUES (?, ?, ?, ?, ?, ?)";
+            try (Connection conn = DriverManager.getConnection(DB_URL);
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.executeUpdate();
-            loadAllData();
-            clearForm();
-        } catch (SQLException e) {
-            showAlert("Database Error", e.getMessage());
+                stmt.setInt(1, userId);
+                stmt.setString(2, judul);
+                stmt.setDouble(3, jumlah);
+                stmt.setString(4, kategori);
+                stmt.setString(5, tipe);
+                stmt.setString(6, tanggal.toString());
+
+                stmt.executeUpdate();
+                showAlert("Sukses", "Catatan berhasil ditambahkan.");
+            } catch (SQLException e) {
+                showAlert("Database Error", e.getMessage());
+            }
         }
+
+        loadAllData();
+        clearForm();
     }
 
     @FXML
@@ -221,10 +249,12 @@ public class MengelolaCatatanController implements Initializable {
         cbKategori.getSelectionModel().clearSelection();
         cbTipe.getSelectionModel().clearSelection();
         dpTanggal.setValue(LocalDate.now());
+        editMode = false;
+        idCatatanYangDiedit = -1;
     }
 
     private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -272,5 +302,7 @@ public class MengelolaCatatanController implements Initializable {
         cbKategori.setValue(selected.getKategori());
         cbTipe.setValue(selected.getTipe());
         dpTanggal.setValue(LocalDate.parse(selected.getTanggal()));
+        idCatatanYangDiedit = selected.getId();
+        editMode = true;
     }
 }

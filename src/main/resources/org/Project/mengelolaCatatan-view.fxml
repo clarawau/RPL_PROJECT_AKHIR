@@ -29,7 +29,7 @@
             <ComboBox fx:id="cbTipe" promptText="Income / Expense"/>
             <Label text="Date:"/>
             <DatePicker fx:id="dpTanggal"/>
-            <Button text="Add" onAction="#tambahCatatan"
+            <Button fx:id="btnTambah" text="Add" onAction="#tambahCatatan"
                     style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;"/>
          </HBox>
       </VBox>
@@ -63,9 +63,9 @@
          </HBox>
 
          <HBox spacing="10" alignment="CENTER_LEFT">
-            <Button text="Delete" onAction="#hapusCatatan"
+            <Button fx:id="btnHapus" text="Delete" onAction="#hapusCatatan"
                     style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;"/>
-            <Button text="Edit" onAction="#editCatatan"
+            <Button fx:id="btnEdit" text="Edit" onAction="#editCatatan"
                     style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold;"/>
             <Button text="Back" onAction="#kembaliKeWelcome"
                     style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-weight: bold;"/>
